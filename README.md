@@ -41,7 +41,7 @@ Raw data
                                 ├─ DIR on resampled training labels (pre-CV)
                                 ├─ 5-fold stratified CV  → metrics
                                 ├─ SHAP feature importances (last fold)
-                                └─ Constrained random-search adversarial attack
+                                └─ Genetic-algorithm (GA) perturbation adversarial attack
 ```
 
 ### Models
@@ -65,7 +65,7 @@ Raw data
 
 ### Adversarial attack
 
-A constrained random-search counterfactual attack: at each iteration, one or more **mutable** features (`loan_amnt`, `annual_inc`, `dti`, `revol_bal`, `revol_util`, `open_acc`, `total_acc`) are replaced with values sampled from the training distribution. The attack succeeds when the predicted class flips from default (1) to non-default (0). The primary metric is **attack success rate** — the fraction of true-default instances that can be flipped within `ATTACK_MAX_ITER` iterations.
+A **genetic-algorithm (GA) perturbation attack** (`GAdvExample` in `src/ga_attack.py`). For each correctly-predicted default the GA evolves a population of perturbed copies of the instance: only the **mutable** features (`loan_amnt`, `annual_inc`, `dti`, `revol_bal`, `revol_util`, `open_acc`, `total_acc`) may change — every other column is black-listed — and new values are sampled from the training distribution. Crossover and mutation explore feature combinations, while the fitness function rewards flipping the prediction to non-default (0) and penalises the number and magnitude of changes (the proximity penalty is gradually relaxed via `GA_BETA` until a flip is found). The attack succeeds when the predicted class flips from default (1) to non-default (0); among the runs that flip, the most proximal counterfactual (fewest changed features) is reported. The primary metric is **attack success rate** — the fraction of true-default instances that can be flipped.
 
 ### Fairness metric (DIR)
 
@@ -252,8 +252,11 @@ All tuneable constants live in `src/config.py`:
 | `MINORITY_FRACS` | `[0.01, 0.02, 0.05, 0.1, 0.2]` | Target minority fractions |
 | `N_FOLDS` | `5` | CV folds |
 | `N_ATTACK_CASES` | `50` | Instances attacked per experiment |
-| `ATTACK_MAX_ITER` | `100` | Max attack iterations per instance |
-| `N_CHANGES` | `1` | Mutable features changed per attack step |
+| `GA_SOL_PER_POP` | `30` | GA population size per generation |
+| `GA_NUM_PARENTS_MATING` | `10` | Parents selected for crossover each generation |
+| `GA_NUM_GENERATIONS` | `100` | Max generations per run (early-stops once flipped) |
+| `GA_N_RUNS` | `5` | Independent GA restarts per attacked instance |
+| `GA_BETA` | `0.95` | Proximity-constraint relaxation factor (0 < β < 1) |
 | `N_SHAP_MAX` | `200` | Test samples for tree/linear SHAP |
 | `N_SHAP_NN` | `20` | Test samples for NN KernelExplainer |
 | `MUTABLE_FEATURES` | see config | Features the attacker can modify |

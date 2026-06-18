@@ -87,7 +87,7 @@ def run_experiment(experiment_id: int, n_cores: int = 8):
         y_cv = y_tr
         X_te_pred = X_te
 
-    cv_n_jobs = 1 if is_nn else min(N_FOLDS, n_cores)
+    cv_n_jobs = 1
     pipe = build_pipeline(model, sampler)
 
     dir_df = compute_dataset_dir(pipe, X_tr, y_tr)

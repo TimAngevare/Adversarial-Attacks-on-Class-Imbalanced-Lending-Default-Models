@@ -1,3 +1,5 @@
+import warnings
+
 import numpy as np
 import pandas as pd
 import shap
@@ -14,9 +16,11 @@ from imblearn.metrics import geometric_mean_score
 
 from src.config import (
     RANDOM_STATE, N_FOLDS, N_SHAP_MAX, N_SHAP_NN, N_SHAP_NN_BG,
-    N_ATTACK_CASES, ATTACK_MAX_ITER, N_CHANGES, MUTABLE_FEATURES,
+    N_ATTACK_CASES, MUTABLE_FEATURES,
+    GA_SOL_PER_POP, GA_NUM_PARENTS_MATING, GA_NUM_GENERATIONS, GA_N_RUNS, GA_BETA,
     DIR_GROUP_SPECS, FAVOURABLE_LABEL,
 )
+from src.ga_attack import GAdvExample
 
 
 def _to_float32(X):
@@ -248,51 +252,83 @@ def compute_dataset_dir(
 # Adversarial attacks
 # ---------------------------------------------------------------------------
 
-def constrained_random_attack(
+def constrained_ga_attack(
     model, x_original: pd.DataFrame, X_reference: pd.DataFrame,
     mutable_features: list, desired_class: int = 0,
-    max_iter: int = ATTACK_MAX_ITER, n_changes: int = N_CHANGES,
+    sol_per_pop: int = GA_SOL_PER_POP,
+    num_parents_mating: int = GA_NUM_PARENTS_MATING,
+    num_generations: int = GA_NUM_GENERATIONS,
+    n_runs: int = GA_N_RUNS,
+    beta: float = GA_BETA,
     random_state: int = RANDOM_STATE,
 ) -> dict:
-    rng = np.random.default_rng(random_state)
-    x_original = x_original.copy()
-    original_prob = model.predict_proba(x_original)[:, 1][0]
+    """Genetic-algorithm counterfactual attack on a single instance.
 
-    best_x = x_original.copy()
-    best_prob = original_prob
-    best_pred = model.predict(x_original)[0]
-    best_changes = {}
+    Evolves a population of perturbed copies of ``x_original`` to flip the
+    model's prediction (from the predicted positive/default class toward
+    ``desired_class``) while keeping the number and magnitude of feature
+    changes small. Only ``mutable_features`` may be modified; every other
+    column is added to the GA's black-list and left untouched. New feature
+    values are sampled from the empirical distribution in ``X_reference``,
+    so counterfactuals stay on realistic, attainable values.
 
-    for _ in range(max_iter):
-        x_cand = x_original.copy()
-        chosen = rng.choice(mutable_features, size=min(n_changes, len(mutable_features)), replace=False)
-        changes = {}
-        for feat in chosen:
-            old_val = x_cand[feat].iloc[0]
-            new_val = X_reference[feat].sample(n=1, random_state=int(rng.integers(0, 1_000_000))).values[0]
-            x_cand.loc[:, feat] = new_val
-            if old_val != new_val:
-                changes[feat] = {"old": old_val, "new": new_val}
+    Returns the same metric keys as the previous random-search attack so the
+    aggregation/plotting code is unaffected.
+    """
+    feature_names = list(X_reference.columns)
+    mutable_set = set(mutable_features)
+    # Immutable columns (everything the attacker cannot change) are black-listed
+    # by positional index, which is how the GA library expects them.
+    black_list = [i for i, f in enumerate(feature_names) if f not in mutable_set]
 
-        pred = model.predict(x_cand)[0]
-        prob = model.predict_proba(x_cand)[:, 1][0]
+    X_ref_np = np.asarray(X_reference.values, dtype=float)
+    x_np = np.asarray(x_original.values, dtype=float).reshape(-1)
 
-        if prob < best_prob:
-            best_prob, best_x, best_pred, best_changes = prob, x_cand.copy(), pred, changes.copy()
+    original_prob = float(model.predict_proba(x_original)[:, 1][0])
 
-        if pred == desired_class:
-            return {
-                "success": 1,
-                "cf_default_prob": prob,
-                "changed_features": int((x_original.iloc[0] != x_cand.iloc[0]).sum()),
-                "prob_reduction": original_prob - prob,
-            }
+    # GA library uses the global NumPy RNG; seed it per-case for reproducibility.
+    np.random.seed(random_state)
+    ga = GAdvExample(
+        feature_names=feature_names,
+        cat_vars_ohe=None,
+        sol_per_pop=sol_per_pop,
+        num_parents_mating=num_parents_mating,
+        num_generations=num_generations,
+        n_runs=n_runs,
+        black_list=black_list,
+        beta=beta,
+        verbose=False,
+    )
+
+    # The GA calls model.predict/predict_proba on bare NumPy arrays, which
+    # triggers sklearn "missing feature names" warnings on every generation.
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", category=UserWarning)
+        _, _, x_success = ga.attack(model, x_np, X_ref_np)
+
+    def _default_prob(cf_rows: np.ndarray) -> np.ndarray:
+        df = pd.DataFrame(cf_rows, columns=feature_names)
+        return model.predict_proba(df)[:, 1]
+
+    if len(x_success) > 0:
+        cfs = np.asarray(x_success, dtype=float)
+        probs = _default_prob(cfs)
+        n_changed = (np.abs(cfs - x_np) > 0).sum(axis=1)
+        # Prefer the most proximal counterfactual: fewest changed features,
+        # then the lowest remaining default probability.
+        best = np.lexsort((probs, n_changed))[0]
+        return {
+            "success": 1,
+            "cf_default_prob": float(probs[best]),
+            "changed_features": int(n_changed[best]),
+            "prob_reduction": original_prob - float(probs[best]),
+        }
 
     return {
         "success": 0,
-        "cf_default_prob": best_prob,
-        "changed_features": int((x_original.iloc[0] != best_x.iloc[0]).sum()),
-        "prob_reduction": original_prob - best_prob,
+        "cf_default_prob": original_prob,
+        "changed_features": 0,
+        "prob_reduction": 0.0,
     }
 
 
@@ -301,8 +337,11 @@ def run_adversarial_attacks(
     y_te, y_pred_te,
     mutable_features: list = None,
     n_cases: int = N_ATTACK_CASES,
-    max_iter: int = ATTACK_MAX_ITER,
-    n_changes: int = N_CHANGES,
+    sol_per_pop: int = GA_SOL_PER_POP,
+    num_parents_mating: int = GA_NUM_PARENTS_MATING,
+    num_generations: int = GA_NUM_GENERATIONS,
+    n_runs: int = GA_N_RUNS,
+    beta: float = GA_BETA,
     random_state: int = RANDOM_STATE,
 ) -> dict:
     if mutable_features is None:
@@ -330,11 +369,14 @@ def run_adversarial_attacks(
     for idx in X_cand.index:
         x0 = X_te.loc[[idx]]
         case_results.append(
-            constrained_random_attack(
+            constrained_ga_attack(
                 pipe, x0, X_tr, feats,
                 desired_class=0,
-                max_iter=max_iter,
-                n_changes=n_changes,
+                sol_per_pop=sol_per_pop,
+                num_parents_mating=num_parents_mating,
+                num_generations=num_generations,
+                n_runs=n_runs,
+                beta=beta,
                 random_state=random_state + int(idx),
             )
         )

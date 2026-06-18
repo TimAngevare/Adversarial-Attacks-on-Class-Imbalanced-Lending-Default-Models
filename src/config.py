@@ -29,8 +29,15 @@ N_SHAP_NN_BG = 50
 
 # Adversarial attack settings
 N_ATTACK_CASES = 50
-ATTACK_MAX_ITER = 100
-N_CHANGES = 1
+
+# Genetic-algorithm (GA) perturbation attack settings.
+# The attack searches for a minimal-change counterfactual that flips the
+# prediction by evolving a population of perturbed copies of the input.
+GA_SOL_PER_POP = 30          # population size per generation
+GA_NUM_PARENTS_MATING = 10   # parents selected for crossover each generation
+GA_NUM_GENERATIONS = 100     # max generations per run (early-stops once flipped)
+GA_N_RUNS = 5                # independent GA restarts per attacked instance
+GA_BETA = 0.95               # proximity-constraint relaxation factor (0<beta<1)
 
 MUTABLE_FEATURES = [
     "loan_amnt", "annual_inc", "dti", "revol_bal",
