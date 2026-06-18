@@ -8,7 +8,7 @@
 #SBATCH --partition=genoa
 #SBATCH --nodes=1
 #SBATCH --exclusive
-#SBATCH --time=02:00:00
+#SBATCH --time=12:00:00
 #SBATCH --output=logs/setup_%j.out
 #SBATCH --error=logs/setup_%j.err
 
@@ -20,5 +20,5 @@ module load Python/3.11.3-GCCcore-12.3.0
 source ~/.local/venv/bin/activate
 
 echo "Starting setup on $(hostname)"
-python3.11 setup.py --data Data/accepted.csv --n_jobs -1
+python3.11 setup.py --skip_preprocess --data Data/accepted.csv --n_jobs 32
 echo "Setup complete."

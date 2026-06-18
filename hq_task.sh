@@ -8,7 +8,7 @@ module load Python/3.11.3-GCCcore-12.3.0
 
 source ~/.local/venv/bin/activate
 
-N_CORES=192
+N_CORES=6
 
 echo "[$(date)] Starting experiment $HQ_TASK_ID on $(hostname) with $N_CORES cores"
 
