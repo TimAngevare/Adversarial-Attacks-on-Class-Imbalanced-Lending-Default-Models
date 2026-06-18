@@ -138,7 +138,10 @@ def run_experiment(experiment_id: int, n_cores: int = 8):
         **attack_row,
     }
     pd.DataFrame([attack_row]).to_csv(os.path.join(out_dir, "attacks.csv"), index=False)
-    print(f"  Attack success rate: {attack_row.get('Attack success rate', 'N/A')}")
+    print(
+        f"  Attack success rate: GA={attack_row.get('Attack success rate (GA)', 'N/A')} "
+        f"ZOO={attack_row.get('Attack success rate (ZOO)', 'N/A')}"
+    )
 
     # ------------------------------------------------------------------ metadata
     with open(os.path.join(out_dir, "meta.json"), "w") as f:

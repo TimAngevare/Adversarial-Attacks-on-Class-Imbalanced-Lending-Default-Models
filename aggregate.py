@@ -80,9 +80,21 @@ def plot_pr_auc_vs_imbalance(model_results: pd.DataFrame, outputs_dir: str):
 
 
 def plot_attack_success(adf: pd.DataFrame, outputs_dir: str):
-    ir_col, y_col = "Imbalance ratio", "Attack success rate"
+    ir_col = "Imbalance ratio"
+    # Each attack method has its own "Attack success rate (<method>)" column.
+    method_styles = [("GA", "-"), ("ZOO", "--")]
+    methods = [
+        (name, ls) for name, ls in method_styles
+        if f"Attack success rate ({name})" in adf.columns
+    ]
+    if not methods:  # backward-compat with single-method results
+        methods = [("", "-")]
+
     samplers = adf["Sampler"].unique()
-    models = adf["Model"].unique()
+    models = list(adf["Model"].unique())
+    color_cycle = plt.rcParams["axes.prop_cycle"].by_key()["color"]
+    model_color = {m: color_cycle[i % len(color_cycle)] for i, m in enumerate(models)}
+
     n = len(samplers)
     ncols = 3
     nrows = -(-n // ncols)
@@ -92,16 +104,29 @@ def plot_attack_success(adf: pd.DataFrame, outputs_dir: str):
         sub = adf[adf["Sampler"] == sampler]
         for model in models:
             m = sub[sub["Model"] == model].sort_values(ir_col)
-            if not m.empty:
-                ax.plot(m[ir_col], m[y_col], marker="o", label=model)
+            if m.empty:
+                continue
+            for name, ls in methods:
+                col = f"Attack success rate ({name})" if name else "Attack success rate"
+                if col in m:
+                    ax.plot(m[ir_col], m[col], marker="o", linestyle=ls, color=model_color[model])
         ax.set_title(sampler)
         ax.set_xlabel("Imbalance ratio")
-        ax.set_ylabel(y_col)
+        ax.set_ylabel("Attack success rate")
         ax.grid(True, alpha=0.3)
     for ax in axes[n:]:
         ax.set_visible(False)
-    handles, labels = axes[0].get_legend_handles_labels()
-    fig.legend(handles, labels, loc="upper center", ncol=len(models), bbox_to_anchor=(0.5, 1.02))
+
+    # Two legends: colour -> model, line style -> attack method.
+    from matplotlib.lines import Line2D
+    model_handles = [Line2D([0], [0], color=model_color[m], marker="o", label=m) for m in models]
+    method_handles = [
+        Line2D([0], [0], color="black", linestyle=ls, label=name)
+        for name, ls in methods if name
+    ]
+    handles = model_handles + method_handles
+    fig.legend(handles, [h.get_label() for h in handles],
+               loc="upper center", ncol=len(handles), bbox_to_anchor=(0.5, 1.04))
     fig.tight_layout()
     fig.savefig(os.path.join(outputs_dir, "plots", "attack_success_rate.png"), bbox_inches="tight", dpi=150)
     plt.close(fig)

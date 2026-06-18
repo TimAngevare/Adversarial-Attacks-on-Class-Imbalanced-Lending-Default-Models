@@ -18,9 +18,15 @@ from src.config import (
     RANDOM_STATE, N_FOLDS, N_SHAP_MAX, N_SHAP_NN, N_SHAP_NN_BG,
     N_ATTACK_CASES, MUTABLE_FEATURES,
     GA_SOL_PER_POP, GA_NUM_PARENTS_MATING, GA_NUM_GENERATIONS, GA_N_RUNS, GA_BETA,
+    ZOO_MAX_ITER, ZOO_LEARNING_RATE, ZOO_BINARY_SEARCH_STEPS,
+    ZOO_INITIAL_CONST, ZOO_NB_PARALLEL,
     DIR_GROUP_SPECS, FAVOURABLE_LABEL,
 )
+
 from src.ga_attack import GAdvExample
+from art.attacks.evasion import ZooAttack
+from art.estimators.classification import BlackBoxClassifier
+
 
 
 def _to_float32(X):
@@ -252,6 +258,10 @@ def compute_dataset_dir(
 # Adversarial attacks
 # ---------------------------------------------------------------------------
 
+def _default_prob(cf_rows: np.ndarray, feature_names: list, model) -> np.ndarray:
+        df = pd.DataFrame(cf_rows, columns=feature_names)
+        return model.predict_proba(df)[:, 1]
+
 def constrained_ga_attack(
     model, x_original: pd.DataFrame, X_reference: pd.DataFrame,
     mutable_features: list, desired_class: int = 0,
@@ -262,23 +272,10 @@ def constrained_ga_attack(
     beta: float = GA_BETA,
     random_state: int = RANDOM_STATE,
 ) -> dict:
-    """Genetic-algorithm counterfactual attack on a single instance.
-
-    Evolves a population of perturbed copies of ``x_original`` to flip the
-    model's prediction (from the predicted positive/default class toward
-    ``desired_class``) while keeping the number and magnitude of feature
-    changes small. Only ``mutable_features`` may be modified; every other
-    column is added to the GA's black-list and left untouched. New feature
-    values are sampled from the empirical distribution in ``X_reference``,
-    so counterfactuals stay on realistic, attainable values.
-
-    Returns the same metric keys as the previous random-search attack so the
-    aggregation/plotting code is unaffected.
-    """
+  
     feature_names = list(X_reference.columns)
     mutable_set = set(mutable_features)
-    # Immutable columns (everything the attacker cannot change) are black-listed
-    # by positional index, which is how the GA library expects them.
+    
     black_list = [i for i, f in enumerate(feature_names) if f not in mutable_set]
 
     X_ref_np = np.asarray(X_reference.values, dtype=float)
@@ -286,8 +283,9 @@ def constrained_ga_attack(
 
     original_prob = float(model.predict_proba(x_original)[:, 1][0])
 
-    # GA library uses the global NumPy RNG; seed it per-case for reproducibility.
+    
     np.random.seed(random_state)
+
     ga = GAdvExample(
         feature_names=feature_names,
         cat_vars_ohe=None,
@@ -300,19 +298,13 @@ def constrained_ga_attack(
         verbose=False,
     )
 
-    # The GA calls model.predict/predict_proba on bare NumPy arrays, which
-    # triggers sklearn "missing feature names" warnings on every generation.
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", category=UserWarning)
         _, _, x_success = ga.attack(model, x_np, X_ref_np)
 
-    def _default_prob(cf_rows: np.ndarray) -> np.ndarray:
-        df = pd.DataFrame(cf_rows, columns=feature_names)
-        return model.predict_proba(df)[:, 1]
-
     if len(x_success) > 0:
         cfs = np.asarray(x_success, dtype=float)
-        probs = _default_prob(cfs)
+        probs = _default_prob(cfs, feature_names, model)
         n_changed = (np.abs(cfs - x_np) > 0).sum(axis=1)
         # Prefer the most proximal counterfactual: fewest changed features,
         # then the lowest remaining default probability.
@@ -331,22 +323,126 @@ def constrained_ga_attack(
         "prob_reduction": 0.0,
     }
 
+def predict_fn(x_mut: np.ndarray, base: np.ndarray, mutable_idx: np.ndarray, feature_names: list, model) -> np.ndarray:
+    x_mut = np.asarray(x_mut, dtype=float)
+    if x_mut.ndim == 1:
+        x_mut = x_mut.reshape(1, -1)
+    X = np.tile(base, (x_mut.shape[0], 1))
+    X[:, mutable_idx] = x_mut
+    return model.predict_proba(pd.DataFrame(X, columns=feature_names))
+
+def constrained_zoo_attack(
+    model, x_original: pd.DataFrame, X_reference: pd.DataFrame,
+    mutable_features: list, desired_class: int = 0,
+    max_iter: int = ZOO_MAX_ITER,
+    learning_rate: float = ZOO_LEARNING_RATE,
+    binary_search_steps: int = ZOO_BINARY_SEARCH_STEPS,
+    initial_const: float = ZOO_INITIAL_CONST,
+    nb_parallel: int = ZOO_NB_PARALLEL,
+    random_state: int = RANDOM_STATE,
+) -> dict:
+
+    feature_names = list(X_reference.columns)
+    mutable_set = set(mutable_features)
+    mutable_idx = np.array(
+        [i for i, f in enumerate(feature_names) if f in mutable_set], dtype=int
+    )
+    n_mut = len(mutable_idx)
+
+    base = np.asarray(x_original.values, dtype=float).reshape(-1)
+    original_prob = float(model.predict_proba(x_original)[:, 1][0])
+
+    x_mut0 = base[mutable_idx].astype(np.float32)
+    train_low = X_reference.iloc[:, mutable_idx].min().to_numpy(dtype=np.float32)
+    train_high = X_reference.iloc[:, mutable_idx].max().to_numpy(dtype=np.float32)
+    
+    low = np.minimum(train_low, x_mut0)
+    high = np.maximum(train_high, x_mut0)
+    high = np.where(high <= low, low + 1e-6, high)
+
+    if nb_parallel is None:
+        nb_parallel = n_mut
+
+    classifier = BlackBoxClassifier(
+        lambda x_mut: predict_fn(x_mut, base, mutable_idx, feature_names, model),
+        input_shape=(n_mut,),
+        nb_classes=2,
+        clip_values=(low, high),
+    )
+
+    attack = ZooAttack(
+        classifier=classifier,
+        targeted=False,
+        learning_rate=learning_rate,
+        max_iter=max_iter,
+        binary_search_steps=binary_search_steps,
+        initial_const=initial_const,
+        abort_early=True,
+        use_resize=False,
+        use_importance=False,
+        nb_parallel=max(1, min(nb_parallel, n_mut)),
+        batch_size=1,
+        verbose=False,
+    )
+
+    np.random.seed(random_state)
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        x_mut_adv = attack.generate(x=x_mut0.reshape(1, -1))
+
+    X_adv = base.copy()
+    X_adv[mutable_idx] = np.asarray(x_mut_adv, dtype=float).reshape(-1)
+    adv_df = pd.DataFrame(X_adv.reshape(1, -1), columns=feature_names)
+    adv_prob = float(model.predict_proba(adv_df)[:, 1][0])
+    adv_pred = int(model.predict(adv_df)[0])
+    changed = int((np.abs(X_adv[mutable_idx] - base[mutable_idx]) > 1e-8).sum())
+
+    return {
+        "success": 1 if adv_pred == desired_class else 0,
+        "cf_default_prob": adv_prob,
+        "changed_features": changed,
+        "prob_reduction": original_prob - adv_prob,
+    }
+
+
+def _summarise_cases(case_results: list) -> dict:
+    rdf = pd.DataFrame(case_results)
+    succ = rdf["success"] == 1
+    return {
+        "Attack success rate": round(float(rdf["success"].mean()), 4),
+        "Mean changed features": round(float(rdf.loc[succ, "changed_features"].mean()), 4) if succ.any() else np.nan,
+        "Mean prob reduction (success)": round(float(rdf.loc[succ, "prob_reduction"].mean()), 4) if succ.any() else np.nan,
+        "Mean prob reduction (all)": round(float(rdf["prob_reduction"].mean()), 4),
+    }
+
+
+# Attack methods compared in the results: name -> per-instance attack function.
+ATTACK_METHODS = {
+    "GA": constrained_ga_attack,
+    "ZOO": constrained_zoo_attack,
+}
+
 
 def run_adversarial_attacks(
     pipe, X_tr: pd.DataFrame, X_te: pd.DataFrame,
     y_te, y_pred_te,
     mutable_features: list = None,
     n_cases: int = N_ATTACK_CASES,
-    sol_per_pop: int = GA_SOL_PER_POP,
-    num_parents_mating: int = GA_NUM_PARENTS_MATING,
-    num_generations: int = GA_NUM_GENERATIONS,
-    n_runs: int = GA_N_RUNS,
-    beta: float = GA_BETA,
+    methods: dict = None,
     random_state: int = RANDOM_STATE,
 ) -> dict:
+    
+    if methods is None:
+        methods = ATTACK_METHODS
     if mutable_features is None:
         mutable_features = MUTABLE_FEATURES
+
     feats = [f for f in mutable_features if f in X_tr.columns]
+
+    metric_names = [
+        "Attack success rate", "Mean changed features",
+        "Mean prob reduction (success)", "Mean prob reduction (all)",
+    ]
 
     y_te_arr = np.asarray(y_te)
     y_pred_arr = np.asarray(y_pred_te)
@@ -356,37 +452,26 @@ def run_adversarial_attacks(
     n_actual = min(n_cases, len(X_cand))
 
     if n_actual == 0:
-        return {
-            "N attacked": 0,
-            "Attack success rate": np.nan,
-            "Mean changed features": np.nan,
-            "Mean prob reduction (success)": np.nan,
-            "Mean prob reduction (all)": np.nan,
-        }
+        out = {"N attacked": 0}
+        for name in methods:
+            out.update({f"{m} ({name})": np.nan for m in metric_names})
+        return out
 
     X_cand = X_cand.sample(n=n_actual, random_state=random_state)
-    case_results = []
-    for idx in X_cand.index:
-        x0 = X_te.loc[[idx]]
-        case_results.append(
-            constrained_ga_attack(
-                pipe, x0, X_tr, feats,
-                desired_class=0,
-                sol_per_pop=sol_per_pop,
-                num_parents_mating=num_parents_mating,
-                num_generations=num_generations,
-                n_runs=n_runs,
-                beta=beta,
-                random_state=random_state + int(idx),
-            )
-        )
 
-    rdf = pd.DataFrame(case_results)
-    succ = rdf["success"] == 1
-    return {
-        "N attacked": n_actual,
-        "Attack success rate": round(float(rdf["success"].mean()), 4),
-        "Mean changed features": round(float(rdf.loc[succ, "changed_features"].mean()), 4) if succ.any() else np.nan,
-        "Mean prob reduction (success)": round(float(rdf.loc[succ, "prob_reduction"].mean()), 4) if succ.any() else np.nan,
-        "Mean prob reduction (all)": round(float(rdf["prob_reduction"].mean()), 4),
-    }
+    out = {"N attacked": n_actual}
+    for name, attack_fn in methods.items():
+        case_results = []
+        for idx in X_cand.index:
+            x0 = X_te.loc[[idx]]
+            case_results.append(
+                attack_fn(
+                    pipe, x0, X_tr, feats,
+                    desired_class=0,
+                    random_state=random_state + int(idx),
+                )
+            )
+        summary = _summarise_cases(case_results)
+        out.update({f"{m} ({name})": summary[m] for m in metric_names})
+
+    return out

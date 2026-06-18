@@ -1,3 +1,4 @@
+adversarial-robustness-toolbox>=1.17.0
 imbalanced-learn==0.14.2
 matplotlib==3.10.9
 networkx>=3.0

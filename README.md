@@ -41,7 +41,7 @@ Raw data
                                 ├─ DIR on resampled training labels (pre-CV)
                                 ├─ 5-fold stratified CV  → metrics
                                 ├─ SHAP feature importances (last fold)
-                                └─ Genetic-algorithm (GA) perturbation adversarial attack
+                                └─ Adversarial attacks: GA search + ZOO (ART), compared
 ```
 
 ### Models
@@ -63,9 +63,17 @@ Raw data
 | KMeans-SMOTE | Cluster-aware oversampling |
 | ClassWeight | Cost-sensitive learning (no resampling) |
 
-### Adversarial attack
+### Adversarial attacks
 
-A **genetic-algorithm (GA) perturbation attack** (`GAdvExample` in `src/ga_attack.py`). For each correctly-predicted default the GA evolves a population of perturbed copies of the instance: only the **mutable** features (`loan_amnt`, `annual_inc`, `dti`, `revol_bal`, `revol_util`, `open_acc`, `total_acc`) may change — every other column is black-listed — and new values are sampled from the training distribution. Crossover and mutation explore feature combinations, while the fitness function rewards flipping the prediction to non-default (0) and penalises the number and magnitude of changes (the proximity penalty is gradually relaxed via `GA_BETA` until a flip is found). The attack succeeds when the predicted class flips from default (1) to non-default (0); among the runs that flip, the most proximal counterfactual (fewest changed features) is reported. The primary metric is **attack success rate** — the fraction of true-default instances that can be flipped.
+Two attacks are run and compared, both under the **same threat model**: only the **mutable** features (`loan_amnt`, `annual_inc`, `dti`, `revol_bal`, `revol_util`, `open_acc`, `total_acc`) may change — every other column is immutable — and both are evaluated on the **same sample** of correctly-predicted defaults, so their metrics are directly comparable. The attack succeeds when the predicted class flips from default (1) to non-default (0). The primary metric is **attack success rate** — the fraction of true-default instances that can be flipped.
+
+**1. PermuteAttack — genetic-algorithm counterfactual search** (`GAdvExample` in `src/ga_attack.py`), following Hashemi & Fathi (2020) [[1]](#references). The GA evolves a population of perturbed copies of the instance, sampling new values from the training distribution. Crossover and mutation explore feature combinations, while the fitness function rewards flipping the prediction and penalises the number and magnitude of changes (the proximity penalty is gradually relaxed via `GA_BETA` until a flip is found). Among the runs that flip, the most proximal counterfactual (fewest changed features) is reported. This is the method demonstrated in `example.ipynb`. *(Referred to as "GA" in the result columns and plots.)*
+
+> **Attribution:** `src/ga_attack.py` and `src/utils.py` are taken from the authors' official PermuteAttack implementation, <https://github.com/masoudhashemi/PermuteAttack/>. They are vendored here (with minor integration tweaks) rather than installed as a package.
+
+**2. ZOO — Zeroth-Order Optimization** (`ZooAttack` from the [Adversarial Robustness Toolbox](https://github.com/Trusted-AI/adversarial-robustness-toolbox)), introduced by Chen et al. (2017) [[2]](#references). A black-box attack that numerically estimates the model's output gradient through repeated `predict_proba` queries and perturbs the input along it. To enforce the mutable-only constraint the attack runs in the mutable-feature subspace (an ART `BlackBoxClassifier` reconstructs the full feature vector before each query), with perturbations clipped to each feature's observed range. ZOO depends on a usable output gradient, so it is expected to be **weaker against piecewise-constant tree ensembles** (Random Forest, XGBoost) than against smooth models (Logistic Regression, Neural Net) — an informative contrast to the GA search.
+
+Per-experiment results carry method-suffixed columns, e.g. `Attack success rate (GA)` and `Attack success rate (ZOO)`; the comparison plot overlays both (colour = model, solid = GA, dashed = ZOO).
 
 ### Fairness metric (DIR)
 
@@ -257,6 +265,11 @@ All tuneable constants live in `src/config.py`:
 | `GA_NUM_GENERATIONS` | `100` | Max generations per run (early-stops once flipped) |
 | `GA_N_RUNS` | `5` | Independent GA restarts per attacked instance |
 | `GA_BETA` | `0.95` | Proximity-constraint relaxation factor (0 < β < 1) |
+| `ZOO_MAX_ITER` | `40` | ZOO optimisation iterations per instance |
+| `ZOO_LEARNING_RATE` | `0.1` | ZOO estimated-gradient step size |
+| `ZOO_BINARY_SEARCH_STEPS` | `1` | ZOO search steps over the trade-off constant |
+| `ZOO_INITIAL_CONST` | `1e-3` | ZOO initial proximity/attack trade-off constant |
+| `ZOO_NB_PARALLEL` | `None` | ZOO coords perturbed in parallel (None → n mutable feats) |
 | `N_SHAP_MAX` | `200` | Test samples for tree/linear SHAP |
 | `N_SHAP_NN` | `20` | Test samples for NN KernelExplainer |
 | `MUTABLE_FEATURES` | see config | Features the attacker can modify |
@@ -275,4 +288,48 @@ pip install -r requirements.txt
 pip install -r requirements_hpc.txt  # adds pyarrow for parquet support
 ```
 
-Key packages: `scikit-learn 1.9`, `imbalanced-learn 0.14`, `xgboost 3.2`, `shap 0.52`, `skorch 1.4`, `torch 2.12`.
+Key packages: `scikit-learn 1.9`, `imbalanced-learn 0.14`, `xgboost 3.2`, `shap 0.52`, `skorch 1.4`, `torch 2.12`, `adversarial-robustness-toolbox 1.17` (ZOO attack).
+
+---
+
+## References
+
+The two adversarial attacks implemented here are based on:
+
+1. **PermuteAttack (GA counterfactual search).** M. Hashemi and A. Fathi, *"PermuteAttack: Counterfactual Explanation of Machine Learning Credit Scorecards,"* arXiv:2008.10138, 2020. Paper: <https://arxiv.org/abs/2008.10138> · Code: <https://github.com/masoudhashemi/PermuteAttack/> (source of `src/ga_attack.py` and `src/utils.py`)
+
+2. **ZOO (Zeroth-Order Optimization black-box attack).** P.-Y. Chen, H. Zhang, Y. Sharma, J. Yi, and C.-J. Hsieh, *"ZOO: Zeroth Order Optimization Based Black-box Attacks to Deep Neural Networks without Training Substitute Models,"* in *Proc. 10th ACM Workshop on Artificial Intelligence and Security (AISec '17)*, 2017, pp. 15–26. <https://doi.org/10.1145/3128572.3140448>
+
+<details>
+<summary>BibTeX</summary>
+
+```bibtex
+@misc{hashemi2020permuteattackcounterfactualexplanationmachine,
+      title={PermuteAttack: Counterfactual Explanation of Machine Learning Credit Scorecards},
+      author={Masoud Hashemi and Ali Fathi},
+      year={2020},
+      eprint={2008.10138},
+      archivePrefix={arXiv},
+      primaryClass={stat.ML},
+      url={https://arxiv.org/abs/2008.10138},
+}
+
+@inproceedings{10.1145/3128572.3140448,
+      author = {Chen, Pin-Yu and Zhang, Huan and Sharma, Yash and Yi, Jinfeng and Hsieh, Cho-Jui},
+      title = {ZOO: Zeroth Order Optimization Based Black-box Attacks to Deep Neural Networks without Training Substitute Models},
+      year = {2017},
+      isbn = {9781450352024},
+      publisher = {Association for Computing Machinery},
+      address = {New York, NY, USA},
+      url = {https://doi.org/10.1145/3128572.3140448},
+      doi = {10.1145/3128572.3140448},
+      booktitle = {Proceedings of the 10th ACM Workshop on Artificial Intelligence and Security},
+      pages = {15--26},
+      numpages = {12},
+      keywords = {substitute model, neural network, deep learning, black-box attack, adversarial learning},
+      location = {Dallas, Texas, USA},
+      series = {AISec '17}
+}
+```
+
+</details>

@@ -39,6 +39,16 @@ GA_NUM_GENERATIONS = 100     # max generations per run (early-stops once flipped
 GA_N_RUNS = 5                # independent GA restarts per attacked instance
 GA_BETA = 0.95               # proximity-constraint relaxation factor (0<beta<1)
 
+# ZOO (Zeroth-Order Optimization) attack settings — Adversarial Robustness Toolbox.
+# A black-box, gradient-estimation attack: it numerically estimates gradients of
+# the model's output through repeated predict_proba queries and perturbs the input
+# along them. Like the GA attack it is constrained to the mutable features only.
+ZOO_MAX_ITER = 40            # optimisation iterations per instance
+ZOO_LEARNING_RATE = 1e-1     # step size for the estimated-gradient update
+ZOO_BINARY_SEARCH_STEPS = 1  # search steps over the proximity trade-off constant
+ZOO_INITIAL_CONST = 1e-3     # initial proximity/attack trade-off constant
+ZOO_NB_PARALLEL = None       # coords perturbed in parallel (None -> n mutable feats)
+
 MUTABLE_FEATURES = [
     "loan_amnt", "annual_inc", "dti", "revol_bal",
     "revol_util", "open_acc", "total_acc",
