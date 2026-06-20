@@ -1,0 +1,6 @@
+[Thu Jun 18 19:05:15 CEST 2026] Starting experiment 35 on tcn999.local.snellius.surf.nl with 6 cores
+[exp 0035] frac=0.02, model=NeuralNetClassifier, sampler=Baseline
+  PR-AUC=0.0505  F1=0.5366
+  Attack success rate: GA=nan ZOO=nan
+[exp 0035] DONE → results/exp_0035
+[Thu Jun 18 19:21:09 CEST 2026] Experiment 35 finished with exit code 0

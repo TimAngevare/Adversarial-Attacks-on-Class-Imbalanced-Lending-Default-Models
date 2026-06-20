@@ -1,0 +1,6 @@
+[Thu Jun 18 19:05:14 CEST 2026] Starting experiment 94 on tcn999.local.snellius.surf.nl with 6 cores
+[exp 0094] frac=0.2, model=RandomForestClassifier, sampler=ClassWeight
+  PR-AUC=0.3875  F1=0.6229
+  Attack success rate: GA=0.22 ZOO=0.26
+[exp 0094] DONE → results/exp_0094
+[Fri Jun 19 01:37:04 CEST 2026] Experiment 94 finished with exit code 0

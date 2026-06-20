@@ -1,0 +1,6 @@
+[Thu Jun 18 16:43:10 CEST 2026] Starting experiment 75 on tcn865.local.snellius.surf.nl with 6 cores
+[exp 0075] frac=0.1, model=NeuralNetClassifier, sampler=Baseline
+  PR-AUC=0.2229  F1=0.5865
+  Attack success rate: GA=1.0 ZOO=0.8182
+[exp 0075] DONE → results/exp_0075
+[Thu Jun 18 17:00:46 CEST 2026] Experiment 75 finished with exit code 0

@@ -1,0 +1,6 @@
+[Thu Jun 18 16:43:10 CEST 2026] Starting experiment 15 on tcn865.local.snellius.surf.nl with 6 cores
+[exp 0015] frac=0.01, model=NeuralNetClassifier, sampler=Baseline
+  PR-AUC=0.0250  F1=0.5213
+  Attack success rate: GA=nan ZOO=nan
+[exp 0015] DONE → results/exp_0015
+[Thu Jun 18 16:57:29 CEST 2026] Experiment 15 finished with exit code 0

@@ -1,0 +1,6 @@
+[Thu Jun 18 17:51:23 CEST 2026] Starting experiment 43 on tcn865.local.snellius.surf.nl with 6 cores
+[exp 0043] frac=0.05, model=XGBClassifier, sampler=KMeansSMOTE
+  PR-AUC=0.1126  F1=0.5591
+  Attack success rate: GA=1.0 ZOO=0.8235
+[exp 0043] DONE → results/exp_0043
+[Thu Jun 18 18:22:05 CEST 2026] Experiment 43 finished with exit code 0

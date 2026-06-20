@@ -1,0 +1,19 @@
+Starting HQ workers on tcn622.local.snellius.surf.nl with 192 cores
++-------------------+---------------------------------------------------------------+
+| Worker ID         | 2                                                             |
+| Hostname          | tcn622.local.snellius.surf.nl                                 |
+| Started           | "2026-06-19T19:22:34.925383280Z"                              |
+| Data provider     | tcn622.local.snellius.surf.nl:38885                           |
+| Working directory | /scratch-local/tangevare.24031722/hq-worker.TVurk6Z8Gfvv/work |
+| Logging directory | /scratch-local/tangevare.24031722/hq-worker.TVurk6Z8Gfvv/logs |
+| Heartbeat         | 8s                                                            |
+| Idle timeout      | 5m                                                            |
+| Resources         | cpus: 8x24                                                    |
+|                   | mem: 377.53 GiB                                               |
+| Time Limit        | 19h 59m 48s                                                   |
+| Process pid       | 1170338                                                       |
+| Group             | 24031722                                                      |
+| Manager           | SLURM                                                         |
+| Manager Job ID    | 24031722                                                      |
++-------------------+---------------------------------------------------------------+
+HQ workers finished.

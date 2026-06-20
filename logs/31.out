@@ -1,0 +1,6 @@
+[Thu Jun 18 19:21:04 CEST 2026] Starting experiment 31 on tcn999.local.snellius.surf.nl with 6 cores
+[exp 0031] frac=0.02, model=RandomForestClassifier, sampler=RandomUnderSampler
+  PR-AUC=0.0515  F1=0.5379
+  Attack success rate: GA=0.08 ZOO=0.14
+[exp 0031] DONE → results/exp_0031
+[Thu Jun 18 20:49:34 CEST 2026] Experiment 31 finished with exit code 0

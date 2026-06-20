@@ -1,0 +1,6 @@
+[Thu Jun 18 19:05:15 CEST 2026] Starting experiment 83 on tcn999.local.snellius.surf.nl with 6 cores
+[exp 0083] frac=0.2, model=XGBClassifier, sampler=KMeansSMOTE
+  PR-AUC=0.3848  F1=0.6120
+  Attack success rate: GA=0.72 ZOO=0.4
+[exp 0083] DONE → results/exp_0083
+[Thu Jun 18 19:46:55 CEST 2026] Experiment 83 finished with exit code 0

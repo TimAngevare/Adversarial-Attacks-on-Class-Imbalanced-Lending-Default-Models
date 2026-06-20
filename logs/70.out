@@ -1,0 +1,6 @@
+[Thu Jun 18 19:05:15 CEST 2026] Starting experiment 70 on tcn999.local.snellius.surf.nl with 6 cores
+[exp 0070] frac=0.1, model=RandomForestClassifier, sampler=Baseline
+  PR-AUC=0.2241  F1=0.5892
+  Attack success rate: GA=1.0 ZOO=1.0
+[exp 0070] DONE → results/exp_0070
+[Thu Jun 18 23:18:43 CEST 2026] Experiment 70 finished with exit code 0

@@ -1,0 +1,6 @@
+[Thu Jun 18 16:59:21 CEST 2026] Starting experiment 99 on tcn865.local.snellius.surf.nl with 6 cores
+[exp 0099] frac=0.2, model=NeuralNetClassifier, sampler=ClassWeight
+  PR-AUC=0.3887  F1=0.6093
+  Attack success rate: GA=0.2 ZOO=0.36
+[exp 0099] DONE → results/exp_0099
+[Thu Jun 18 17:34:43 CEST 2026] Experiment 99 finished with exit code 0

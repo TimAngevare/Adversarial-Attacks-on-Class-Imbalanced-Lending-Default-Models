@@ -1,0 +1,6 @@
+[Thu Jun 18 19:32:58 CEST 2026] Starting experiment 66 on tcn999.local.snellius.surf.nl with 6 cores
+[exp 0066] frac=0.1, model=LogisticRegression, sampler=RandomUnderSampler
+  PR-AUC=0.2130  F1=0.5765
+  Attack success rate: GA=0.22 ZOO=0.4
+[exp 0066] DONE → results/exp_0066
+[Thu Jun 18 19:57:16 CEST 2026] Experiment 66 finished with exit code 0

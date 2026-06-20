@@ -1,0 +1,6 @@
+[Thu Jun 18 19:05:15 CEST 2026] Starting experiment 42 on tcn999.local.snellius.surf.nl with 6 cores
+[exp 0042] frac=0.05, model=XGBClassifier, sampler=SMOTEENN
+  PR-AUC=0.1230  F1=0.5618
+  Attack success rate: GA=0.92 ZOO=0.44
+[exp 0042] DONE → results/exp_0042
+[Fri Jun 19 00:07:44 CEST 2026] Experiment 42 finished with exit code 0

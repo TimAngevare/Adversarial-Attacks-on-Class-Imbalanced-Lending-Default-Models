@@ -1,0 +1,6 @@
+[Fri Jun 19 21:22:35 CEST 2026] Starting experiment 7 on tcn622.local.snellius.surf.nl with 6 cores
+[exp 0007] frac=0.01, model=LogisticRegression, sampler=SMOTEENN
+  PR-AUC=0.0248  F1=0.5190
+  Attack success rate: GA=0.2 ZOO=0.3
+[exp 0007] DONE → results/exp_0007
+[Sat Jun 20 05:21:57 CEST 2026] Experiment 7 finished with exit code 0

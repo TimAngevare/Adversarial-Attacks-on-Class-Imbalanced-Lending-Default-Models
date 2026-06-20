@@ -1,0 +1,6 @@
+[Thu Jun 18 17:21:19 CEST 2026] Starting experiment 80 on tcn865.local.snellius.surf.nl with 6 cores
+[exp 0080] frac=0.2, model=XGBClassifier, sampler=Baseline
+  PR-AUC=0.3995  F1=0.6216
+  Attack success rate: GA=0.8 ZOO=0.66
+[exp 0080] DONE → results/exp_0080
+[Thu Jun 18 17:51:23 CEST 2026] Experiment 80 finished with exit code 0

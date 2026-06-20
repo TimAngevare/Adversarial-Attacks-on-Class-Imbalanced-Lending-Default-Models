@@ -1,0 +1,6 @@
+[Thu Jun 18 19:59:16 CEST 2026] Starting experiment 11 on tcn999.local.snellius.surf.nl with 6 cores
+[exp 0011] frac=0.01, model=RandomForestClassifier, sampler=RandomUnderSampler
+  PR-AUC=0.0257  F1=0.5220
+  Attack success rate: GA=0.04 ZOO=0.06
+[exp 0011] DONE → results/exp_0011
+[Thu Jun 18 21:23:53 CEST 2026] Experiment 11 finished with exit code 0

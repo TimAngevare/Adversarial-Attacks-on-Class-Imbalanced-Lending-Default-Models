@@ -1,0 +1,6 @@
+[Thu Jun 18 16:43:10 CEST 2026] Starting experiment 39 on tcn865.local.snellius.surf.nl with 6 cores
+[exp 0039] frac=0.02, model=NeuralNetClassifier, sampler=ClassWeight
+  PR-AUC=0.0513  F1=0.5354
+  Attack success rate: GA=0.34 ZOO=0.44
+[exp 0039] DONE → results/exp_0039
+[Thu Jun 18 17:08:30 CEST 2026] Experiment 39 finished with exit code 0

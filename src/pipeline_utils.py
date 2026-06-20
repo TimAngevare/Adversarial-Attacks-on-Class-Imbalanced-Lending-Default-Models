@@ -1,4 +1,12 @@
+import os
 import warnings
+
+# Pre-create ART's config dir BEFORE importing `art` below. art/config.py runs
+# `os.makedirs("~/.art")` without exist_ok=True at import time; when many array
+# tasks start concurrently they race on it and all but one crash with
+# FileExistsError -> NameError: name '_config' is not defined. Creating it
+# atomically here makes ART's `os.path.exists` check pass and skip its makedirs.
+os.makedirs(os.path.expanduser("~/.art"), exist_ok=True)
 
 import numpy as np
 import pandas as pd

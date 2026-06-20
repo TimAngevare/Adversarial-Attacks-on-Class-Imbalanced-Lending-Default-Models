@@ -1,0 +1,6 @@
+[Thu Jun 18 17:47:41 CEST 2026] Starting experiment 98 on tcn865.local.snellius.surf.nl with 6 cores
+[exp 0098] frac=0.2, model=NeuralNetClassifier, sampler=KMeansSMOTE
+  PR-AUC=0.3033  F1=0.5615
+  Attack success rate: GA=0.82 ZOO=0.98
+[exp 0098] DONE → results/exp_0098
+[Thu Jun 18 18:24:13 CEST 2026] Experiment 98 finished with exit code 0

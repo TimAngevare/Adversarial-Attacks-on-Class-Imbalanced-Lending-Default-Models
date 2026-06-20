@@ -1,0 +1,6 @@
+[Fri Jun 19 21:22:35 CEST 2026] Starting experiment 32 on tcn622.local.snellius.surf.nl with 6 cores
+[exp 0032] frac=0.02, model=RandomForestClassifier, sampler=SMOTEENN
+  PR-AUC=0.0434  F1=0.5263
+  Attack success rate: GA=1.0 ZOO=0.94
+[exp 0032] DONE → results/exp_0032
+[Sat Jun 20 05:57:02 CEST 2026] Experiment 32 finished with exit code 0

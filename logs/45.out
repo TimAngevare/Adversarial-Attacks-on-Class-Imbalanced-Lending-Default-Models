@@ -1,0 +1,6 @@
+[Thu Jun 18 16:43:10 CEST 2026] Starting experiment 45 on tcn865.local.snellius.surf.nl with 6 cores
+[exp 0045] frac=0.05, model=LogisticRegression, sampler=Baseline
+  PR-AUC=0.1160  F1=0.5563
+  Attack success rate: GA=nan ZOO=nan
+[exp 0045] DONE → results/exp_0045
+[Thu Jun 18 17:47:40 CEST 2026] Experiment 45 finished with exit code 0

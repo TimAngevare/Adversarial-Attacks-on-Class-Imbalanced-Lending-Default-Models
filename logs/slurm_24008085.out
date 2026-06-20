@@ -1,0 +1,19 @@
+Starting HQ workers on tcn999.local.snellius.surf.nl with 192 cores
++-------------------+---------------------------------------------------------------+
+| Worker ID         | 1                                                             |
+| Hostname          | tcn999.local.snellius.surf.nl                                 |
+| Started           | "2026-06-18T17:05:13.708730619Z"                              |
+| Data provider     | tcn999.local.snellius.surf.nl:42983                           |
+| Working directory | /scratch-local/tangevare.24008085/hq-worker.L7LS2ftNvjny/work |
+| Logging directory | /scratch-local/tangevare.24008085/hq-worker.L7LS2ftNvjny/logs |
+| Heartbeat         | 8s                                                            |
+| Idle timeout      | 5m                                                            |
+| Resources         | cpus: 8x24                                                    |
+|                   | mem: 377.51 GiB                                               |
+| Time Limit        | 19h 59m 49s                                                   |
+| Process pid       | 1773208                                                       |
+| Group             | 24008085                                                      |
+| Manager           | SLURM                                                         |
+| Manager Job ID    | 24008085                                                      |
++-------------------+---------------------------------------------------------------+
+HQ workers finished.

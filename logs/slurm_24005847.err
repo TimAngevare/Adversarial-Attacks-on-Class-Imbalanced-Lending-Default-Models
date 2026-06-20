@@ -1,0 +1,14 @@
+2026-06-18T14:42:47Z INFO Detected 405373579264B of memory (377.53 GiB)
+2026-06-18T14:42:47Z INFO SLURM environment detected
+2026-06-18T14:42:47Z INFO Starting hyperqueue worker v0.19.0
+2026-06-18T14:42:47Z INFO Connecting to: int4.local.snellius.surf.nl:38803
+2026-06-18T14:42:47Z INFO Listening on port 35285
+2026-06-18T14:42:47Z INFO Connecting to server (candidate addresses = [172.18.63.190:38803])
+2026-06-18T16:24:44Z INFO Waiting for stopping running tasks
+2026-06-18T16:24:45Z INFO All running tasks were stopped
+IO error: Connection reset by peer (os error 104)
+
+Caused by:
+    Connection reset by peer (os error 104)
+srun: error: tcn865: task 0: Exited with exit code 1
+srun: Terminating StepId=24005847.0

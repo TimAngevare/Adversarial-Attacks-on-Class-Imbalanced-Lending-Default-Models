@@ -1,0 +1,6 @@
+[Thu Jun 18 19:36:23 CEST 2026] Starting experiment 72 on tcn999.local.snellius.surf.nl with 6 cores
+[exp 0072] frac=0.1, model=RandomForestClassifier, sampler=SMOTEENN
+  PR-AUC=0.2056  F1=0.5806
+  Attack success rate: GA=0.38 ZOO=0.5
+[exp 0072] DONE → results/exp_0072
+[Fri Jun 19 06:58:10 CEST 2026] Experiment 72 finished with exit code 0
