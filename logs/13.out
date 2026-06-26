@@ -1,7 +1,0 @@
-[Fri Jun 19 21:22:35 CEST 2026] Starting experiment 13 on tcn622.local.snellius.surf.nl with 6 cores
-[exp 0013] frac=0.01, model=RandomForestClassifier, sampler=KMeansSMOTE
-  PR-AUC=0.0202  F1=0.5100
-  SHAP skipped (RandomForestClassifier+KMeansSMOTE IR=0.01): Additivity check failed in TreeExplainer! Please ensure the data matrix you passed to the explainer is the same shape that the model was trained on. If your data shape is correct then please report this on GitHub. Consider retrying with the feature_perturbation='interventional' option. This check failed because for one of the samples the sum of the SHAP values was 2120.855340, while the model output was 0.940265. If this difference is acceptable you can set check_additivity=False to disable this check.
-  Attack success rate: GA=1.0 ZOO=1.0
-[exp 0013] DONE → results/exp_0013
-[Sat Jun 20 02:39:45 CEST 2026] Experiment 13 finished with exit code 0

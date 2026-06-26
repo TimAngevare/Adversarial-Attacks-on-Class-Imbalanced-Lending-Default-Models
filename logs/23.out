@@ -1,6 +1,0 @@
-[Thu Jun 18 19:05:15 CEST 2026] Starting experiment 23 on tcn999.local.snellius.surf.nl with 6 cores
-[exp 0023] frac=0.02, model=XGBClassifier, sampler=KMeansSMOTE
-  PR-AUC=0.0445  F1=0.5286
-  Attack success rate: GA=1.0 ZOO=0.0
-[exp 0023] DONE → results/exp_0023
-[Thu Jun 18 19:32:57 CEST 2026] Experiment 23 finished with exit code 0

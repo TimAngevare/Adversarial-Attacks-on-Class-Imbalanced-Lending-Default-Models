@@ -1,6 +1,0 @@
-[Thu Jun 18 19:57:17 CEST 2026] Starting experiment 4 on tcn999.local.snellius.surf.nl with 6 cores
-[exp 0004] frac=0.01, model=XGBClassifier, sampler=ClassWeight
-  PR-AUC=0.0245  F1=0.5201
-  Attack success rate: GA=1.0 ZOO=0.98
-[exp 0004] DONE → results/exp_0004
-[Thu Jun 18 20:19:57 CEST 2026] Experiment 4 finished with exit code 0

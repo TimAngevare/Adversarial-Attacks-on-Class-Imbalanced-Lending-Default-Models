@@ -1,8 +1,0 @@
-2026-06-19T19:22:34Z INFO Detected 405373591552B of memory (377.53 GiB)
-2026-06-19T19:22:34Z INFO SLURM environment detected
-2026-06-19T19:22:34Z INFO Starting hyperqueue worker v0.19.0
-2026-06-19T19:22:34Z INFO Connecting to: int4.local.snellius.surf.nl:40645
-2026-06-19T19:22:34Z INFO Listening on port 38885
-2026-06-19T19:22:34Z INFO Connecting to server (candidate addresses = [172.18.63.190:40645])
-2026-06-20T05:12:53Z INFO Idle timeout reached
-2026-06-20T05:12:53Z INFO Worker stopping

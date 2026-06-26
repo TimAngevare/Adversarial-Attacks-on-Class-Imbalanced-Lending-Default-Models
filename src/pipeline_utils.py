@@ -15,7 +15,7 @@ from sklearn.base import clone
 from sklearn.impute import SimpleImputer
 from sklearn.metrics import (
     confusion_matrix, f1_score,
-    precision_score, recall_score, precision_recall_curve,
+    precision_score, recall_score,
 )
 from sklearn.model_selection import StratifiedKFold, cross_validate
 from sklearn.preprocessing import FunctionTransformer, StandardScaler
@@ -54,10 +54,9 @@ def build_pipeline(estimator, sampler) -> ImbPipeline:
     return ImbPipeline(steps)
 
 
-def best_f1_threshold(y_true, y_proba) -> float:
-    precision, recall, thresholds = precision_recall_curve(y_true, y_proba)
-    f1 = 2 * precision * recall / np.clip(precision + recall, 1e-12, None)
-    return float(thresholds[np.argmax(f1[:-1])])
+# Fixed decision threshold: predictions use the model's default 0.5 cutoff
+# (no per-fold threshold tuning).
+DECISION_THRESHOLD = 0.5
 
 
 # ---------------------------------------------------------------------------
@@ -79,7 +78,7 @@ def run_cv(pipe, X, y, n_jobs: int = 1):
 def compute_cv_metrics(cv_out, imbalance_ratio, model_name, sampler_name, X, y) -> dict:
     y_arr = np.asarray(y)
     y_pred = np.empty_like(y_arr)
-    fold_thresholds, train_f1s, test_f1s = [], [], []
+    train_f1s, test_f1s = [], []
 
     for est, train_idx, test_idx in zip(
         cv_out["estimator"],
@@ -88,11 +87,9 @@ def compute_cv_metrics(cv_out, imbalance_ratio, model_name, sampler_name, X, y) 
     ):
         X_iloc = X.iloc if hasattr(X, "iloc") else X
         proba_tr = est.predict_proba(X_iloc[train_idx])[:, 1]
-        thr = best_f1_threshold(y_arr[train_idx], proba_tr)
         proba_te = est.predict_proba(X_iloc[test_idx])[:, 1]
-        y_pred[test_idx] = (proba_te >= thr).astype(y_arr.dtype)
-        fold_thresholds.append(thr)
-        train_f1s.append(f1_score(y_arr[train_idx], (proba_tr >= thr).astype(y_arr.dtype), average="macro"))
+        y_pred[test_idx] = (proba_te >= DECISION_THRESHOLD).astype(y_arr.dtype)
+        train_f1s.append(f1_score(y_arr[train_idx], (proba_tr >= DECISION_THRESHOLD).astype(y_arr.dtype), average="macro"))
         test_f1s.append(f1_score(y_arr[test_idx], y_pred[test_idx], average="macro"))
 
     cm = confusion_matrix(y_arr, y_pred, normalize="true")
@@ -105,7 +102,7 @@ def compute_cv_metrics(cv_out, imbalance_ratio, model_name, sampler_name, X, y) 
         "Imbalance ratio": imbalance_ratio,
         "fit_time_mean": round(float(cv_out["fit_time"].mean()), 2),
         "score_time_mean": round(float(cv_out["score_time"].mean()), 2),
-        "Threshold (mean)": round(float(np.mean(fold_thresholds)), 4),
+        "Threshold (mean)": DECISION_THRESHOLD,
         "F1 (mean)": round(test_f1, 4),
         "ROC-AUC (mean)": round(float(cv_out["test_roc_auc"].mean()), 4),
         "PR-AUC (mean)": round(float(cv_out["test_average_precision"].mean()), 4),

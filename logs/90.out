@@ -1,6 +1,0 @@
-[Thu Jun 18 19:05:15 CEST 2026] Starting experiment 90 on tcn999.local.snellius.surf.nl with 6 cores
-[exp 0090] frac=0.2, model=RandomForestClassifier, sampler=Baseline
-  PR-AUC=0.3886  F1=0.6273
-  Attack success rate: GA=0.58 ZOO=0.62
-[exp 0090] DONE → results/exp_0090
-[Fri Jun 19 01:35:59 CEST 2026] Experiment 90 finished with exit code 0

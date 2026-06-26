@@ -1,6 +1,0 @@
-[Thu Jun 18 19:38:37 CEST 2026] Starting experiment 78 on tcn999.local.snellius.surf.nl with 6 cores
-[exp 0078] frac=0.1, model=NeuralNetClassifier, sampler=KMeansSMOTE
-  PR-AUC=0.1344  F1=0.4321
-  Attack success rate: GA=0.96 ZOO=0.88
-[exp 0078] DONE → results/exp_0078
-[Thu Jun 18 20:07:55 CEST 2026] Experiment 78 finished with exit code 0

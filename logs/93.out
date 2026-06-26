@@ -1,6 +1,0 @@
-[Fri Jun 19 21:22:35 CEST 2026] Starting experiment 93 on tcn622.local.snellius.surf.nl with 6 cores
-[exp 0093] frac=0.2, model=RandomForestClassifier, sampler=KMeansSMOTE
-  PR-AUC=0.3494  F1=0.6164
-  Attack success rate: GA=0.46 ZOO=0.62
-[exp 0093] DONE → results/exp_0093
-[Sat Jun 20 07:07:53 CEST 2026] Experiment 93 finished with exit code 0

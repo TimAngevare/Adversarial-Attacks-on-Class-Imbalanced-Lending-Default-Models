@@ -6,7 +6,7 @@ from sklearn.model_selection import train_test_split
 from src.config import RANDOM_STATE
 
 KEEP_COLS = [
-    "loan_amnt", "term", "int_rate", "installment", "grade", "sub_grade", "emp_length",
+    "loan_amnt", "term", "installment", "grade", "emp_length",
     "home_ownership", "annual_inc", "verification_status", "issue_d",
     "loan_status", "purpose", "addr_state", "dti", "delinq_2yrs", "earliest_cr_line",
     "fico_range_low", "fico_range_high", "inq_last_6mths", "open_acc",
@@ -48,8 +48,6 @@ def engineer_features(df: pd.DataFrame) -> pd.DataFrame:
     )
 
     df.drop("grade", axis=1, inplace=True)
-    sub_grade_order = sorted(df["sub_grade"].dropna().unique())
-    df["sub_grade"] = df["sub_grade"].map({sg: i for i, sg in enumerate(sub_grade_order, start=1)})
 
     dummies = ["verification_status", "purpose", "initial_list_status", "home_ownership", "addr_state"]
     dummies = [c for c in dummies if c in df.columns]

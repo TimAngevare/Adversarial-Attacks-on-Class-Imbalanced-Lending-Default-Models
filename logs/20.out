@@ -1,6 +1,0 @@
-[Thu Jun 18 16:43:10 CEST 2026] Starting experiment 20 on tcn865.local.snellius.surf.nl with 6 cores
-[exp 0020] frac=0.02, model=XGBClassifier, sampler=Baseline
-  PR-AUC=0.0538  F1=0.5391
-  Attack success rate: GA=nan ZOO=nan
-[exp 0020] DONE → results/exp_0020
-[Thu Jun 18 16:57:05 CEST 2026] Experiment 20 finished with exit code 0

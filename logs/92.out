@@ -1,6 +1,0 @@
-[Fri Jun 19 21:22:35 CEST 2026] Starting experiment 92 on tcn622.local.snellius.surf.nl with 6 cores
-[exp 0092] frac=0.2, model=RandomForestClassifier, sampler=SMOTEENN
-  PR-AUC=0.3678  F1=0.6077
-  Attack success rate: GA=0.2 ZOO=0.18
-[exp 0092] DONE → results/exp_0092
-[Sat Jun 20 05:56:50 CEST 2026] Experiment 92 finished with exit code 0

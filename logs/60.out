@@ -1,6 +1,0 @@
-[Thu Jun 18 19:05:15 CEST 2026] Starting experiment 60 on tcn999.local.snellius.surf.nl with 6 cores
-[exp 0060] frac=0.1, model=XGBClassifier, sampler=Baseline
-  PR-AUC=0.2335  F1=0.5943
-  Attack success rate: GA=0.94 ZOO=0.78
-[exp 0060] DONE → results/exp_0060
-[Thu Jun 18 19:31:14 CEST 2026] Experiment 60 finished with exit code 0

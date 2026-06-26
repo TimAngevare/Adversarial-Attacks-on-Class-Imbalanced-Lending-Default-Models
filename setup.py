@@ -58,6 +58,23 @@ ESTIMATORS = {
 }
 
 
+def _atomic_to_parquet(df, path: str):
+    """Write a parquet file atomically: write to a temp file in the same
+    directory, then os.replace() into place. A concurrent reader (e.g. a
+    running experiment task) therefore never sees a missing or half-written
+    file while preprocessing is regenerating the dataset."""
+    tmp = f"{path}.tmp.{os.getpid()}"
+    df.to_parquet(tmp, index=False)
+    os.replace(tmp, path)
+
+
+def _atomic_write_json(obj, path: str):
+    tmp = f"{path}.tmp.{os.getpid()}"
+    with open(tmp, "w") as f:
+        json.dump(obj, f, indent=2)
+    os.replace(tmp, path)
+
+
 def preprocess_and_save(data_path: str):
     print(f"Loading {data_path} ...")
     df_raw = load_and_clean(data_path)
@@ -71,19 +88,17 @@ def preprocess_and_save(data_path: str):
         X, y, bias = create_imbalanced_dataset(df, frac)
         print(f"    Shape: {X.shape}, minority rate: {y.mean():.3f}")
 
-        X.to_parquet(os.path.join(DATA_PROCESSED_DIR, f"X_full_{frac}.parquet"), index=False)
-        y.to_frame("target").to_parquet(os.path.join(DATA_PROCESSED_DIR, f"y_full_{frac}.parquet"), index=False)
+        _atomic_to_parquet(X, os.path.join(DATA_PROCESSED_DIR, f"X_full_{frac}.parquet"))
+        _atomic_to_parquet(y.to_frame("target"), os.path.join(DATA_PROCESSED_DIR, f"y_full_{frac}.parquet"))
 
-        with open(os.path.join(DATA_PROCESSED_DIR, f"bias_{frac}.json"), "w") as f:
-            json.dump(bias, f, indent=2)
+        _atomic_write_json(bias, os.path.join(DATA_PROCESSED_DIR, f"bias_{frac}.json"))
 
         biased = {col: v for col, v in bias.items() if v["p_value"] < 0.05}
         print(f"    Biased features (KS p<0.05): {len(biased)} / {len(bias)}")
 
     # Save feature names (needed for SHAP / NN input_dim)
     feat_names = list(X.columns)
-    with open(os.path.join(DATA_PROCESSED_DIR, "feature_names.json"), "w") as f:
-        json.dump(feat_names, f)
+    _atomic_write_json(feat_names, os.path.join(DATA_PROCESSED_DIR, "feature_names.json"))
     print(f"  Saved {len(feat_names)} feature names.")
 
 

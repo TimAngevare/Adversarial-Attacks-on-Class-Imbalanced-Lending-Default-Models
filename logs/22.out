@@ -1,6 +1,0 @@
-[Thu Jun 18 20:07:56 CEST 2026] Starting experiment 22 on tcn999.local.snellius.surf.nl with 6 cores
-[exp 0022] frac=0.02, model=XGBClassifier, sampler=SMOTEENN
-  PR-AUC=0.0517  F1=0.5377
-  Attack success rate: GA=nan ZOO=nan
-[exp 0022] DONE → results/exp_0022
-[Fri Jun 19 01:01:55 CEST 2026] Experiment 22 finished with exit code 0
