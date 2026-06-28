@@ -35,6 +35,22 @@ module load 2023
 module load HyperQueue/0.19.0
 module load OpenMPI/4.1.5-GCC-12.3.0
 
+# We have to use data staging since IO errors occur when multiple workers read the same parquet files from the network storage at the same time.
+SCRATCH_DIR="/scratch-node/$USER/$SLURM_JOB_ID"
+
+if [ -d "/scratch-node" ]; then
+    echo "Fast NVMe detected. Staging data to $SCRATCH_DIR/data/processed"
+    mkdir -p "$SCRATCH_DIR/data"
+    
+    # Fast copy of your processed parquets to the local node
+    cp -r data/processed "$SCRATCH_DIR/data/"
+    
+    # Ensure SLURM cleans up this massive data when the job ends or fails
+    trap "echo 'Cleaning up NVMe...'; rm -rf $SCRATCH_DIR" EXIT
+else
+    echo "No NVMe drive detected on this node. Defaulting to network storage."
+fi
+
 echo "Starting HQ workers on $(hostname) with $SLURM_CPUS_ON_NODE cores"
 
 # Each worker connects to the HQ server and picks up queued tasks

@@ -1,9 +1,6 @@
 """
 Phase B: One HQ task per experiment.
 Each experiment is (imbalance_ratio, model, sampler) — fully self-contained.
-
-Usage:
-    python main.py --experiment_id=<int> [--n_cores=8]
 """
 
 import argparse
@@ -65,10 +62,7 @@ def run_experiment(experiment_id: int, n_cores: int = 8):
 
     n_features = X_tr.shape[1]
 
-    # cv_n_jobs runs up to N_FOLDS folds in parallel; model_cores is what
-    # each per-fold model gets for its own internal parallelism (RF n_jobs,
-    # XGB nthread). The product cv_n_jobs * model_cores should not exceed n_cores.
-    model_cores = max(1, n_cores // min(N_FOLDS, n_cores))
+    model_cores = n_cores if model_name != "NeuralNetClassifier" else 1  # skorch doesn't support parallel CV
     models = get_models(n_features, n_cores=model_cores, best_params=best_params)
     samplers = get_samplers(n_jobs=n_cores)
 

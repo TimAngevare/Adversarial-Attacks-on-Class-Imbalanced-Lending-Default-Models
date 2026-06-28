@@ -15,6 +15,8 @@ Credit default prediction models are trained on highly class-imbalanced datasets
 
 The study uses the [LendingClub dataset](https://www.kaggle.com/datasets/wordsforthewise/lending-club) and evaluates four classifiers (XGBoost, Logistic Regression, Random Forrist, and Neural Network) across five resampling strategies (Baseline, Class Weight, Undersampling, SMOTEENN, KMEANS SMOTE) and five levels of synthetic class imbalance (1%, 2%, 5%, 10%, 20%).
 
+The Jupyter notebook, 'Adversarial_attacks.ipynb' Implements the full pipeline. For improved resources on the HPC cluster we rewrote the notebook into a multiple steps with various paython files.
+
 ---
 
 ## Methodology

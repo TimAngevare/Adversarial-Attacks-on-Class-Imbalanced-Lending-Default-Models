@@ -1,3 +1,5 @@
+import os
+
 RANDOM_STATE = 42
 
 MINORITY_FRACS = [0.01, 0.02, 0.05, 0.1, 0.2]
@@ -75,7 +77,10 @@ DIR_GROUP_SPECS = {
 
 # Paths
 DATA_RAW = "Data/accepted.csv"
-DATA_PROCESSED_DIR = "data/processed"
+
+# Processed data and results are saved to LOCAL_DATA_DIR if set, otherwise to the default paths below.
+DATA_PROCESSED_DIR = os.environ.get("LOCAL_DATA_DIR", "data/processed")
+
 RESULTS_DIR = "results"
 OUTPUTS_DIR = "outputs"
 PARAMS_FILE = "config/best_params.json"
