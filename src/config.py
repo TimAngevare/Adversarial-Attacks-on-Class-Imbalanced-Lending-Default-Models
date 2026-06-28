@@ -4,6 +4,15 @@ RANDOM_STATE = 42
 
 MINORITY_FRACS = [0.01, 0.02, 0.05, 0.1, 0.2]
 
+# Imputation: KNN imputer (replaces the median SimpleImputer) used in every
+# preprocessing pipeline. Distance-weighted so closer neighbours count more.
+KNN_IMPUTER_NEIGHBORS = 5
+
+# KMeansSMOTE clustering: number of clusters fixed at 30 via the elbow method
+# (distortion/inertia, see Advesarial_attacks.ipynb), so we hardcode it here
+# instead of re-searching on the cluster every run.
+KMEANS_SMOTE_N_CLUSTERS = 30
+
 SAMPLER_NAMES = [
     "Baseline",
     "RandomUnderSampler",

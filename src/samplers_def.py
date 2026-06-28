@@ -3,7 +3,7 @@ from imblearn.combine import SMOTEENN
 from imblearn.over_sampling import KMeansSMOTE
 from sklearn.cluster import MiniBatchKMeans
 
-from src.config import RANDOM_STATE
+from src.config import RANDOM_STATE, KMEANS_SMOTE_N_CLUSTERS
 
 
 def get_samplers(n_jobs: int = 1) -> dict:
@@ -23,7 +23,7 @@ def get_samplers(n_jobs: int = 1) -> dict:
             random_state=RANDOM_STATE,
             cluster_balance_threshold=0.01,
             kmeans_estimator=MiniBatchKMeans(
-                n_clusters=100,
+                n_clusters=KMEANS_SMOTE_N_CLUSTERS,
                 random_state=RANDOM_STATE,
                 n_init=3,
             ),

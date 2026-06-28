@@ -8,7 +8,7 @@ import os
 
 import numpy as np
 import pandas as pd
-from sklearn.impute import SimpleImputer
+from sklearn.impute import KNNImputer
 from sklearn.model_selection import GridSearchCV
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
@@ -18,7 +18,7 @@ from xgboost import XGBClassifier
 
 from src.config import (
     DATA_RAW, DATA_PROCESSED_DIR, PARAMS_FILE,
-    MINORITY_FRACS, RANDOM_STATE,
+    MINORITY_FRACS, RANDOM_STATE, KNN_IMPUTER_NEIGHBORS,
 )
 from src.preprocessing import load_and_clean, engineer_features, create_imbalanced_dataset
 
@@ -99,7 +99,7 @@ def run_gridsearch(n_jobs: int = -1):
     for model_name, estimator in ESTIMATORS.items():
         print(f"\nGridSearch for {model_name} ...")
         pipe = Pipeline([
-            ("imputer", SimpleImputer(strategy="median")),
+            ("imputer", KNNImputer(n_neighbors=KNN_IMPUTER_NEIGHBORS, weights="distance")),
             ("scaler", StandardScaler()),
             ("clf", estimator),
         ])
