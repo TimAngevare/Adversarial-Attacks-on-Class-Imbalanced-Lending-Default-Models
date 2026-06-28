@@ -28,9 +28,6 @@ MODEL_NAMES = [
     "NeuralNetClassifier",
 ]
 
-# Models to optimise
-GRIDSEARCH_MODELS = ["XGBClassifier", "LogisticRegression", "RandomForestClassifier"]
-
 N_FOLDS = 5
 
 # SHAP settings
@@ -38,32 +35,51 @@ N_SHAP_MAX = 200
 N_SHAP_NN = 20
 N_SHAP_NN_BG = 50
 
+# ---------------------------------------------------------------------------
 # Adversarial attack settings
-N_ATTACK_CASES = 50
+# ---------------------------------------------------------------------------
+# Both attacks search for a realistic, *actionable* counterfactual: a minimal,
+# direction-constrained change to a few mutable loan features that flips the
+# model's decision from "default" to "repaid".
+DEFAULT_CLASS = 1            # unfavourable label the attacker tries to escape
+N_ATTACK_CASES = 100         # attacked instances per experiment
+MAX_CHANGED_ACTIONS = 2      # sparsity: at most this many features may change
 
-# Genetic-algorithm (GA) perturbation attack settings.
-# The attack searches for a minimal-change counterfactual that flips the
-# prediction by evolving a population of perturbed copies of the input.
-GA_SOL_PER_POP = 30          # population size per generation
-GA_NUM_PARENTS_MATING = 10   # parents selected for crossover each generation
-GA_NUM_GENERATIONS = 100     # max generations per run (early-stops once flipped)
-GA_N_RUNS = 5                # independent GA restarts per attacked instance
-GA_BETA = 0.95               # proximity-constraint relaxation factor (0<beta<1)
+# Per-feature action constraints: allowed direction and max relative change.
+ACTION_SPECS = {
+    "loan_amnt":  {"direction": "decrease", "max_change": 0.25},
+    "annual_inc": {"direction": "increase", "max_change": 0.10},
+    "revol_bal":  {"direction": "decrease", "max_change": 0.25},
+}
 
-# ZOO (Zeroth-Order Optimization) attack settings — Adversarial Robustness Toolbox.
-# A black-box, gradient-estimation attack: it numerically estimates gradients of
-# the model's output through repeated predict_proba queries and perturbs the input
-# along them. Like the GA attack it is constrained to the mutable features only.
-ZOO_MAX_ITER = 40            # optimisation iterations per instance
-ZOO_LEARNING_RATE = 1e-1     # step size for the estimated-gradient update
-ZOO_BINARY_SEARCH_STEPS = 1  # search steps over the proximity trade-off constant
-ZOO_INITIAL_CONST = 1e-3     # initial proximity/attack trade-off constant
-ZOO_NB_PARALLEL = None       # coords perturbed in parallel (None -> n mutable feats)
+# Features stored on a log1p scale in model space (decoded when computing bounds).
+LOG_FEATURES = {"annual_inc", "revol_bal"}
 
-MUTABLE_FEATURES = [
-    "loan_amnt", "annual_inc", "dti", "revol_bal",
-    "revol_util", "open_acc", "total_acc",
+# A row must have these columns non-null to be an eligible attack target.
+ATTACK_REQUIRED_COLUMNS = [
+    "loan_amnt", "annual_inc", "revol_bal", "installment", "dti", "revol_util",
 ]
+
+# Features the attacker can directly modify (also used to highlight SHAP plots).
+MUTABLE_FEATURES = list(ACTION_SPECS)
+
+LOWER_Q = 0.01               # training quantiles that clamp the action bounds
+UPPER_Q = 0.99
+PROXIMITY_PENALTY = 0.02     # weight on perturbation size in the attack objective
+
+# PermuteAttack-inspired genetic algorithm.
+GA_POP_SIZE = 50
+GA_GENERATIONS = 100
+GA_RESTARTS = 5
+GA_MUTATION_PROB = 0.20
+GA_MUTATION_SCALE = 0.15
+GA_ELITE_FRAC = 0.20
+
+# ZOO-inspired finite-difference attack (Adam-optimised gradient estimate).
+ZOO_MAX_ITER = 200
+ZOO_RESTARTS = 3
+ZOO_LEARNING_RATE = 0.03
+ZOO_FD_STEP = 0.05
 
 FAVOURABLE_LABEL = 0
 

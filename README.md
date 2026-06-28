@@ -67,15 +67,13 @@ Raw data
 
 ### Adversarial attacks
 
-Two attacks are run and compared, both under the **same threat model**: only the **mutable** features (`loan_amnt`, `annual_inc`, `dti`, `revol_bal`, `revol_util`, `open_acc`, `total_acc`) may change — every other column is immutable — and both are evaluated on the **same sample** of correctly-predicted defaults, so their metrics are directly comparable. The attack succeeds when the predicted class flips from default (1) to non-default (0). The primary metric is **attack success rate** — the fraction of true-default instances that can be flipped.
+Two attacks are run and compared under the **same threat model**: only three **actionable** features may change — `loan_amnt` (decrease ≤ 25%), `annual_inc` (increase ≤ 10%) and `revol_bal` (decrease ≤ 25%), as set by `ACTION_SPECS` — and at most `MAX_CHANGED_ACTIONS` (2) of them at once. Dependent columns are **repaired** to stay self-consistent: `installment` tracks the loan amount, `dti` tracks income, and `revol_util` tracks the balance. Both attacks search the same normalised `[0, 1]` action space and are evaluated on the **same sample** of eligible defaults, so their metrics are directly comparable. Targets are chosen with an **F1-optimal decision threshold** calibrated on a held-out validation split; an attack succeeds when it drives the predicted default probability below that threshold. The primary metric is **attack success rate**.
 
-**1. PermuteAttack — genetic-algorithm counterfactual search** (`GAdvExample` in `src/ga_attack.py`), following Hashemi & Fathi (2020) [[1]](#references). The GA evolves a population of perturbed copies of the instance, sampling new values from the training distribution. Crossover and mutation explore feature combinations, while the fitness function rewards flipping the prediction and penalises the number and magnitude of changes (the proximity penalty is gradually relaxed via `GA_BETA` until a flip is found). Among the runs that flip, the most proximal counterfactual (fewest changed features) is reported. *(Referred to as "GA" in the result columns and plots.)*
+**1. PermuteAttack-inspired GA** (`permute_attack` in `src/pipeline_utils.py`), after Hashemi & Fathi (2020) [[1]](#references). A genetic search evolves a population of action vectors with elitism, uniform crossover and Gaussian mutation over several restarts; the objective rewards a low default probability and penalises perturbation size (`PROXIMITY_PENALTY`). The most proximal flipping candidate is reported. *(Referred to as "GA" in the result columns and plots.)*
 
-> **Attribution:** `src/ga_attack.py` and `src/utils.py` are taken from the authors' official PermuteAttack implementation, <https://github.com/masoudhashemi/PermuteAttack/>. They are vendored here (with minor integration tweaks) rather than installed as a package.
+**2. ZOO-inspired finite-difference attack** (`zoo_attack` in `src/pipeline_utils.py`), after Chen et al. (2017) [[2]](#references). A black-box attack that estimates the objective's gradient by central finite differences over `predict_proba` queries and steps the action vector with an Adam update, re-projected into the constraint set each iteration, across several restarts.
 
-**2. ZOO — Zeroth-Order Optimization** (`ZooAttack` from the [Adversarial Robustness Toolbox](https://github.com/Trusted-AI/adversarial-robustness-toolbox)), introduced by Chen et al. (2017) [[2]](#references). A black-box attack that numerically estimates the model's output gradient through repeated `predict_proba` queries and perturbs the input along it. To enforce the mutable-only constraint the attack runs in the mutable-feature subspace (an ART `BlackBoxClassifier` reconstructs the full feature vector before each query), with perturbations clipped to each feature's observed range. ZOO depends on a usable output gradient, so it is expected to be **weaker against piecewise-constant tree ensembles** (Random Forest, XGBoost) than against smooth models (Logistic Regression, Neural Net) — an informative contrast to the GA search.
-
-Per-experiment results carry method-suffixed columns, e.g. `Attack success rate (GA)` and `Attack success rate (ZOO)`; the comparison plot overlays both (colour = model, solid = GA, dashed = ZOO).
+Both attacks are pure-NumPy and query the model only through `predict_proba`, so they apply uniformly to every model type. They are re-implementations inspired by the cited works rather than the original code. Per-experiment results carry method-suffixed columns, e.g. `Attack success rate (GA)` and `Attack success rate (ZOO)`; the comparison plot overlays both (colour = model, solid = GA, dashed = ZOO).
 
 ### Fairness metric (DIR)
 
@@ -103,10 +101,7 @@ DIR < 0.8 flags potential disparate impact introduced by the resampler.
 │   ├── preprocessing.py       # Data loading, feature engineering, bias check
 │   ├── samplers_def.py        # Sampler objects (with n_jobs)
 │   ├── models_def.py          # Model constructors + apply_class_weight
-│   ├── pipeline_utils.py      # CV, SHAP, DIR, adversarial attack logic
-│   ├── ga_attack.py           # PermuteAttack GA counterfactual search (vendored)
-│   ├── ga_attack_gibss.py     # Gibbs-sampling variant of the GA search (experimental)
-│   └── utils.py               # PermuteAttack OHE/ordinal helpers (vendored)
+│   └── pipeline_utils.py      # CV, SHAP, DIR, adversarial attack logic
 ├── setup.py                   # Phase A: preprocess data + run gridsearch
 ├── main.py                    # Phase B: single contained experiment (HPC entry point)
 ├── aggregate.py               # Phase C: collect results → CSVs + plots
@@ -266,20 +261,22 @@ All tuneable constants live in `src/config.py`:
 |---|---|---|
 | `MINORITY_FRACS` | `[0.01, 0.02, 0.05, 0.1, 0.2]` | Target minority fractions |
 | `N_FOLDS` | `5` | CV folds |
-| `N_ATTACK_CASES` | `50` | Instances attacked per experiment |
-| `GA_SOL_PER_POP` | `30` | GA population size per generation |
-| `GA_NUM_PARENTS_MATING` | `10` | Parents selected for crossover each generation |
-| `GA_NUM_GENERATIONS` | `100` | Max generations per run (early-stops once flipped) |
-| `GA_N_RUNS` | `5` | Independent GA restarts per attacked instance |
-| `GA_BETA` | `0.95` | Proximity-constraint relaxation factor (0 < β < 1) |
-| `ZOO_MAX_ITER` | `40` | ZOO optimisation iterations per instance |
-| `ZOO_LEARNING_RATE` | `0.1` | ZOO estimated-gradient step size |
-| `ZOO_BINARY_SEARCH_STEPS` | `1` | ZOO search steps over the trade-off constant |
-| `ZOO_INITIAL_CONST` | `1e-3` | ZOO initial proximity/attack trade-off constant |
-| `ZOO_NB_PARALLEL` | `None` | ZOO coords perturbed in parallel (None → n mutable feats) |
+| `N_ATTACK_CASES` | `100` | Instances attacked per experiment |
+| `ACTION_SPECS` | see config | Mutable features + allowed direction & max relative change |
+| `MAX_CHANGED_ACTIONS` | `2` | Max features changed at once (sparsity) |
+| `PROXIMITY_PENALTY` | `0.02` | Weight on perturbation size in the attack objective |
+| `GA_POP_SIZE` | `50` | GA population size per generation |
+| `GA_GENERATIONS` | `100` | Max generations per restart (early-stops once flipped) |
+| `GA_RESTARTS` | `5` | Independent GA restarts per attacked instance |
+| `GA_MUTATION_PROB` / `GA_MUTATION_SCALE` | `0.20` / `0.15` | GA mutation rate and Gaussian scale |
+| `GA_ELITE_FRAC` | `0.20` | Fraction of population carried over as elites |
+| `ZOO_MAX_ITER` | `200` | ZOO finite-difference iterations per restart |
+| `ZOO_RESTARTS` | `3` | Independent ZOO restarts per attacked instance |
+| `ZOO_LEARNING_RATE` | `0.03` | ZOO Adam step size |
+| `ZOO_FD_STEP` | `0.05` | ZOO central finite-difference step |
 | `N_SHAP_MAX` | `200` | Test samples for tree/linear SHAP |
 | `N_SHAP_NN` | `20` | Test samples for NN KernelExplainer |
-| `MUTABLE_FEATURES` | see config | Features the attacker can modify |
+| `MUTABLE_FEATURES` | `list(ACTION_SPECS)` | Features the attacker can modify (highlights SHAP plots) |
 
 ---
 
@@ -293,7 +290,7 @@ pip install -r requirements.txt
 
 A single `requirements.txt` covers both local and HPC use (it already includes `pyarrow` for the parquet data files).
 
-Key packages: `scikit-learn 1.9`, `imbalanced-learn 0.14`, `xgboost 3.2`, `shap 0.52`, `skorch 1.4`, `torch 2.12`, `adversarial-robustness-toolbox 1.17` (ZOO attack).
+Key packages: `scikit-learn 1.9`, `imbalanced-learn 0.14`, `xgboost 3.2`, `shap 0.52`, `skorch 1.4`, `torch 2.12`. The adversarial attacks are pure-NumPy, so `adversarial-robustness-toolbox` / `pygad` are not required.
 
 ---
 
@@ -301,7 +298,7 @@ Key packages: `scikit-learn 1.9`, `imbalanced-learn 0.14`, `xgboost 3.2`, `shap 
 
 The two adversarial attacks implemented here are based on:
 
-1. **PermuteAttack (GA counterfactual search).** M. Hashemi and A. Fathi, *"PermuteAttack: Counterfactual Explanation of Machine Learning Credit Scorecards,"* arXiv:2008.10138, 2020. Paper: <https://arxiv.org/abs/2008.10138> · Code: <https://github.com/masoudhashemi/PermuteAttack/> (source of `src/ga_attack.py` and `src/utils.py`)
+1. **PermuteAttack (GA counterfactual search).** M. Hashemi and A. Fathi, *"PermuteAttack: Counterfactual Explanation of Machine Learning Credit Scorecards,"* arXiv:2008.10138, 2020. Paper: <https://arxiv.org/abs/2008.10138> · Code: <https://github.com/masoudhashemi/PermuteAttack/>
 
 2. **ZOO (Zeroth-Order Optimization black-box attack).** P.-Y. Chen, H. Zhang, Y. Sharma, J. Yi, and C.-J. Hsieh, *"ZOO: Zeroth Order Optimization Based Black-box Attacks to Deep Neural Networks without Training Substitute Models,"* in *Proc. 10th ACM Workshop on Artificial Intelligence and Security (AISec '17)*, 2017, pp. 15–26. <https://doi.org/10.1145/3128572.3140448>
 
