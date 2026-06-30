@@ -1,0 +1,6 @@
+[Mon Jun 29 08:37:23 CEST 2026] Starting experiment 97 on tcn1174.local.snellius.surf.nl with 16 cores
+[exp 0097] frac=0.2, model=NeuralNetClassifier, sampler=SMOTEENN
+  PR-AUC=0.3572  F1=0.4926
+  Attack success rate: GA=0.09 ZOO=0.09
+[exp 0097] DONE → results/exp_0097
+[Mon Jun 29 13:31:01 CEST 2026] Experiment 97 finished with exit code 0

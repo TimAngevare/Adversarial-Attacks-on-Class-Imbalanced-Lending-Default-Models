@@ -1,0 +1,25 @@
+  0%|          | 0/20 [00:00<?, ?it/s] 10%|█         | 2/20 [00:00<00:01, 17.22it/s] 20%|██        | 4/20 [00:00<00:00, 17.40it/s] 30%|███       | 6/20 [00:00<00:00, 17.46it/s] 40%|████      | 8/20 [00:00<00:00, 17.48it/s] 50%|█████     | 10/20 [00:00<00:00, 17.49it/s] 60%|██████    | 12/20 [00:00<00:00, 17.51it/s] 70%|███████   | 14/20 [00:00<00:00, 17.52it/s] 80%|████████  | 16/20 [00:00<00:00, 17.52it/s] 90%|█████████ | 18/20 [00:01<00:00, 17.54it/s]100%|██████████| 20/20 [00:01<00:00, 17.54it/s]100%|██████████| 20/20 [00:01<00:00, 17.50it/s]
+Traceback (most recent call last):
+  File "/gpfs/home2/tangevare/main.py", line 172, in <module>
+    run_experiment(args.experiment_id, n_cores=args.n_cores)
+  File "/gpfs/home2/tangevare/main.py", line 129, in run_experiment
+    attack_row = run_adversarial_attacks(pipe_final, X_fit, X_val, y_val, X_te, y_te)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/gpfs/home2/tangevare/src/pipeline_utils.py", line 653, in run_adversarial_attacks
+    attack_fn(pipe, x0, X_ref, action_features, threshold,
+  File "/gpfs/home2/tangevare/src/pipeline_utils.py", line 542, in zoo_attack
+    f_minus, _, _, _ = evaluate_candidate(
+                       ^^^^^^^^^^^^^^^^^^^
+  File "/gpfs/home2/tangevare/src/pipeline_utils.py", line 409, in evaluate_candidate
+    x_adv, z_effective = vector_to_instance(z, x_original, bounds, action_features)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/gpfs/home2/tangevare/src/pipeline_utils.py", line 361, in vector_to_instance
+    x_adv = repair_features(x_adv, x_original)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/gpfs/home2/tangevare/src/pipeline_utils.py", line 332, in repair_features
+    x_adv.loc[:, "installment"] = old_installment * new_loan / old_loan
+    ^^^^^^^^^
+  File "/home/tangevare/.local/lib/python3.11/site-packages/pandas/core/indexing.py", line 305, in loc
+    @property
+
+KeyboardInterrupt
