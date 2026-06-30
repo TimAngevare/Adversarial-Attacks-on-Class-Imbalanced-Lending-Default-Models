@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import shap
 from sklearn.base import clone
-from sklearn.impute import KNNImputer
+from sklearn.impute import SimpleImputer
 from sklearn.metrics import (
     confusion_matrix, f1_score,
     precision_score, recall_score, precision_recall_curve,
@@ -16,7 +16,7 @@ from imblearn.pipeline import Pipeline as ImbPipeline
 from imblearn.metrics import geometric_mean_score
 
 from src.config import (
-    RANDOM_STATE, N_FOLDS, KNN_IMPUTER_NEIGHBORS,
+    RANDOM_STATE, N_FOLDS,
     N_SHAP_MAX, N_SHAP_NN, N_SHAP_NN_BG,
     N_ATTACK_CASES, DEFAULT_CLASS, MAX_CHANGED_ACTIONS,
     ACTION_SPECS, LOG_FEATURES, ATTACK_REQUIRED_COLUMNS,
@@ -35,7 +35,7 @@ def _to_float32(X):
 
 def build_pipeline(estimator, sampler) -> ImbPipeline:
     steps = [
-        ("imputer", KNNImputer(n_neighbors=KNN_IMPUTER_NEIGHBORS, weights="distance")),
+        ("imputer", SimpleImputer(strategy="median")),
         ("scaler", StandardScaler()),
     ]
     if sampler is not None:
