@@ -1,0 +1,3 @@
+[Mon Jun 29 12:08:16 CEST 2026] Starting experiment 78 on tcn1174.local.snellius.surf.nl with 16 cores
+[exp 0078] frac=0.1, model=NeuralNetClassifier, sampler=KMeansSMOTE
+[Mon Jun 29 12:18:28 CEST 2026] Experiment 78 finished with exit code 1

@@ -1,0 +1,6 @@
+[Mon Jun 29 19:25:02 CEST 2026] Starting experiment 16 on tcn1174.local.snellius.surf.nl with 16 cores
+[exp 0016] frac=0.01, model=NeuralNetClassifier, sampler=RandomUnderSampler
+  PR-AUC=0.0230  F1=0.4042
+  Attack success rate: GA=0.34 ZOO=0.31
+[exp 0016] DONE → results/exp_0016
+[Mon Jun 29 21:27:23 CEST 2026] Experiment 16 finished with exit code 0

@@ -25,7 +25,7 @@ from src.pipeline_utils import (
     build_pipeline, run_cv, compute_cv_metrics,
     compute_shap, compute_dataset_dir, run_adversarial_attacks,
 )
-from src.preprocessing import make_train_test_split
+from src.preprocessing import make_train_test_split, make_validation_split
 
 
 # Build experiment grid once
@@ -75,11 +75,9 @@ def run_experiment(experiment_id: int, n_cores: int = 8):
     if is_nn:
         X_cv = X_tr.astype(np.float32)
         y_cv = y_tr.to_numpy().astype(np.int64)
-        X_te_pred = X_te.astype(np.float32)
     else:
         X_cv = X_tr
         y_cv = y_tr
-        X_te_pred = X_te
 
     cv_n_jobs = 1
     pipe = build_pipeline(model, sampler)
@@ -113,17 +111,22 @@ def run_experiment(experiment_id: int, n_cores: int = 8):
 
     del cv_out
 
-    # Refit on full training set for adversarial attacks on held-out test set
+    # Refit for adversarial attacks. Hold a validation split out of the fit so the
+    # F1-optimal threshold that selects attack targets is calibrated on unseen data.
+    X_fit, X_val, y_fit, y_val = make_validation_split(X_tr, y_tr)
+
     model2 = clone(models[model_name]) if not is_nn else models[model_name]
-    model2 = apply_class_weight(model2, sampler_name, y_tr)
+    model2 = apply_class_weight(model2, sampler_name, y_fit)
     sampler2 = get_samplers(n_jobs=n_cores)[sampler_name]
     pipe_final = build_pipeline(model2, sampler2)
-    pipe_final.fit(X_cv, y_cv)
 
-    y_pred_te = pipe_final.predict(X_te_pred)
+    if is_nn:
+        pipe_final.fit(X_fit.astype(np.float32), y_fit.to_numpy().astype(np.int64))
+    else:
+        pipe_final.fit(X_fit, y_fit)
 
     # ------------------------------------------------------------------ adversarial attacks
-    attack_row = run_adversarial_attacks(pipe_final, X_tr, X_te, y_te, y_pred_te)
+    attack_row = run_adversarial_attacks(pipe_final, X_fit, X_val, y_val, X_te, y_te)
     attack_row = {
         "experiment_id": experiment_id,
         "Imbalance ratio": frac,

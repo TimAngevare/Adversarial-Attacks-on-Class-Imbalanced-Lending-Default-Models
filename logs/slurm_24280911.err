@@ -1,0 +1,11 @@
+2026-06-29T06:39:52Z INFO Detected 405346050048B of memory (377.51 GiB)
+2026-06-29T06:39:52Z INFO SLURM environment detected
+2026-06-29T06:39:52Z INFO Starting hyperqueue worker v0.19.0
+2026-06-29T06:39:52Z INFO Connecting to: int4.local.snellius.surf.nl:39473
+2026-06-29T06:39:52Z INFO Listening on port 34983
+2026-06-29T06:39:52Z INFO Connecting to server (candidate addresses = [172.18.63.190:39473])
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+[2026-06-29T08:40:03.298] error: *** JOB 24280911 ON tcn1187 CANCELLED AT 2026-06-29T08:40:03 DUE to SIGNAL Terminated ***
+[2026-06-29T08:40:03.299] error: *** STEP 24280911.0 ON tcn1187 CANCELLED AT 2026-06-29T08:40:03 DUE to SIGNAL Terminated ***
+2026-06-29T06:40:03Z INFO Worker received an external stop notification
+2026-06-29T06:40:03Z INFO Waiting for stopping running tasks

@@ -1,0 +1,6 @@
+[Mon Jun 29 08:37:23 CEST 2026] Starting experiment 48 on tcn1174.local.snellius.surf.nl with 16 cores
+[exp 0048] frac=0.05, model=LogisticRegression, sampler=KMeansSMOTE
+  PR-AUC=0.0681  F1=0.4871
+  Attack success rate: GA=0.18 ZOO=0.18
+[exp 0048] DONE → results/exp_0048
+[Mon Jun 29 12:08:14 CEST 2026] Experiment 48 finished with exit code 0

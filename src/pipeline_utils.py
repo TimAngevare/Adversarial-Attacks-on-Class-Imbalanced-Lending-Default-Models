@@ -1,12 +1,5 @@
-import os
+import time
 import warnings
-
-# Pre-create ART's config dir BEFORE importing `art` below. art/config.py runs
-# `os.makedirs("~/.art")` without exist_ok=True at import time; when many array
-# tasks start concurrently they race on it and all but one crash with
-# FileExistsError -> NameError: name '_config' is not defined. Creating it
-# atomically here makes ART's `os.path.exists` check pass and skip its makedirs.
-os.makedirs(os.path.expanduser("~/.art"), exist_ok=True)
 
 import numpy as np
 import pandas as pd
@@ -15,7 +8,7 @@ from sklearn.base import clone
 from sklearn.impute import SimpleImputer
 from sklearn.metrics import (
     confusion_matrix, f1_score,
-    precision_score, recall_score,
+    precision_score, recall_score, precision_recall_curve,
 )
 from sklearn.model_selection import StratifiedKFold, cross_validate
 from sklearn.preprocessing import FunctionTransformer, StandardScaler
@@ -23,17 +16,16 @@ from imblearn.pipeline import Pipeline as ImbPipeline
 from imblearn.metrics import geometric_mean_score
 
 from src.config import (
-    RANDOM_STATE, N_FOLDS, N_SHAP_MAX, N_SHAP_NN, N_SHAP_NN_BG,
-    N_ATTACK_CASES, MUTABLE_FEATURES,
-    GA_SOL_PER_POP, GA_NUM_PARENTS_MATING, GA_NUM_GENERATIONS, GA_N_RUNS, GA_BETA,
-    ZOO_MAX_ITER, ZOO_LEARNING_RATE, ZOO_BINARY_SEARCH_STEPS,
-    ZOO_INITIAL_CONST, ZOO_NB_PARALLEL,
+    RANDOM_STATE, N_FOLDS,
+    N_SHAP_MAX, N_SHAP_NN, N_SHAP_NN_BG,
+    N_ATTACK_CASES, DEFAULT_CLASS, MAX_CHANGED_ACTIONS,
+    ACTION_SPECS, LOG_FEATURES, ATTACK_REQUIRED_COLUMNS,
+    LOWER_Q, UPPER_Q, PROXIMITY_PENALTY,
+    GA_POP_SIZE, GA_GENERATIONS, GA_RESTARTS,
+    GA_MUTATION_PROB, GA_MUTATION_SCALE, GA_ELITE_FRAC,
+    ZOO_MAX_ITER, ZOO_RESTARTS, ZOO_LEARNING_RATE, ZOO_FD_STEP,
     DIR_GROUP_SPECS, FAVOURABLE_LABEL,
 )
-
-from src.ga_attack import GAdvExample
-from art.attacks.evasion import ZooAttack
-from art.estimators.classification import BlackBoxClassifier
 
 
 
@@ -261,222 +253,407 @@ def compute_dataset_dir(
 
 # ---------------------------------------------------------------------------
 # Adversarial attacks
+#
+# Both attacks search for a realistic, *actionable* counterfactual: a sparse,
+# direction-constrained change to a few mutable loan features (see ACTION_SPECS)
+# that pushes the model's default probability below a calibrated threshold.
+# The search happens in a normalised [0, 1] "action" space; vector_to_instance
+# decodes it back to feature space and repairs dependent features.
 # ---------------------------------------------------------------------------
 
-def _default_prob(cf_rows: np.ndarray, feature_names: list, model) -> np.ndarray:
-        df = pd.DataFrame(cf_rows, columns=feature_names)
-        return model.predict_proba(df)[:, 1]
 
-def constrained_ga_attack(
-    model, x_original: pd.DataFrame, X_reference: pd.DataFrame,
-    mutable_features: list, desired_class: int = 0,
-    sol_per_pop: int = GA_SOL_PER_POP,
-    num_parents_mating: int = GA_NUM_PARENTS_MATING,
-    num_generations: int = GA_NUM_GENERATIONS,
-    n_runs: int = GA_N_RUNS,
-    beta: float = GA_BETA,
-    random_state: int = RANDOM_STATE,
+def to_raw(value, feature):
+    """Decode a model-space value to its raw scale (undo log1p for LOG_FEATURES)."""
+    value = float(value)
+    return max(np.expm1(value), 0.0) if feature in LOG_FEATURES else value
+
+
+def to_model(value, feature):
+    """Encode a raw value back to model space (apply log1p for LOG_FEATURES)."""
+    value = max(float(value), 0.0)
+    return np.log1p(value) if feature in LOG_FEATURES else value
+
+
+def get_action_features(columns) -> list:
+    return [feature for feature in ACTION_SPECS if feature in columns]
+
+
+def project_action_vector(z: np.ndarray) -> np.ndarray:
+    """Clip to [0, 1] and keep at most MAX_CHANGED_ACTIONS non-zero entries."""
+    z = np.clip(np.asarray(z, dtype=float), 0.0, 1.0)
+    active = np.flatnonzero(z > 1e-12)
+    if len(active) > MAX_CHANGED_ACTIONS:
+        keep = active[np.argsort(z[active])[-MAX_CHANGED_ACTIONS:]]
+        mask = np.zeros(len(z), dtype=bool)
+        mask[keep] = True
+        z = np.where(mask, z, 0.0)
+    return z
+
+
+def get_bounds(x_original, X_reference, action_features) -> dict:
+    """Per-feature (low, high) raw-scale bounds from direction + max_change, clamped
+    to training quantiles."""
+    bounds = {}
+    for feature in action_features:
+        original = to_raw(x_original.iloc[0][feature], feature)
+        values = X_reference[feature].astype(float).to_numpy()
+        if feature in LOG_FEATURES:
+            values = np.expm1(values)
+        values = values[np.isfinite(values)]
+        if len(values) == 0:
+            bounds[feature] = (original, original)
+            continue
+        q_low = float(np.nanquantile(values, LOWER_Q))
+        q_high = float(np.nanquantile(values, UPPER_Q))
+        direction = ACTION_SPECS[feature]["direction"]
+        max_change = ACTION_SPECS[feature]["max_change"]
+        if direction == "increase":
+            low = original
+            high = min(original * (1 + max_change), q_high)
+            if high < low:
+                high = low
+        else:  # decrease
+            low = max(original * (1 - max_change), q_low, 0.0)
+            high = original
+            if low > high:
+                low = high
+        bounds[feature] = (float(low), float(high))
+    return bounds
+
+
+def repair_features(x_adv, x_original):
+    """Keep dependent features consistent after an action: installment tracks the
+    loan amount, dti tracks income, and revol_util tracks the balance."""
+    eps = 1e-10
+    if {"loan_amnt", "installment"}.issubset(x_adv.columns):
+        old_loan = max(float(x_original.iloc[0]["loan_amnt"]), eps)
+        old_installment = float(x_original.iloc[0]["installment"])
+        new_loan = float(x_adv.iloc[0]["loan_amnt"])
+        x_adv.loc[:, "installment"] = old_installment * new_loan / old_loan
+    if {"annual_inc", "dti"}.issubset(x_adv.columns):
+        old_income = max(to_raw(x_original.iloc[0]["annual_inc"], "annual_inc"), eps)
+        new_income = max(to_raw(x_adv.iloc[0]["annual_inc"], "annual_inc"), eps)
+        old_dti = float(x_original.iloc[0]["dti"])
+        x_adv.loc[:, "dti"] = max(0.0, old_dti * old_income / new_income)
+    if {"revol_bal", "revol_util"}.issubset(x_adv.columns):
+        old_balance = to_raw(x_original.iloc[0]["revol_bal"], "revol_bal")
+        old_util = float(x_original.iloc[0]["revol_util"])
+        if old_balance > eps and old_util > eps:
+            credit_limit = old_balance / (old_util / 100.0)
+            new_balance = to_raw(x_adv.iloc[0]["revol_bal"], "revol_bal")
+            x_adv.loc[:, "revol_util"] = np.clip(100.0 * new_balance / credit_limit, 0.0, 100.0)
+    return x_adv
+
+
+def vector_to_instance(z, x_original, bounds, action_features):
+    """Decode a normalised action vector into a concrete adversarial instance."""
+    z_effective = project_action_vector(z)
+    x_adv = x_original.copy(deep=True)
+    for i, feature in enumerate(action_features):
+        original = to_raw(x_original.iloc[0][feature], feature)
+        low, high = bounds[feature]
+        if ACTION_SPECS[feature]["direction"] == "increase":
+            new_value = original + z_effective[i] * (high - original)
+        else:
+            new_value = original - z_effective[i] * (original - low)
+        new_value = np.clip(new_value, low, high)
+        x_adv.loc[:, feature] = to_model(new_value, feature)
+    x_adv = repair_features(x_adv, x_original)
+    return x_adv, z_effective
+
+
+def default_probability_index(model) -> int:
+    classes = np.asarray(model.classes_)
+    matches = np.where(classes == DEFAULT_CLASS)[0]
+    if len(matches) != 1:
+        raise ValueError(f"Default class {DEFAULT_CLASS} was not found in {classes}.")
+    return int(matches[0])
+
+
+def default_probabilities(model, X) -> np.ndarray:
+    class_index = default_probability_index(model)
+    return model.predict_proba(X)[:, class_index]
+
+
+def default_probability(model, X, query_counter=None) -> float:
+    if query_counter is not None:
+        query_counter["count"] += 1
+    return float(default_probabilities(model, X)[0])
+
+
+def get_threshold(model, X_validation, y_validation) -> float:
+    """F1-optimal default-probability threshold on a held-out validation set."""
+    probabilities = default_probabilities(model, X_validation)
+    precision, recall, thresholds = precision_recall_curve(
+        y_validation, probabilities, pos_label=DEFAULT_CLASS,
+    )
+    if len(thresholds) == 0:
+        return 0.50
+    f1_scores = (
+        2.0 * precision[:-1] * recall[:-1]
+        / np.clip(precision[:-1] + recall[:-1], 1e-12, None)
+    )
+    return float(thresholds[np.argmax(f1_scores)])
+
+
+def changed_features(x_adv, x_original, action_features) -> int:
+    return int(sum(
+        abs(to_raw(x_adv.iloc[0][feature], feature)
+            - to_raw(x_original.iloc[0][feature], feature)) > 1e-8
+        for feature in action_features
+    ))
+
+
+def evaluate_candidate(z, model, x_original, bounds, action_features, query_counter):
+    """Objective = default probability + PROXIMITY_PENALTY * mean perturbation."""
+    x_adv, z_effective = vector_to_instance(z, x_original, bounds, action_features)
+    adversarial_probability = default_probability(model, x_adv, query_counter)
+    perturbation_cost = np.mean(np.abs(z_effective))
+    score = adversarial_probability + PROXIMITY_PENALTY * perturbation_cost
+    return score, adversarial_probability, x_adv, z_effective
+
+
+def create_result(
+    method, original_probability, adversarial_probability,
+    x_original, x_adv, action_features, threshold, query_counter, runtime_seconds,
 ) -> dict:
-  
-    feature_names = list(X_reference.columns)
-    mutable_set = set(mutable_features)
-    
-    black_list = [i for i, f in enumerate(feature_names) if f not in mutable_set]
-
-    X_ref_np = np.asarray(X_reference.values, dtype=float)
-    x_np = np.asarray(x_original.values, dtype=float).reshape(-1)
-
-    original_prob = float(model.predict_proba(x_original)[:, 1][0])
-
-    
-    np.random.seed(random_state)
-
-    ga = GAdvExample(
-        feature_names=feature_names,
-        cat_vars_ohe=None,
-        sol_per_pop=sol_per_pop,
-        num_parents_mating=num_parents_mating,
-        num_generations=num_generations,
-        n_runs=n_runs,
-        black_list=black_list,
-        beta=beta,
-        verbose=False,
-    )
-
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore", category=UserWarning)
-        _, _, x_success = ga.attack(model, x_np, X_ref_np)
-
-    if len(x_success) > 0:
-        cfs = np.asarray(x_success, dtype=float)
-        probs = _default_prob(cfs, feature_names, model)
-        n_changed = (np.abs(cfs - x_np) > 0).sum(axis=1)
-        # Prefer the most proximal counterfactual: fewest changed features,
-        # then the lowest remaining default probability.
-        best = np.lexsort((probs, n_changed))[0]
-        return {
-            "success": 1,
-            "cf_default_prob": float(probs[best]),
-            "changed_features": int(n_changed[best]),
-            "prob_reduction": original_prob - float(probs[best]),
-        }
-
-    return {
-        "success": 0,
-        "cf_default_prob": original_prob,
-        "changed_features": 0,
-        "prob_reduction": 0.0,
+    result = {
+        "Method": method,
+        "Success": int(adversarial_probability < threshold),
+        "Original default probability": original_probability,
+        "Adversarial default probability": adversarial_probability,
+        "Probability reduction": original_probability - adversarial_probability,
+        "Changed features": changed_features(x_adv, x_original, action_features),
+        "Queries": int(query_counter["count"]),
+        "Runtime seconds": runtime_seconds,
     }
+    for feature in action_features:
+        before = to_raw(x_original.iloc[0][feature], feature)
+        after = to_raw(x_adv.iloc[0][feature], feature)
+        result[f"{feature}_before"] = before
+        result[f"{feature}_after"] = after
+        result[f"{feature}_relative_change"] = (after - before) / before if before != 0 else np.nan
+    return result
 
-def predict_fn(x_mut: np.ndarray, base: np.ndarray, mutable_idx: np.ndarray, feature_names: list, model) -> np.ndarray:
-    x_mut = np.asarray(x_mut, dtype=float)
-    if x_mut.ndim == 1:
-        x_mut = x_mut.reshape(1, -1)
-    X = np.tile(base, (x_mut.shape[0], 1))
-    X[:, mutable_idx] = x_mut
-    return model.predict_proba(pd.DataFrame(X, columns=feature_names))
 
-def constrained_zoo_attack(
-    model, x_original: pd.DataFrame, X_reference: pd.DataFrame,
-    mutable_features: list, desired_class: int = 0,
-    max_iter: int = ZOO_MAX_ITER,
-    learning_rate: float = ZOO_LEARNING_RATE,
-    binary_search_steps: int = ZOO_BINARY_SEARCH_STEPS,
-    initial_const: float = ZOO_INITIAL_CONST,
-    nb_parallel: int = ZOO_NB_PARALLEL,
-    random_state: int = RANDOM_STATE,
-) -> dict:
+def permute_attack(model, x_original, X_reference, action_features, threshold, seed=RANDOM_STATE) -> dict:
+    """PermuteAttack-inspired genetic search over the normalised action space."""
+    rng = np.random.default_rng(seed)
+    start = time.perf_counter()
+    query_counter = {"count": 0}
 
-    feature_names = list(X_reference.columns)
-    mutable_set = set(mutable_features)
-    mutable_idx = np.array(
-        [i for i, f in enumerate(feature_names) if f in mutable_set], dtype=int
+    bounds = get_bounds(x_original, X_reference, action_features)
+    original_probability = default_probability(model, x_original, query_counter)
+
+    d = len(action_features)
+    best_score = np.inf
+    best_probability = original_probability
+    best_x_adv = x_original.copy(deep=True)
+    n_elite = max(2, int(GA_POP_SIZE * GA_ELITE_FRAC))
+
+    for _ in range(GA_RESTARTS):
+        population = rng.uniform(0.0, 1.0, size=(GA_POP_SIZE, d))
+        population[0] = np.zeros(d)
+        population = np.asarray([project_action_vector(z) for z in population])
+
+        for _ in range(GA_GENERATIONS):
+            evaluations = []
+            for z in population:
+                score, probability, x_adv, z_effective = evaluate_candidate(
+                    z, model, x_original, bounds, action_features, query_counter,
+                )
+                evaluations.append({"score": score, "probability": probability,
+                                    "x_adv": x_adv, "z": z_effective})
+            evaluations.sort(key=lambda item: item["score"])
+
+            if evaluations[0]["score"] < best_score:
+                best_score = evaluations[0]["score"]
+                best_probability = evaluations[0]["probability"]
+                best_x_adv = evaluations[0]["x_adv"].copy(deep=True)
+
+            successful = [item for item in evaluations if item["probability"] < threshold]
+            if successful:
+                selected = min(successful, key=lambda item: item["score"])
+                return create_result(
+                    "PermuteAttack-inspired GA", original_probability,
+                    selected["probability"], x_original, selected["x_adv"],
+                    action_features, threshold, query_counter, time.perf_counter() - start,
+                )
+
+            elites = np.asarray([item["z"] for item in evaluations[:n_elite]])
+            children = [elite.copy() for elite in elites]
+            while len(children) < GA_POP_SIZE:
+                parent_1 = elites[rng.integers(0, len(elites))]
+                parent_2 = elites[rng.integers(0, len(elites))]
+                crossover_mask = rng.random(d) < 0.5
+                child = np.where(crossover_mask, parent_1, parent_2)
+                mutation_mask = rng.random(d) < GA_MUTATION_PROB
+                child[mutation_mask] += rng.normal(0.0, GA_MUTATION_SCALE, size=mutation_mask.sum())
+                if rng.random() < 0.30:
+                    child[rng.integers(0, d)] = 0.0
+                children.append(project_action_vector(child))
+            population = np.asarray(children)
+
+    return create_result(
+        "PermuteAttack-inspired GA", original_probability, best_probability,
+        x_original, best_x_adv, action_features, threshold,
+        query_counter, time.perf_counter() - start,
     )
-    n_mut = len(mutable_idx)
 
-    base = np.asarray(x_original.values, dtype=float).reshape(-1)
-    original_prob = float(model.predict_proba(x_original)[:, 1][0])
 
-    x_mut0 = base[mutable_idx].astype(np.float32)
-    train_low = X_reference.iloc[:, mutable_idx].min().to_numpy(dtype=np.float32)
-    train_high = X_reference.iloc[:, mutable_idx].max().to_numpy(dtype=np.float32)
-    
-    low = np.minimum(train_low, x_mut0)
-    high = np.maximum(train_high, x_mut0)
-    high = np.where(high <= low, low + 1e-6, high)
+def zoo_attack(model, x_original, X_reference, action_features, threshold, seed=RANDOM_STATE) -> dict:
+    """ZOO-inspired finite-difference attack with an Adam update on the action vector."""
+    rng = np.random.default_rng(seed)
+    start = time.perf_counter()
+    query_counter = {"count": 0}
 
-    if nb_parallel is None:
-        nb_parallel = n_mut
+    bounds = get_bounds(x_original, X_reference, action_features)
+    original_probability = default_probability(model, x_original, query_counter)
 
-    classifier = BlackBoxClassifier(
-        lambda x_mut: predict_fn(x_mut, base, mutable_idx, feature_names, model),
-        input_shape=(n_mut,),
-        nb_classes=2,
-        clip_values=(low, high),
+    d = len(action_features)
+    best_score = np.inf
+    best_probability = original_probability
+    best_x_adv = x_original.copy(deep=True)
+
+    for restart in range(ZOO_RESTARTS):
+        z = np.zeros(d) if restart == 0 else rng.uniform(0.0, 0.25, size=d)
+        z = project_action_vector(z)
+        m = np.zeros(d)
+        v = np.zeros(d)
+
+        current_score, current_probability, current_x_adv, z = evaluate_candidate(
+            z, model, x_original, bounds, action_features, query_counter,
+        )
+        if current_score < best_score:
+            best_score = current_score
+            best_probability = current_probability
+            best_x_adv = current_x_adv.copy(deep=True)
+
+        for iteration in range(1, ZOO_MAX_ITER + 1):
+            gradient = np.zeros(d)
+            for j in range(d):
+                z_plus = z.copy()
+                z_minus = z.copy()
+                z_plus[j] = min(1.0, z_plus[j] + ZOO_FD_STEP)
+                z_minus[j] = max(0.0, z_minus[j] - ZOO_FD_STEP)
+                f_plus, _, _, _ = evaluate_candidate(
+                    z_plus, model, x_original, bounds, action_features, query_counter,
+                )
+                f_minus, _, _, _ = evaluate_candidate(
+                    z_minus, model, x_original, bounds, action_features, query_counter,
+                )
+                denominator = max(z_plus[j] - z_minus[j], 1e-8)
+                gradient[j] = (f_plus - f_minus) / denominator
+
+            beta_1, beta_2 = 0.90, 0.999
+            m = beta_1 * m + (1.0 - beta_1) * gradient
+            v = beta_2 * v + (1.0 - beta_2) * gradient ** 2
+            m_hat = m / (1.0 - beta_1 ** iteration)
+            v_hat = v / (1.0 - beta_2 ** iteration)
+            proposal = z - ZOO_LEARNING_RATE * m_hat / (np.sqrt(v_hat) + 1e-8)
+            proposal = project_action_vector(proposal)
+
+            proposal_score, proposal_probability, proposal_x_adv, proposal_z = evaluate_candidate(
+                proposal, model, x_original, bounds, action_features, query_counter,
+            )
+            if proposal_score <= current_score:
+                z = proposal_z
+                current_score = proposal_score
+                current_probability = proposal_probability
+                current_x_adv = proposal_x_adv
+
+            if current_score < best_score:
+                best_score = current_score
+                best_probability = current_probability
+                best_x_adv = current_x_adv.copy(deep=True)
+
+            if current_probability < threshold:
+                return create_result(
+                    "ZOO-inspired finite difference", original_probability,
+                    current_probability, x_original, current_x_adv,
+                    action_features, threshold, query_counter, time.perf_counter() - start,
+                )
+
+    return create_result(
+        "ZOO-inspired finite difference", original_probability, best_probability,
+        x_original, best_x_adv, action_features, threshold,
+        query_counter, time.perf_counter() - start,
     )
 
-    attack = ZooAttack(
-        classifier=classifier,
-        targeted=False,
-        learning_rate=learning_rate,
-        max_iter=max_iter,
-        binary_search_steps=binary_search_steps,
-        initial_const=initial_const,
-        abort_early=True,
-        use_resize=False,
-        use_importance=False,
-        nb_parallel=max(1, min(nb_parallel, n_mut)),
-        batch_size=1,
-        verbose=False,
-    )
 
-    np.random.seed(random_state)
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore")
-        x_mut_adv = attack.generate(x=x_mut0.reshape(1, -1))
+# Attack methods compared in the results: column-suffix -> per-instance function.
+ATTACK_METHODS = {
+    "GA": permute_attack,    # PermuteAttack-inspired genetic algorithm
+    "ZOO": zoo_attack,       # ZOO-inspired finite-difference (Adam)
+}
 
-    X_adv = base.copy()
-    X_adv[mutable_idx] = np.asarray(x_mut_adv, dtype=float).reshape(-1)
-    adv_df = pd.DataFrame(X_adv.reshape(1, -1), columns=feature_names)
-    adv_prob = float(model.predict_proba(adv_df)[:, 1][0])
-    adv_pred = int(model.predict(adv_df)[0])
-    changed = int((np.abs(X_adv[mutable_idx] - base[mutable_idx]) > 1e-8).sum())
-
-    return {
-        "success": 1 if adv_pred == desired_class else 0,
-        "cf_default_prob": adv_prob,
-        "changed_features": changed,
-        "prob_reduction": original_prob - adv_prob,
-    }
+_ATTACK_METRIC_NAMES = [
+    "Attack success rate", "Mean changed features",
+    "Mean prob reduction (success)", "Mean prob reduction (all)",
+    "Median queries", "Median runtime",
+]
 
 
 def _summarise_cases(case_results: list) -> dict:
     rdf = pd.DataFrame(case_results)
-    succ = rdf["success"] == 1
+    succ = rdf["Success"] == 1
     return {
-        "Attack success rate": round(float(rdf["success"].mean()), 4),
-        "Mean changed features": round(float(rdf.loc[succ, "changed_features"].mean()), 4) if succ.any() else np.nan,
-        "Mean prob reduction (success)": round(float(rdf.loc[succ, "prob_reduction"].mean()), 4) if succ.any() else np.nan,
-        "Mean prob reduction (all)": round(float(rdf["prob_reduction"].mean()), 4),
+        "Attack success rate": round(float(rdf["Success"].mean()), 4),
+        "Mean changed features": round(float(rdf.loc[succ, "Changed features"].mean()), 4) if succ.any() else np.nan,
+        "Mean prob reduction (success)": round(float(rdf.loc[succ, "Probability reduction"].mean()), 4) if succ.any() else np.nan,
+        "Mean prob reduction (all)": round(float(rdf["Probability reduction"].mean()), 4),
+        "Median queries": round(float(rdf["Queries"].median()), 2),
+        "Median runtime": round(float(rdf["Runtime seconds"].median()), 4),
     }
 
 
-# Attack methods compared in the results: name -> per-instance attack function.
-ATTACK_METHODS = {
-    "GA": constrained_ga_attack,
-    "ZOO": constrained_zoo_attack,
-}
-
-
 def run_adversarial_attacks(
-    pipe, X_tr: pd.DataFrame, X_te: pd.DataFrame,
-    y_te, y_pred_te,
-    mutable_features: list = None,
+    pipe, X_ref: pd.DataFrame, X_val: pd.DataFrame, y_val,
+    X_te: pd.DataFrame, y_te,
     n_cases: int = N_ATTACK_CASES,
     methods: dict = None,
+    required_columns: list = None,
     random_state: int = RANDOM_STATE,
 ) -> dict:
-    
     if methods is None:
         methods = ATTACK_METHODS
-    if mutable_features is None:
-        mutable_features = MUTABLE_FEATURES
+    if required_columns is None:
+        required_columns = ATTACK_REQUIRED_COLUMNS
 
-    feats = [f for f in mutable_features if f in X_tr.columns]
+    action_features = get_action_features(X_ref.columns)
 
-    metric_names = [
-        "Attack success rate", "Mean changed features",
-        "Mean prob reduction (success)", "Mean prob reduction (all)",
-    ]
-
+    # F1-optimal decision threshold from the held-out validation set, then pick
+    # eligible targets: truly-defaulting, predicted-default, complete rows.
+    threshold = get_threshold(pipe, X_val, y_val)
+    test_probs = default_probabilities(pipe, X_te)
     y_te_arr = np.asarray(y_te)
-    y_pred_arr = np.asarray(y_pred_te)
-    mask = (y_te_arr == 1) & (y_pred_arr == 1)
+    mask = (y_te_arr == DEFAULT_CLASS) & (test_probs >= threshold)
+
+    avail_required = [c for c in required_columns if c in X_te.columns]
+    if avail_required:
+        mask &= X_te[avail_required].notna().all(axis=1).to_numpy()
 
     X_cand = X_te[mask]
     n_actual = min(n_cases, len(X_cand))
 
-    if n_actual == 0:
-        out = {"N attacked": 0}
+    if n_actual == 0 or len(action_features) == 0:
+        out = {"N attacked": 0, "Threshold": round(float(threshold), 4)}
         for name in methods:
-            out.update({f"{m} ({name})": np.nan for m in metric_names})
+            out.update({f"{m} ({name})": np.nan for m in _ATTACK_METRIC_NAMES})
         return out
 
     X_cand = X_cand.sample(n=n_actual, random_state=random_state)
 
-    out = {"N attacked": n_actual}
+    out = {"N attacked": n_actual, "Threshold": round(float(threshold), 4)}
     for name, attack_fn in methods.items():
         case_results = []
         for idx in X_cand.index:
             x0 = X_te.loc[[idx]]
             case_results.append(
-                attack_fn(
-                    pipe, x0, X_tr, feats,
-                    desired_class=0,
-                    random_state=random_state + int(idx),
-                )
+                attack_fn(pipe, x0, X_ref, action_features, threshold,
+                          seed=random_state + int(idx))
             )
         summary = _summarise_cases(case_results)
-        out.update({f"{m} ({name})": summary[m] for m in metric_names})
+        out.update({f"{m} ({name})": summary[m] for m in _ATTACK_METRIC_NAMES})
 
     return out

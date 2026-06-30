@@ -118,3 +118,12 @@ def create_imbalanced_dataset(
 
 def make_train_test_split(X: pd.DataFrame, y: pd.Series, random_state: int = RANDOM_STATE):
     return train_test_split(X, y, test_size=0.2, stratify=y, random_state=random_state)
+
+
+def make_validation_split(X: pd.DataFrame, y: pd.Series, random_state: int = RANDOM_STATE):
+    """Carve a stratified validation set out of the training set (20%).
+
+    Used to calibrate the F1-optimal decision threshold for the adversarial
+    attacks without touching the held-out test set.
+    """
+    return train_test_split(X, y, test_size=0.2, stratify=y, random_state=random_state)

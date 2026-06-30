@@ -1,0 +1,42 @@
+Traceback (most recent call last):
+  File "/gpfs/home2/tangevare/main.py", line 172, in <module>
+    run_experiment(args.experiment_id, n_cores=args.n_cores)
+  File "/gpfs/home2/tangevare/main.py", line 129, in run_experiment
+    attack_row = run_adversarial_attacks(pipe_final, X_fit, X_val, y_val, X_te, y_te)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/gpfs/home2/tangevare/src/pipeline_utils.py", line 653, in run_adversarial_attacks
+    attack_fn(pipe, x0, X_ref, action_features, threshold,
+  File "/gpfs/home2/tangevare/src/pipeline_utils.py", line 462, in permute_attack
+    score, probability, x_adv, z_effective = evaluate_candidate(
+                                             ^^^^^^^^^^^^^^^^^^^
+  File "/gpfs/home2/tangevare/src/pipeline_utils.py", line 409, in evaluate_candidate
+    x_adv, z_effective = vector_to_instance(z, x_original, bounds, action_features)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/gpfs/home2/tangevare/src/pipeline_utils.py", line 361, in vector_to_instance
+    x_adv = repair_features(x_adv, x_original)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/gpfs/home2/tangevare/src/pipeline_utils.py", line 336, in repair_features
+    old_dti = float(x_original.iloc[0]["dti"])
+                    ~~~~~~~~~~~~~~~^^^
+  File "/home/tangevare/.local/lib/python3.11/site-packages/pandas/core/indexing.py", line 1207, in __getitem__
+    return self._getitem_axis(maybe_callable, axis=axis)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tangevare/.local/lib/python3.11/site-packages/pandas/core/indexing.py", line 1775, in _getitem_axis
+    return self.obj._ixs(key, axis=axis)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tangevare/.local/lib/python3.11/site-packages/pandas/core/frame.py", line 4305, in _ixs
+    new_mgr = self._mgr.fast_xs(i)
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/home/tangevare/.local/lib/python3.11/site-packages/pandas/core/internals/managers.py", line 1211, in fast_xs
+    return SingleBlockManager(block, self.axes[0].view())
+                                     ^^^^^^^^^^^^^^^^^^^
+  File "/home/tangevare/.local/lib/python3.11/site-packages/pandas/core/indexes/base.py", line 1106, in view
+    result = self._view()
+             ^^^^^^^^^^^^
+  File "/home/tangevare/.local/lib/python3.11/site-packages/pandas/core/indexes/base.py", line 783, in _view
+    result = self._simple_new(self._values, name=self._name, refs=self._references)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tangevare/.local/lib/python3.11/site-packages/pandas/core/indexes/base.py", line 667, in _simple_new
+    result = object.__new__(cls)
+             ^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt
