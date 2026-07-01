@@ -21,10 +21,9 @@ Traceback (most recent call last):
   File "/home/tangevare/.local/lib/python3.11/site-packages/imblearn/pipeline.py", line 849, in predict_proba
     return self.steps[-1][1].predict_proba(Xt, **params)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/tangevare/.local/lib/python3.11/site-packages/sklearn/ensemble/_forest.py", line 956, in predict_proba
-    Parallel(n_jobs=n_jobs, verbose=self.verbose, require="sharedmem")(
-  File "/home/tangevare/.local/lib/python3.11/site-packages/sklearn/utils/parallel.py", line 91, in __call__
-    return super().__call__(iterable_with_config_and_warning_filters)
+  File "/home/tangevare/.local/lib/python3.11/site-packages/skle    data_to_wrap = f(self, X, *args, **kwargs)
+          Parallel(n_jobs=n_jobs, verbose=self.verbose, require="sharedmem")(
+  File "/home/tangevare/.local/lib/python3.11/site-packages/sklearn/utils/para    X = self._validate_input(X,    return super().__call__(iterable_with_config_and_warning_filters)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/home/tangevare/.local/lib/python3.11/site-packages/joblib/parallel.py", line 2072, in __call__
     return output if self.return_generator else list(output)
@@ -33,4 +32,34 @@ Traceback (most recent call last):
     yield from self._retrieve()
   File "/home/tangevare/.local/lib/python3.11/site-packages/joblib/parallel.py", line 1800, in _retrieve
     time.sleep(0.01)
+KeyboardInterrupt
+1/site-packages/sklearn/utils/validation.py", line 2361, in _get_feature_names
+    feature_names = np.asarray(nw.from_native(X).columns, dtype=object)
+                               ^^^^^^^^^^^^^^^^^
+  File "/home/tangevare/.local/lib/python3.11/site-packages/narwhals/stable/v2/__init__.py", line 484, in from_native
+    return _from_native_impl(  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tangevare/.local/lib/python3.11/site-packages/narwhals/translate.py", line 371, in _from_native_impl
+    .to_narwhals()
+     ^^^^^^^^^^^^^
+  File "/home/tangevare/.local/lib/python3.11/site-packages/narwhals/_compliant/dataframe.py", line 336, in to_narwhals
+    return self._version.dataframe(self, level="full")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tangevare/.local/lib/python3.11/site-packages/narwhals/stable/v2/__init__.py", line 121, in __init__
+    super().__init__(df, level=level)
+  File "/home/tangevare/.local/lib/python3.11/site-packages/narwhals/dataframe.py", line 495, in __init__
+    if is_compliant_dataframe(df):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tangevare/.local/lib/python3.11/site-packages/narwhals/_utils.py", line 1543, in is_compliant_dataframe
+    return _hasattr_static(obj, "__narwhals_dataframe__")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tangevare/.local/lib/python3.11/site-packages/narwhals/_utils.py", line 1532, in _hasattr_static
+    return getattr_static(obj, attr, _SENTINEL) is not _SENTINEL
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/sw/arch/RHEL8/EB_production/2023/software/Python/3.11.3-GCCcore-12.3.0/lib/python3.11/inspect.py", line 1822, in getattr_static
+    dict_attr = _shadowed_dict(klass)
+                ^^^^^^^^^^^^^^^^^^^^^
+  File "/sw/arch/RHEL8/EB_production/2023/software/Python/3.11.3-GCCcore-12.3.0/lib/python3.11/inspect.py", line 1798, in _shadowed_dict
+    class_dict = dict_attr.__get__(entry)["__dict__"]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^
 KeyboardInterrupt

@@ -1,0 +1,6 @@
+2026-07-01T04:40:20Z INFO Detected 405373546496B of memory (377.53 GiB)
+2026-07-01T04:40:20Z INFO SLURM environment detected
+2026-07-01T04:40:20Z INFO Starting hyperqueue worker v0.19.0
+2026-07-01T04:40:20Z INFO Connecting to: int4.local.snellius.surf.nl:39473
+2026-07-01T04:40:20Z INFO Listening on port 36557
+2026-07-01T04:40:20Z INFO Connecting to server (candidate addresses = [172.18.63.190:39473])

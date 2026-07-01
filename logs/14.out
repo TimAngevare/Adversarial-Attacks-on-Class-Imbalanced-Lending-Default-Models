@@ -1,0 +1,3 @@
+[Tue Jun 30 13:48:45 CEST 2026] Starting experiment 14 on tcn1160.local.snellius.surf.nl with 16 cores
+[exp 0014] frac=0.01, model=RandomForestClassifier, sampler=ClassWeight
+  PR-AUC=0.0215  F1=0.5158

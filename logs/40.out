@@ -1,3 +1,6 @@
-[Tue Jun 30 03:50:35 CEST 2026] Starting experiment 40 on tcn1174.local.snellius.surf.nl with 16 cores
+[Tue Jun 30 15:03:22 CEST 2026] Starting experiment 40 on tcn1167.local.snellius.surf.nl with 16 cores
 [exp 0040] frac=0.05, model=XGBClassifier, sampler=Baseline
-  PR-AUC=0.1242  F1=0.4873
+  PR-AUC=0.1238  F1=0.4873
+  Attack success rate: GA=0.54 ZOO=0.2
+[exp 0040] DONE → results/exp_0040
+[Tue Jun 30 16:40:51 CEST 2026] Experiment 40 finished with exit code 0

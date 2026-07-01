@@ -1,0 +1,6 @@
+[Tue Jun 30 07:07:09 CEST 2026] Starting experiment 3 on tcn1026.local.snellius.surf.nl with 16 cores
+[exp 0003] frac=0.01, model=XGBClassifier, sampler=KMeansSMOTE
+  PR-AUC=0.0192  F1=0.4975
+  Attack success rate: GA=0.56 ZOO=0.07
+[exp 0003] DONE → results/exp_0003
+[Tue Jun 30 08:49:14 CEST 2026] Experiment 3 finished with exit code 0

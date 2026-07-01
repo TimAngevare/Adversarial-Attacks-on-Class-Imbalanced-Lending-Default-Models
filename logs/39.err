@@ -1,33 +1,1 @@
-Traceback (most recent call last):
-  File "/gpfs/home2/tangevare/main.py", line 22, in <module>
-    from src.models_def import get_models, apply_class_weight
-  File "/gpfs/home2/tangevare/src/models_def.py", line 2, in <module>
-    import torch
-  File "/home/tangevare/.local/lib/python3.11/site-packages/torch/__init__.py", line 3042, in <module>
-    _import_device_backends()
-  File "/home/tangevare/.local/lib/python3.11/site-packages/torch/__init__.py", line 2990, in _import_device_backends
-    backend_extensions = entry_points(group=group_name)
-                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/sw/arch/RHEL8/EB_production/2023/software/Python/3.11.3-GCCcore-12.3.0/lib/python3.11/importlib/metadata/__init__.py", line 1040, in entry_points
-    return SelectableGroups.load(eps).select(**params)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/sw/arch/RHEL8/EB_production/2023/software/Python/3.11.3-GCCcore-12.3.0/lib/python3.11/importlib/metadata/__init__.py", line 476, in load
-    ordered = sorted(eps, key=by_group)
-              ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/sw/arch/RHEL8/EB_production/2023/software/Python/3.11.3-GCCcore-12.3.0/lib/python3.11/importlib/metadata/__init__.py", line 1038, in <genexpr>
-    dist.entry_points for dist in _unique(distributions())
-    ^^^^^^^^^^^^^^^^^
-  File "/sw/arch/RHEL8/EB_production/2023/software/Python/3.11.3-GCCcore-12.3.0/lib/python3.11/importlib/metadata/__init__.py", line 636, in entry_points
-    return EntryPoints._from_text_for(self.read_text('entry_points.txt'), self)
-                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/sw/arch/RHEL8/EB_production/2023/software/Python/3.11.3-GCCcore-12.3.0/lib/python3.11/importlib/metadata/__init__.py", line 938, in read_text
-    return self._path.joinpath(filename).read_text(encoding='utf-8')
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/sw/arch/RHEL8/EB_production/2023/software/Python/3.11.3-GCCcore-12.3.0/lib/python3.11/pathlib.py", line 1058, in read_text
-    with self.open(mode='r', encoding=encoding, errors=errors) as f:
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/sw/arch/RHEL8/EB_production/2023/software/Python/3.11.3-GCCcore-12.3.0/lib/python3.11/pathlib.py", line 1044, in open
-    return io.open(self, mode, buffering, encoding, errors, newline)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "<frozen codecs>", line 309, in __init__
-KeyboardInterrupt
+  0%|          | 0/20 [00:00<?, ?it/s] 10%|█         | 2/20 [00:00<00:01, 16.83it/s] 20%|██        | 4/20 [00:00<00:00, 16.94it/s] 30%|███       | 6/20 [00:00<00:01, 10.60it/s] 40%|████      | 8/20 [00:00<00:00, 12.46it/s] 50%|█████     | 10/20 [00:00<00:00, 13.80it/s] 60%|██████    | 12/20 [00:00<00:00, 14.75it/s] 70%|███████   | 14/20 [00:00<00:00, 15.44it/s] 80%|████████  | 16/20 [00:01<00:00, 15.92it/s] 90%|█████████ | 18/20 [00:01<00:00, 16.25it/s]100%|██████████| 20/20 [00:01<00:00, 16.48it/s]100%|██████████| 20/20 [00:01<00:00, 15.03it/s]

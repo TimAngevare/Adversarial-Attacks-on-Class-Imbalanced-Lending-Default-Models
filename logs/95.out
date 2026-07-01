@@ -1,3 +1,6 @@
-[Tue Jun 30 01:29:44 CEST 2026] Starting experiment 95 on tcn1174.local.snellius.surf.nl with 16 cores
+[Tue Jun 30 07:07:09 CEST 2026] Starting experiment 95 on tcn1026.local.snellius.surf.nl with 16 cores
 [exp 0095] frac=0.2, model=NeuralNetClassifier, sampler=Baseline
-  PR-AUC=0.3833  F1=0.5141
+  PR-AUC=0.3826  F1=0.5077
+  Attack success rate: GA=0.15 ZOO=0.12
+[exp 0095] DONE → results/exp_0095
+[Tue Jun 30 10:22:32 CEST 2026] Experiment 95 finished with exit code 0

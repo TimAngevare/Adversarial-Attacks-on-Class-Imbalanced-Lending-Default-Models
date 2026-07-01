@@ -1,0 +1,6 @@
+[Tue Jun 30 15:01:32 CEST 2026] Starting experiment 56 on tcn1026.local.snellius.surf.nl with 16 cores
+[exp 0056] frac=0.05, model=NeuralNetClassifier, sampler=RandomUnderSampler
+  PR-AUC=0.1150  F1=0.4586
+  Attack success rate: GA=0.27 ZOO=0.26
+[exp 0056] DONE → results/exp_0056
+[Tue Jun 30 17:15:15 CEST 2026] Experiment 56 finished with exit code 0

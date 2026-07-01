@@ -1,0 +1,34 @@
+  0%|          | 0/20 [00:00<?, ?it/s] 10%|█         | 2/20 [00:00<00:01, 17.44it/s] 20%|██        | 4/20 [00:00<00:00, 17.57it/s] 30%|███       | 6/20 [00:00<00:00, 17.61it/s] 40%|████      | 8/20 [00:00<00:00, 17.63it/s] 50%|█████     | 10/20 [00:00<00:00, 17.65it/s] 60%|██████    | 12/20 [00:00<00:00, 17.66it/s] 70%|███████   | 14/20 [00:00<00:00, 17.66it/s] 80%|████████  | 16/20 [00:00<00:00, 17.65it/s] 90%|█████████ | 18/20 [00:01<00:00, 17.64it/s]100%|██████████| 20/20 [00:01<00:00, 17.65it/s]100%|██████████| 20/20 [00:01<00:00, 17.63it/s]
+Traceback (most recent call last):
+  File "/gpfs/home2/tangevare/main.py", line 172, in <module>
+    run_experiment(args.experiment_id, n_cores=args.n_cores)
+  File "/gpfs/home2/tangevare/main.py", line 129, in run_experiment
+    attack_row = run_adversarial_attacks(pipe_final, X_fit, X_val, y_val, X_te, y_te)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/gpfs/home2/tangevare/src/pipeline_utils.py", line 653, in run_adversarial_attacks
+    attack_fn(pipe, x0, X_ref, action_features, threshold,
+  File "/gpfs/home2/tangevare/src/pipeline_utils.py", line 462, in permute_attack
+    score, probability, x_adv, z_effective = evaluate_candidate(
+                                             ^^^^^^^^^^^^^^^^^^^
+  File "/gpfs/home2/tangevare/src/pipeline_utils.py", line 410, in evaluate_candidate
+    adversarial_probability = default_probability(model, x_adv, query_counter)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/gpfs/home2/tangevare/src/pipeline_utils.py", line 381, in default_probability
+    return float(default_probabilities(model, X)[0])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/gpfs/home2/tangevare/src/pipeline_utils.py", line 375, in default_probabilities
+    return model.predict_proba(X)[:, class_index]
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tangevare/.local/lib/python3.11/site-packages/imblearn/pipeline.py", line 848, in predict_proba
+    Xt = transform.transform(Xt)
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tangevare/.local/lib/python3.11/site-packages/sklearn/utils/_set_output.py", line 319, in wrapped
+    data_to_wrap = f(self, X, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tangevare/.local/lib/python3.11/site-packages/sklearn/preprocessing/_data.py", line 1111, in transform
+    X = validate_data(
+        ^^^^^^^^^^^^^^
+  File "/home/tangevare/.local/lib/python3.11/site-packages/sklearn/utils/validation.py", line 3058, in validate_data
+    if not no_val_X and check_params.get("ensure_2d", True):
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

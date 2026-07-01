@@ -1,0 +1,38 @@
+/home/tangevare/.local/lib/python3.11/site-packages/sklearn/metrics/_classification.py:1879: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", result.shape[0])
+Traceback (most recent call last):
+  File "/gpfs/home2/tangevare/main.py", line 172, in <module>
+    run_experiment(args.experiment_id, n_cores=args.n_cores)
+  File "/gpfs/home2/tangevare/main.py", line 129, in run_experiment
+    attack_row = run_adversarial_attacks(pipe_final, X_fit, X_val, y_val, X_te, y_te)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/gpfs/home2/tangevare/src/pipeline_utils.py", line 653, in run_adversarial_attacks
+    attack_fn(pipe, x0, X_ref, action_features, threshold,
+  File "/gpfs/home2/tangevare/src/pipeline_utils.py", line 556, in zoo_attack
+    proposal_score, proposal_probability, proposal_x_adv, proposal_z = evaluate_candidate(
+                                                                       ^^^^^^^^^^^^^^^^^^^
+  File "/gpfs/home2/tangevare/src/pipeline_utils.py", line 410, in evaluate_candidate
+    adversarial_probability = default_probability(model, x_adv, query_counter)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/gpfs/home2/tangevare/src/pipeline_utils.py", line 381, in default_probability
+    return float(default_probabilities(model, X)[0])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/gpfs/home2/tangevare/src/pipeline_utils.py", line 375, in default_probabilities
+    return model.predict_proba(X)[:, class_index]
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tangevare/.local/lib/python3.11/site-packages/imblearn/pipeline.py", line 849, in predict_proba
+    return self.steps[-1][1].predict_proba(Xt, **params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tangevare/.local/lib/python3.11/site-packages/sklearn/ensemble/_forest.py", line 956, in predict_proba
+    Parallel(n_jobs=n_jobs, verbose=self.verbose, require="sharedmem")(
+  File "/home/tangevare/.local/lib/python3.11/site-packages/sklearn/utils/parallel.py", line 91, in __call__
+    return super().__call__(iterable_with_config_and_warning_filters)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tangevare/.local/lib/python3.11/site-packages/joblib/parallel.py", line 2072, in __call__
+    return output if self.return_generator else list(output)
+                                                ^^^^^^^^^^^^
+  File "/home/tangevare/.local/lib/python3.11/site-packages/joblib/parallel.py", line 1682, in _get_outputs
+    yield from self._retrieve()
+  File "/home/tangevare/.local/lib/python3.11/site-packages/joblib/parallel.py", line 1800, in _retrieve
+    time.sleep(0.01)
+KeyboardInterrupt

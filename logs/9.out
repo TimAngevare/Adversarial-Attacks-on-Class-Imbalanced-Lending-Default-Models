@@ -1,0 +1,6 @@
+[Tue Jun 30 09:16:04 CEST 2026] Starting experiment 9 on tcn1160.local.snellius.surf.nl with 16 cores
+[exp 0009] frac=0.01, model=LogisticRegression, sampler=ClassWeight
+  PR-AUC=0.0247  F1=0.4169
+  Attack success rate: GA=0.2 ZOO=0.18
+[exp 0009] DONE → results/exp_0009
+[Tue Jun 30 12:12:47 CEST 2026] Experiment 9 finished with exit code 0

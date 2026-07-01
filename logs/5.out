@@ -1,0 +1,6 @@
+[Tue Jun 30 09:23:43 CEST 2026] Starting experiment 5 on tcn1167.local.snellius.surf.nl with 16 cores
+[exp 0005] frac=0.01, model=LogisticRegression, sampler=Baseline
+  PR-AUC=0.0240  F1=0.4975
+  Attack success rate: GA=0.22 ZOO=0.04
+[exp 0005] DONE → results/exp_0005
+[Tue Jun 30 13:41:56 CEST 2026] Experiment 5 finished with exit code 0

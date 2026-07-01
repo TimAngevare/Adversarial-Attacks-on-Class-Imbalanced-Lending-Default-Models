@@ -1,0 +1,19 @@
+No NVMe drive detected on this node. Defaulting to network storage.
+Starting HQ workers on tcn607.local.snellius.surf.nl with 192 cores
++-------------------+---------------------------------------------------------------+
+| Worker ID         | 6                                                             |
+| Hostname          | tcn607.local.snellius.surf.nl                                 |
+| Started           | "2026-07-01T04:40:20.112964404Z"                              |
+| Data provider     | tcn607.local.snellius.surf.nl:36557                           |
+| Working directory | /scratch-local/tangevare.24337649/hq-worker.vvE2NseQ423x/work |
+| Logging directory | /scratch-local/tangevare.24337649/hq-worker.vvE2NseQ423x/logs |
+| Heartbeat         | 8s                                                            |
+| Idle timeout      | 5m                                                            |
+| Resources         | cpus: 8x24                                                    |
+|                   | mem: 377.53 GiB                                               |
+| Time Limit        | 1day 15h 59m 48s                                              |
+| Process pid       | 3629583                                                       |
+| Group             | 24337649                                                      |
+| Manager           | SLURM                                                         |
+| Manager Job ID    | 24337649                                                      |
++-------------------+---------------------------------------------------------------+

@@ -1,9 +1,9 @@
 /home/tangevare/.local/lib/python3.11/site-packages/imblearn/over_sampling/_smote/cluster.py:216: RuntimeWarning: overflow encountered in scalar power
   return (mean_distance**exponent) / X.shape[0]
-/home/tangevare/.local/lib/python3.11/site-packages/imblearn/over_sampling/_smote/cluster.py:216: RuntimeWarning: overflow encountered in scalar power
-  return (mean_distance**exponent) / X.shape[0]
 /home/tangevare/.local/lib/python3.11/site-packages/imblearn/over_sampling/_smote/cluster.py:267: RuntimeWarning: invalid value encountered in divide
   cluster_weights = cluster_sparsities / cluster_sparsities.sum()
+/gpfs/home2/tangevare/src/samplers_def.py:17: RuntimeWarning: KMeansSMOTE failed (cannot convert float NaN to integer); falling back to SMOTE.
+  warnings.warn(
 /home/tangevare/.local/lib/python3.11/site-packages/sklearn/model_selection/_validation.py:489: FitFailedWarning: 
 1 fits failed out of a total of 5.
 The score on these train-test partitions for these parameters will be set to nan.
@@ -12,6 +12,25 @@ If these failures are not expected, you can try to debug them by setting error_s
 Below are more details about the failures:
 --------------------------------------------------------------------------------
 1 fits failed with the following error:
+Traceback (most recent call last):
+  File "/gpfs/home2/tangevare/src/samplers_def.py", line 15, in fit_resample
+    return super().fit_resample(X, y, **params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tangevare/.local/lib/python3.11/site-packages/imblearn/base.py", line 204, in fit_resample
+    return super().fit_resample(X, y, **params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tangevare/.local/lib/python3.11/site-packages/sklearn/base.py", line 1403, in wrapper
+    return fit_method(estimator, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tangevare/.local/lib/python3.11/site-packages/imblearn/base.py", line 107, in fit_resample
+    output = self._fit_resample(X, y, **params)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tangevare/.local/lib/python3.11/site-packages/imblearn/over_sampling/_smote/cluster.py", line 291, in _fit_resample
+    math.ceil(n_samples * cluster_weights[valid_cluster_idx])
+ValueError: cannot convert float NaN to integer
+
+During handling of the above exception, another exception occurred:
+
 Traceback (most recent call last):
   File "/home/tangevare/.local/lib/python3.11/site-packages/sklearn/model_selection/_validation.py", line 856, in _fit_and_score
     estimator.fit(X_train, y_train, **fit_params)
@@ -30,18 +49,10 @@ Traceback (most recent call last):
   File "/home/tangevare/.local/lib/python3.11/site-packages/imblearn/pipeline.py", line 1332, in _fit_resample_one
     X_res, y_res = sampler.fit_resample(X, y, **params.get("fit_resample", {}))
                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/tangevare/.local/lib/python3.11/site-packages/imblearn/base.py", line 204, in fit_resample
-    return super().fit_resample(X, y, **params)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/tangevare/.local/lib/python3.11/site-packages/sklearn/base.py", line 1403, in wrapper
-    return fit_method(estimator, *args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/tangevare/.local/lib/python3.11/site-packages/imblearn/base.py", line 107, in fit_resample
-    output = self._fit_resample(X, y, **params)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/tangevare/.local/lib/python3.11/site-packages/imblearn/over_sampling/_smote/cluster.py", line 291, in _fit_resample
-    math.ceil(n_samples * cluster_weights[valid_cluster_idx])
-ValueError: cannot convert float NaN to integer
+  File "/gpfs/home2/tangevare/src/samplers_def.py", line 21, in fit_resample
+    fallback = SMOTE(
+               ^^^^^^
+TypeError: SMOTE.__init__() got an unexpected keyword argument 'n_jobs'
 
   warnings.warn(some_fits_failed_message, FitFailedWarning)
 Traceback (most recent call last):

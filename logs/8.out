@@ -1,0 +1,6 @@
+[Tue Jun 30 07:07:11 CEST 2026] Starting experiment 8 on tcn1167.local.snellius.surf.nl with 16 cores
+[exp 0008] frac=0.01, model=LogisticRegression, sampler=KMeansSMOTE
+  PR-AUC=0.0138  F1=0.4762
+  Attack success rate: GA=0.31 ZOO=0.26
+[exp 0008] DONE → results/exp_0008
+[Tue Jun 30 10:52:40 CEST 2026] Experiment 8 finished with exit code 0
