@@ -4,3 +4,7 @@
 2026-07-01T04:40:20Z INFO Connecting to: int4.local.snellius.surf.nl:39473
 2026-07-01T04:40:20Z INFO Listening on port 36557
 2026-07-01T04:40:20Z INFO Connecting to server (candidate addresses = [172.18.63.190:39473])
+2026-07-02T20:40:08Z INFO Time limit reached
+2026-07-02T20:40:08Z INFO Waiting for stopping running tasks
+2026-07-02T20:40:09Z INFO All running tasks were stopped
+2026-07-02T20:40:09Z INFO Worker stopping

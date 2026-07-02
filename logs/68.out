@@ -1,1 +1,6 @@
 [Wed Jul  1 06:40:21 CEST 2026] Starting experiment 68 on tcn607.local.snellius.surf.nl with 16 cores
+[exp 0068] frac=0.1, model=LogisticRegression, sampler=KMeansSMOTE
+  PR-AUC=0.1390  F1=0.5083
+  Attack success rate: GA=0.06 ZOO=0.05
+[exp 0068] DONE → results/exp_0068
+[Wed Jul  1 10:16:10 CEST 2026] Experiment 68 finished with exit code 0

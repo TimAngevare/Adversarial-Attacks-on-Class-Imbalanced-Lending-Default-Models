@@ -29,8 +29,10 @@ Traceback (most recent call last):
   File "/home/tangevare/.local/lib/python3.11/site-packages/joblib/parallel.py", line 2072, in __call__
     return output if self.return_generator else list(output)
                                                 ^^^^^^^^^^^^
-  File "/home/tangevare/.local/lib/python3.11/site-packages/joblib/parallel.py", line 1682, in _get_outputs
-    yield from self._retrieve()
-  File "/home/tangevare/.local/lib/python3.11/site-packages/joblib/parallel.py", line 1800, in _retrieve
-    time.sleep(0.01)
+  File "/home/tangevare/.local/lib/python3.11/site-packages/joblib/parallel.py", line 1745, in _get_outputs
+    batched_results = batched_results.get_result(self.timeout)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tangevare/.local/lib/python3.11/site-packages/joblib/parallel.py", line 734, in get_result
+    def get_result(self, timeout):
+
 KeyboardInterrupt

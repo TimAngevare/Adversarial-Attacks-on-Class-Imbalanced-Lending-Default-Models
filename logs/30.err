@@ -8,9 +8,9 @@ Traceback (most recent call last):
                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/gpfs/home2/tangevare/src/pipeline_utils.py", line 653, in run_adversarial_attacks
     attack_fn(pipe, x0, X_ref, action_features, threshold,
-  File "/gpfs/home2/tangevare/src/pipeline_utils.py", line 556, in zoo_attack
-    proposal_score, proposal_probability, proposal_x_adv, proposal_z = evaluate_candidate(
-                                                                       ^^^^^^^^^^^^^^^^^^^
+  File "/gpfs/home2/tangevare/src/pipeline_utils.py", line 542, in zoo_attack
+    f_minus, _, _, _ = evaluate_candidate(
+                       ^^^^^^^^^^^^^^^^^^^
   File "/gpfs/home2/tangevare/src/pipeline_utils.py", line 410, in evaluate_candidate
     adversarial_probability = default_probability(model, x_adv, query_counter)
                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

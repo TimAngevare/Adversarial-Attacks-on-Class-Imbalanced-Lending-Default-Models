@@ -1,1 +1,6 @@
-[Wed Jul  1 03:04:39 CEST 2026] Starting experiment 62 on tcn1160.local.snellius.surf.nl with 16 cores
+[Thu Jul  2 12:56:12 CEST 2026] Starting experiment 62 on tcn607.local.snellius.surf.nl with 16 cores
+[exp 0062] frac=0.1, model=XGBClassifier, sampler=SMOTEENN
+  PR-AUC=0.2179  F1=0.5822
+  Attack success rate: GA=0.26 ZOO=0.07
+[exp 0062] DONE → results/exp_0062
+[Thu Jul  2 17:19:25 CEST 2026] Experiment 62 finished with exit code 0

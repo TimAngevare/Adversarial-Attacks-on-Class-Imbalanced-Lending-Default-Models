@@ -1,2 +1,6 @@
 [Wed Jul  1 06:40:21 CEST 2026] Starting experiment 57 on tcn607.local.snellius.surf.nl with 16 cores
 [exp 0057] frac=0.05, model=NeuralNetClassifier, sampler=SMOTEENN
+  PR-AUC=0.0960  F1=0.4791
+  Attack success rate: GA=0.28 ZOO=0.25
+[exp 0057] DONE → results/exp_0057
+[Wed Jul  1 12:06:49 CEST 2026] Experiment 57 finished with exit code 0

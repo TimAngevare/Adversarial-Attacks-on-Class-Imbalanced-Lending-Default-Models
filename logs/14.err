@@ -22,12 +22,10 @@ Traceback (most recent call last):
     return self.steps[-1][1].predict_proba(Xt, **params)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/home/tangevare/.local/lib/python3.11/site-packages/sklearn/ensemble/_forest.py", line 956, in predict_proba
-    Parallel(n_job    new_mgr = self._mgr.fast_xs(i)
-              ^^^^^^^^^^^^^^^^^^^^
-  File "/home/tangevare/.local/lib/python3.11/site-packages/pandas/core/internals/managers.py    return super().__call    result = np.empty(n, dtype=dtype)
-             ^^^^^^^^^^^^^^^^^^^^^^^^
-KeyboardInterrupt
-^^^^^^^^^^^^^^^^^^^^
+    Parallel(n_jobs=n_jobs, verbose=self.verbose, require="sharedmem")(
+  File "/home/tangevare/.local/lib/python3.11/site-packages/sklearn/utils/parallel.py", line 91, in __call__
+    return super().__call__(iterable_with_config_and_warning_filters)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/home/tangevare/.local/lib/python3.11/site-packages/joblib/parallel.py", line 2072, in __call__
     return output if self.return_generator else list(output)
                                                 ^^^^^^^^^^^^

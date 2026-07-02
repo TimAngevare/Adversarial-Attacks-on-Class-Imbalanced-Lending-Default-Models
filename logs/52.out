@@ -1,3 +1,3 @@
-[Tue Jun 30 13:38:42 CEST 2026] Starting experiment 52 on tcn1160.local.snellius.surf.nl with 16 cores
+[Thu Jul  2 07:54:57 CEST 2026] Starting experiment 52 on tcn607.local.snellius.surf.nl with 16 cores
 [exp 0052] frac=0.05, model=RandomForestClassifier, sampler=SMOTEENN
   PR-AUC=0.0962  F1=0.5398

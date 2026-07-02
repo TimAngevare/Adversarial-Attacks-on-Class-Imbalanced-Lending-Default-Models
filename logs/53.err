@@ -18,19 +18,47 @@ Traceback (most recent call last):
   File "/gpfs/home2/tangevare/src/pipeline_utils.py", line 375, in default_probabilities
     return model.predict_proba(X)[:, class_index]
            ^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/tangevare/.local/lib/python3.11/site-packages/imblearn/pipeline.py", line 849, in predict_proba
-    return self.steps[-1][1].predict_proba(Xt, **params)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/tangevare/.local/lib/python3.11/site-packages/sklearn/ensemble/_forest.py", line 956, in predict_proba
-    Parallel(n_jobs=n_jobs, verbose=self.verbose, require="sharedmem")(
-  File "/home/tangevare/.local/lib/python3.11/site-packages/sklearn/utils/parallel.py", line 91, in __call__
-    return super().__call__(iterable_with_config_and_warning_filters)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/tangevare/.local/lib/python3.11/site-packages/joblib/parallel.py", line 2072, in __call__
-    return output if self.return_generator else list(output)
-                                                ^^^^^^^^^^^^
-  File "/home/tangevare/.local/lib/python3.11/site-packages/joblib/parallel.py", line 1682, in _get_outputs
-    yield from self._retrieve()
-  File "/home/tangevare/.local/lib/python3.11/site-packages/joblib/parallel.py", line 1800, in _retrieve
-    time.sleep(0.01)
+  File "/home/tangevare/.local/lib/python3.11/site-packages/imblearn/pipeline.py", line 848, in predict_proba
+    Xt = transform.transform(Xt)
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tangevare/.local/lib/python3.11/site-packages/sklearn/utils/_set_output.py", line 319, in wrapped
+    data_to_wrap = f(self, X, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tangevare/.local/lib/python3.11/site-packages/sklearn/impute/_base.py", line 617, in transform
+    X = self._validate_input(X, in_fit=False)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tangevare/.local/lib/python3.11/site-packages/sklearn/impute/_base.py", line 356, in _validate_input
+    X = validate_data(
+        ^^^^^^^^^^^^^^
+  File "/home/tangevare/.local/lib/python3.11/site-packages/sklearn/utils/validation.py", line 3038, in validate_data
+    out = check_array(X, input_name="X", **check_params)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tangevare/.local/lib/python3.11/site-packages/sklearn/utils/validation.py", line 906, in check_array
+    if hasattr(array, "sparse") and array.dtypes.apply(is_pd_sparse).all():
+       ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tangevare/.local/lib/python3.11/site-packages/pandas/core/generic.py", line 6206, in __getattr__
+    return object.__getattribute__(self, name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tangevare/.local/lib/python3.11/site-packages/pandas/core/accessor.py", line 230, in __get__
+    return self._accessor(obj)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/tangevare/.local/lib/python3.11/site-packages/pandas/core/arrays/sparse/accessor.py", line 37, in __init__
+    self._validate(data)
+  File "/home/tangevare/.local/lib/python3.11/site-packages/pandas/core/arrays/sparse/accessor.py", line 304, in _validate
+    dtypes = data.dtypes
+             ^^^^^^^^^^^
+  File "/home/tangevare/.local/lib/python3.11/site-packages/pandas/core/generic.py", line 6358, in dtypes
+    return self._constructor_sliced(data, index=self._info_axis, dtype=np.object_)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tangevare/.local/lib/python3.11/site-packages/pandas/core/series.py", line 426, in __init__
+    dtype = self._validate_dtype(dtype)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tangevare/.local/lib/python3.11/site-packages/pandas/core/generic.py", line 477, in _validate_dtype
+    dtype = pandas_dtype(dtype)
+            ^^^^^^^^^^^^^^^^^^^
+  File "/home/tangevare/.local/lib/python3.11/site-packages/pandas/core/dtypes/common.py", line 1878, in pandas_dtype
+    with warnings.catch_warnings():
+  File "/sw/arch/RHEL8/EB_production/2023/software/Python/3.11.3-GCCcore-12.3.0/lib/python3.11/warnings.py", line 487, in __exit__
+    def __exit__(self, *exc_info):
+
 KeyboardInterrupt

@@ -3,6 +3,10 @@ experiment_id,Imbalance ratio,Model,Sampler,Feature,Group,Role,Threshold used,DI
 0,0.01,XGBClassifier,Baseline,emp_length,emp_length >= 5 years,privileged,5.0,0.9997626847478897,542997.0,0.9900883430295196,0.0099116569704805
 0,0.01,XGBClassifier,Baseline,annual_inc,higher annual income,privileged,11.082157933374816,0.9975787900920918,454893.0,0.99114517040271,0.0088548295972899
 0,0.01,XGBClassifier,Baseline,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9975787900920918,415208.0,0.9887453998959558,0.0112546001040442
+1,0.01,XGBClassifier,RandomUnderSampler,emp_length,emp_length < 5 years,unprivileged,5.0,1.0060942142408305,6663.0,0.5018760318174996,0.4981239681825004
+1,0.01,XGBClassifier,RandomUnderSampler,emp_length,emp_length >= 5 years,privileged,5.0,1.0060942142408305,10739.0,0.4988360182512338,0.5011639817487662
+1,0.01,XGBClassifier,RandomUnderSampler,annual_inc,higher annual income,privileged,11.082157933374816,0.8852377284430001,8586.0,0.5308641975308642,0.4691358024691358
+1,0.01,XGBClassifier,RandomUnderSampler,annual_inc,lower annual income,unprivileged,11.082157933374816,0.8852377284430001,8816.0,0.4699410163339383,0.5300589836660617
 2,0.01,XGBClassifier,SMOTEENN,emp_length,emp_length < 5 years,unprivileged,5.0,0.9572147494530026,635752.0,0.463358353571833,0.5366416464281669
 2,0.01,XGBClassifier,SMOTEENN,emp_length,emp_length >= 5 years,privileged,5.0,0.9572147494530026,1008310.0,0.4840693834237486,0.5159306165762514
 2,0.01,XGBClassifier,SMOTEENN,annual_inc,higher annual income,privileged,11.082157933374816,0.8073341825574085,778297.0,0.5298144538652982,0.4701855461347018
@@ -207,6 +211,10 @@ experiment_id,Imbalance ratio,Model,Sampler,Feature,Group,Role,Threshold used,DI
 54,0.05,RandomForestClassifier,ClassWeight,emp_length,emp_length >= 5 years,privileged,5.0,0.999361471031904,565720.0,0.9502280279997172,0.0497719720002828
 54,0.05,RandomForestClassifier,ClassWeight,annual_inc,higher annual income,privileged,11.082157933374816,0.9864990792155957,471552.0,0.9561957111834962,0.0438042888165038
 54,0.05,RandomForestClassifier,ClassWeight,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9864990792155957,435185.0,0.9432861886324206,0.0567138113675793
+55,0.05,NeuralNetClassifier,Baseline,emp_length,emp_length < 5 years,unprivileged,5.0,0.999361471031904,341017.0,0.9496212798775427,0.0503787201224572
+55,0.05,NeuralNetClassifier,Baseline,emp_length,emp_length >= 5 years,privileged,5.0,0.999361471031904,565720.0,0.9502280279997172,0.0497719720002828
+55,0.05,NeuralNetClassifier,Baseline,annual_inc,higher annual income,privileged,11.082157933374816,0.9864990792155957,471552.0,0.9561957111834962,0.0438042888165038
+55,0.05,NeuralNetClassifier,Baseline,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9864990792155957,435185.0,0.9432861886324206,0.0567138113675793
 56,0.05,NeuralNetClassifier,RandomUnderSampler,emp_length,emp_length < 5 years,unprivileged,5.0,0.9987349661125244,34333.0,0.4996067922989544,0.5003932077010457
 56,0.05,NeuralNetClassifier,RandomUnderSampler,emp_length,emp_length >= 5 years,privileged,5.0,0.9987349661125244,56341.0,0.500239612360448,0.499760387639552
 56,0.05,NeuralNetClassifier,RandomUnderSampler,annual_inc,higher annual income,privileged,11.082157933374816,0.8784313355998709,44249.0,0.5331871906709756,0.4668128093290243
@@ -227,6 +235,10 @@ experiment_id,Imbalance ratio,Model,Sampler,Feature,Group,Role,Threshold used,DI
 61,0.1,XGBClassifier,RandomUnderSampler,emp_length,emp_length >= 5 years,privileged,5.0,0.9966032080335872,119153.0,0.5006420316735626,0.4993579683264374
 61,0.1,XGBClassifier,RandomUnderSampler,annual_inc,higher annual income,privileged,11.082157933374816,0.8690069532231661,93711.0,0.5358282378802915,0.4641717621197084
 61,0.1,XGBClassifier,RandomUnderSampler,annual_inc,lower annual income,unprivileged,11.082157933374816,0.8690069532231661,97711.0,0.46563846445129,0.53436153554871
+62,0.1,XGBClassifier,SMOTEENN,emp_length,emp_length < 5 years,unprivileged,5.0,0.9438477773089584,526056.0,0.3557168818528826,0.6442831181471174
+62,0.1,XGBClassifier,SMOTEENN,emp_length,emp_length >= 5 years,privileged,5.0,0.9438477773089584,826548.0,0.3768795036706882,0.6231204963293118
+62,0.1,XGBClassifier,SMOTEENN,annual_inc,higher annual income,privileged,11.082157933374816,0.723051609138687,635154.0,0.4321282712539006,0.5678717287460994
+62,0.1,XGBClassifier,SMOTEENN,annual_inc,lower annual income,unprivileged,11.082157933374816,0.723051609138687,717450.0,0.3124510418844519,0.6875489581155482
 63,0.1,XGBClassifier,KMeansSMOTE,emp_length,emp_length < 5 years,unprivileged,5.0,0.7677533211703558,757773.0,0.4275449244034823,0.5724550755965176
 63,0.1,XGBClassifier,KMeansSMOTE,emp_length,emp_length >= 5 years,privileged,5.0,0.7677533211703558,965057.0,0.5568779875178357,0.4431220124821642
 63,0.1,XGBClassifier,KMeansSMOTE,annual_inc,higher annual income,privileged,11.082157933374816,0.6255450536012936,701900.0,0.6425787149166547,0.3574212850833452

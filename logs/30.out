@@ -1,3 +1,6 @@
-[Tue Jun 30 17:15:17 CEST 2026] Starting experiment 30 on tcn1026.local.snellius.surf.nl with 16 cores
+[Thu Jul  2 09:20:22 CEST 2026] Starting experiment 30 on tcn607.local.snellius.surf.nl with 16 cores
 [exp 0030] frac=0.02, model=RandomForestClassifier, sampler=Baseline
   PR-AUC=0.0495  F1=0.4949
+  Attack success rate: GA=0.69 ZOO=0.28
+[exp 0030] DONE → results/exp_0030
+[Thu Jul  2 18:40:27 CEST 2026] Experiment 30 finished with exit code 0

@@ -17,3 +17,4 @@ Starting HQ workers on tcn607.local.snellius.surf.nl with 192 cores
 | Manager           | SLURM                                                         |
 | Manager Job ID    | 24337649                                                      |
 +-------------------+---------------------------------------------------------------+
+HQ workers finished.
