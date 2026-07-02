@@ -9,7 +9,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 from xgboost import XGBClassifier
 
-from src.config import RANDOM_STATE
+from HPC.src.config import RANDOM_STATE
 
 
 class NeuralNetwork(nn.Module):

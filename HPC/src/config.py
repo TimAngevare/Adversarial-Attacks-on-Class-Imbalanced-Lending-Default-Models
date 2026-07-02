@@ -80,6 +80,13 @@ ZOO_RESTARTS = 3
 ZOO_LEARNING_RATE = 0.03
 ZOO_FD_STEP = 0.05
 
+# Models for which the ZOO attack is skipped. ZOO issues thousands of single-row
+# predict_proba queries per instance (~4200 with the settings above); on
+# RandomForest each query fans out over joblib, so the full ZOO budget blows
+# through the job wall-time. GA still runs for these models; their ZOO columns
+# are left empty in the results. Empty this set to re-enable ZOO everywhere.
+ZOO_SKIP_MODELS = {"RandomForestClassifier"}
+
 FAVOURABLE_LABEL = 0
 
 DIR_GROUP_SPECS = {

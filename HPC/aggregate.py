@@ -17,7 +17,7 @@ import numpy as np
 import pandas as pd
 from matplotlib.patches import Patch
 
-from src.config import RESULTS_DIR, OUTPUTS_DIR, MODEL_NAMES, SAMPLER_NAMES, MINORITY_FRACS
+from HPC.src.config import RESULTS_DIR, OUTPUTS_DIR, MODEL_NAMES, SAMPLER_NAMES, MINORITY_FRACS
 
 
 def collect_csv(results_dir: str, filename: str) -> pd.DataFrame:
@@ -185,7 +185,7 @@ def main(results_dir: str, outputs_dir: str):
         shap_wide.to_csv(os.path.join(outputs_dir, "shap_importances.csv"), index=False)
         print(f"  {len(shap_wide)} rows → shap_importances.csv")
         try:
-            from src.config import MUTABLE_FEATURES
+            from HPC.src.config import MUTABLE_FEATURES
             plot_shap(shap_wide, outputs_dir, MUTABLE_FEATURES)
         except Exception as e:
             print(f"  SHAP plot failed: {e}")

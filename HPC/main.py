@@ -14,18 +14,19 @@ import numpy as np
 import pandas as pd
 from sklearn.base import clone
 
-from src.config import (
+from HPC.src.config import (
     DATA_PROCESSED_DIR, RESULTS_DIR, PARAMS_FILE,
     MINORITY_FRACS, MODEL_NAMES, SAMPLER_NAMES,
-    RANDOM_STATE, N_FOLDS,
+    RANDOM_STATE, N_FOLDS, ZOO_SKIP_MODELS,
 )
-from src.models_def import get_models, apply_class_weight
-from src.samplers_def import get_samplers
-from src.pipeline_utils import (
+from HPC.src.models_def import get_models, apply_class_weight
+from HPC.src.samplers_def import get_samplers
+from HPC.src.pipeline_utils import (
     build_pipeline, run_cv, compute_cv_metrics,
     compute_shap, compute_dataset_dir, run_adversarial_attacks,
+    ATTACK_METHODS,
 )
-from src.preprocessing import make_train_test_split, make_validation_split
+from HPC.src.preprocessing import make_train_test_split, make_validation_split
 
 
 # Build experiment grid once
@@ -126,7 +127,15 @@ def run_experiment(experiment_id: int, n_cores: int = 8):
         pipe_final.fit(X_fit, y_fit)
 
     # ------------------------------------------------------------------ adversarial attacks
-    attack_row = run_adversarial_attacks(pipe_final, X_fit, X_val, y_val, X_te, y_te)
+    # Skip ZOO for models flagged in ZOO_SKIP_MODELS (its query budget blows
+    # through the wall-time there); GA still runs.
+    attack_methods = {
+        name: fn for name, fn in ATTACK_METHODS.items()
+        if not (name == "ZOO" and model_name in ZOO_SKIP_MODELS)
+    }
+    attack_row = run_adversarial_attacks(
+        pipe_final, X_fit, X_val, y_val, X_te, y_te, methods=attack_methods,
+    )
     attack_row = {
         "experiment_id": experiment_id,
         "Imbalance ratio": frac,

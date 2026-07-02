@@ -16,11 +16,11 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 from xgboost import XGBClassifier
 
-from src.config import (
+from HPC.src.config import (
     DATA_RAW, DATA_PROCESSED_DIR, PARAMS_FILE,
     MINORITY_FRACS, RANDOM_STATE, KNN_IMPUTER_NEIGHBORS,
 )
-from src.preprocessing import load_and_clean, engineer_features, create_imbalanced_dataset
+from HPC.src.preprocessing import load_and_clean, engineer_features, create_imbalanced_dataset
 
 
 PARAM_GRIDS = {
