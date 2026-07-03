@@ -15,7 +15,7 @@ from sklearn.preprocessing import FunctionTransformer, StandardScaler
 from imblearn.pipeline import Pipeline as ImbPipeline
 from imblearn.metrics import geometric_mean_score
 
-from HPC.src.config import (
+from src.config import (
     RANDOM_STATE, N_FOLDS,
     N_SHAP_MAX, N_SHAP_NN, N_SHAP_NN_BG,
     N_ATTACK_CASES, DEFAULT_CLASS, MAX_CHANGED_ACTIONS,

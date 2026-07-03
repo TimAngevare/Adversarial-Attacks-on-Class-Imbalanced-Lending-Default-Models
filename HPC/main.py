@@ -14,19 +14,19 @@ import numpy as np
 import pandas as pd
 from sklearn.base import clone
 
-from HPC.src.config import (
+from src.config import (
     DATA_PROCESSED_DIR, RESULTS_DIR, PARAMS_FILE,
     MINORITY_FRACS, MODEL_NAMES, SAMPLER_NAMES,
     RANDOM_STATE, N_FOLDS, ZOO_SKIP_MODELS,
 )
-from HPC.src.models_def import get_models, apply_class_weight
-from HPC.src.samplers_def import get_samplers
-from HPC.src.pipeline_utils import (
+from src.models_def import get_models, apply_class_weight
+from src.samplers_def import get_samplers
+from src.pipeline_utils import (
     build_pipeline, run_cv, compute_cv_metrics,
     compute_shap, compute_dataset_dir, run_adversarial_attacks,
     ATTACK_METHODS,
 )
-from HPC.src.preprocessing import make_train_test_split, make_validation_split
+from src.preprocessing import make_train_test_split, make_validation_split
 
 
 # Build experiment grid once

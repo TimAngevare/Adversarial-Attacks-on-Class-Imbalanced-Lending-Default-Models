@@ -5,7 +5,7 @@ from imblearn.combine import SMOTEENN
 from imblearn.over_sampling import KMeansSMOTE, SMOTE
 from sklearn.cluster import MiniBatchKMeans
 
-from HPC.src.config import RANDOM_STATE, KMEANS_SMOTE_N_CLUSTERS
+from src.config import RANDOM_STATE, KMEANS_SMOTE_N_CLUSTERS
 
 
 class SafeKMeansSMOTE(KMeansSMOTE):
