@@ -1,0 +1,11 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Run notebook (skip HPC cells)",
+      "type": "shell",
+      "command": "jupyter nbconvert --to notebook --execute Notebook_Final_V1.ipynb --output Notebook_Final_V1.ipynb --TagRemovePreprocessor.remove_cell_tags='[\"hpc-only\"]' --TagRemovePreprocessor.enabled=True",
+      "problemMatcher": []
+    }
+  ]
+}
