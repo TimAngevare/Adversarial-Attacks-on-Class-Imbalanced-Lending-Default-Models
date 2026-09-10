@@ -1,0 +1,366 @@
+{
+  "Individual application": {
+    "ks_stat": 0.0,
+    "p_value": 1.0
+  },
+  "addr_state_AL": {
+    "ks_stat": 0.0002,
+    "p_value": 1.0
+  },
+  "addr_state_AR": {
+    "ks_stat": 0.0002,
+    "p_value": 1.0
+  },
+  "addr_state_AZ": {
+    "ks_stat": 0.0,
+    "p_value": 1.0
+  },
+  "addr_state_CA": {
+    "ks_stat": 0.0003,
+    "p_value": 1.0
+  },
+  "addr_state_CO": {
+    "ks_stat": 0.0006,
+    "p_value": 0.9688
+  },
+  "addr_state_CT": {
+    "ks_stat": 0.0003,
+    "p_value": 1.0
+  },
+  "addr_state_DC": {
+    "ks_stat": 0.0001,
+    "p_value": 1.0
+  },
+  "addr_state_DE": {
+    "ks_stat": 0.0,
+    "p_value": 1.0
+  },
+  "addr_state_FL": {
+    "ks_stat": 0.0006,
+    "p_value": 0.9694
+  },
+  "addr_state_GA": {
+    "ks_stat": 0.0003,
+    "p_value": 1.0
+  },
+  "addr_state_HI": {
+    "ks_stat": 0.0,
+    "p_value": 1.0
+  },
+  "addr_state_IA": {
+    "ks_stat": 0.0,
+    "p_value": 1.0
+  },
+  "addr_state_ID": {
+    "ks_stat": 0.0,
+    "p_value": 1.0
+  },
+  "addr_state_IL": {
+    "ks_stat": 0.0006,
+    "p_value": 0.9888
+  },
+  "addr_state_IN": {
+    "ks_stat": 0.0002,
+    "p_value": 1.0
+  },
+  "addr_state_KS": {
+    "ks_stat": 0.0002,
+    "p_value": 1.0
+  },
+  "addr_state_KY": {
+    "ks_stat": 0.0001,
+    "p_value": 1.0
+  },
+  "addr_state_LA": {
+    "ks_stat": 0.0002,
+    "p_value": 1.0
+  },
+  "addr_state_MA": {
+    "ks_stat": 0.0001,
+    "p_value": 1.0
+  },
+  "addr_state_MD": {
+    "ks_stat": 0.0001,
+    "p_value": 1.0
+  },
+  "addr_state_ME": {
+    "ks_stat": 0.0001,
+    "p_value": 1.0
+  },
+  "addr_state_MI": {
+    "ks_stat": 0.0,
+    "p_value": 1.0
+  },
+  "addr_state_MN": {
+    "ks_stat": 0.0,
+    "p_value": 1.0
+  },
+  "addr_state_MO": {
+    "ks_stat": 0.0001,
+    "p_value": 1.0
+  },
+  "addr_state_MS": {
+    "ks_stat": 0.0002,
+    "p_value": 1.0
+  },
+  "addr_state_MT": {
+    "ks_stat": 0.0,
+    "p_value": 1.0
+  },
+  "addr_state_NC": {
+    "ks_stat": 0.0001,
+    "p_value": 1.0
+  },
+  "addr_state_ND": {
+    "ks_stat": 0.0,
+    "p_value": 1.0
+  },
+  "addr_state_NE": {
+    "ks_stat": 0.0001,
+    "p_value": 1.0
+  },
+  "addr_state_NH": {
+    "ks_stat": 0.0002,
+    "p_value": 1.0
+  },
+  "addr_state_NJ": {
+    "ks_stat": 0.0002,
+    "p_value": 1.0
+  },
+  "addr_state_NM": {
+    "ks_stat": 0.0,
+    "p_value": 1.0
+  },
+  "addr_state_NV": {
+    "ks_stat": 0.0002,
+    "p_value": 1.0
+  },
+  "addr_state_NY": {
+    "ks_stat": 0.0011,
+    "p_value": 0.3853
+  },
+  "addr_state_OH": {
+    "ks_stat": 0.0002,
+    "p_value": 1.0
+  },
+  "addr_state_OK": {
+    "ks_stat": 0.0002,
+    "p_value": 1.0
+  },
+  "addr_state_OR": {
+    "ks_stat": 0.0004,
+    "p_value": 0.9999
+  },
+  "addr_state_PA": {
+    "ks_stat": 0.0003,
+    "p_value": 1.0
+  },
+  "addr_state_RI": {
+    "ks_stat": 0.0,
+    "p_value": 1.0
+  },
+  "addr_state_SC": {
+    "ks_stat": 0.0003,
+    "p_value": 1.0
+  },
+  "addr_state_SD": {
+    "ks_stat": 0.0,
+    "p_value": 1.0
+  },
+  "addr_state_TN": {
+    "ks_stat": 0.0002,
+    "p_value": 1.0
+  },
+  "addr_state_TX": {
+    "ks_stat": 0.0,
+    "p_value": 1.0
+  },
+  "addr_state_UT": {
+    "ks_stat": 0.0001,
+    "p_value": 1.0
+  },
+  "addr_state_VA": {
+    "ks_stat": 0.0,
+    "p_value": 1.0
+  },
+  "addr_state_VT": {
+    "ks_stat": 0.0001,
+    "p_value": 1.0
+  },
+  "addr_state_WA": {
+    "ks_stat": 0.0005,
+    "p_value": 0.9925
+  },
+  "addr_state_WI": {
+    "ks_stat": 0.0001,
+    "p_value": 1.0
+  },
+  "addr_state_WV": {
+    "ks_stat": 0.0001,
+    "p_value": 1.0
+  },
+  "addr_state_WY": {
+    "ks_stat": 0.0,
+    "p_value": 1.0
+  },
+  "annual_inc": {
+    "ks_stat": 0.0071,
+    "p_value": 0.0
+  },
+  "credit_history_yrs": {
+    "ks_stat": 0.0054,
+    "p_value": 0.0
+  },
+  "delinq_2yrs": {
+    "ks_stat": 0.0017,
+    "p_value": 0.0434
+  },
+  "dti": {
+    "ks_stat": 0.0114,
+    "p_value": 0.0
+  },
+  "emp_length": {
+    "ks_stat": 0.0016,
+    "p_value": 0.0808
+  },
+  "fico_mid": {
+    "ks_stat": 0.014,
+    "p_value": 0.0
+  },
+  "home_ownership_MORTGAGE": {
+    "ks_stat": 0.0086,
+    "p_value": 0.0
+  },
+  "home_ownership_NONE": {
+    "ks_stat": 0.0,
+    "p_value": 1.0
+  },
+  "home_ownership_OTHER": {
+    "ks_stat": 0.0,
+    "p_value": 1.0
+  },
+  "home_ownership_OWN": {
+    "ks_stat": 0.0005,
+    "p_value": 0.9979
+  },
+  "home_ownership_RENT": {
+    "ks_stat": 0.0081,
+    "p_value": 0.0
+  },
+  "initial_list_status_w": {
+    "ks_stat": 0.0009,
+    "p_value": 0.6191
+  },
+  "inq_last_6mths": {
+    "ks_stat": 0.0073,
+    "p_value": 0.0
+  },
+  "installment": {
+    "ks_stat": 0.0072,
+    "p_value": 0.0
+  },
+  "int_rate": {
+    "ks_stat": 0.0266,
+    "p_value": 0.0
+  },
+  "loan_amnt": {
+    "ks_stat": 0.0083,
+    "p_value": 0.0
+  },
+  "mort_acc": {
+    "ks_stat": 0.0091,
+    "p_value": 0.0
+  },
+  "open_acc": {
+    "ks_stat": 0.0029,
+    "p_value": 0.0
+  },
+  "pub_rec": {
+    "ks_stat": 0.0029,
+    "p_value": 0.0
+  },
+  "pub_rec_bankruptcies": {
+    "ks_stat": 0.0021,
+    "p_value": 0.0082
+  },
+  "purpose_credit_card": {
+    "ks_stat": 0.0042,
+    "p_value": 0.0
+  },
+  "purpose_debt_consolidation": {
+    "ks_stat": 0.0042,
+    "p_value": 0.0
+  },
+  "purpose_educational": {
+    "ks_stat": 0.0,
+    "p_value": 1.0
+  },
+  "purpose_home_improvement": {
+    "ks_stat": 0.0008,
+    "p_value": 0.8344
+  },
+  "purpose_house": {
+    "ks_stat": 0.0001,
+    "p_value": 1.0
+  },
+  "purpose_major_purchase": {
+    "ks_stat": 0.0002,
+    "p_value": 1.0
+  },
+  "purpose_medical": {
+    "ks_stat": 0.0001,
+    "p_value": 1.0
+  },
+  "purpose_moving": {
+    "ks_stat": 0.0002,
+    "p_value": 1.0
+  },
+  "purpose_other": {
+    "ks_stat": 0.0004,
+    "p_value": 1.0
+  },
+  "purpose_renewable_energy": {
+    "ks_stat": 0.0,
+    "p_value": 1.0
+  },
+  "purpose_small_business": {
+    "ks_stat": 0.0007,
+    "p_value": 0.9067
+  },
+  "purpose_vacation": {
+    "ks_stat": 0.0,
+    "p_value": 1.0
+  },
+  "purpose_wedding": {
+    "ks_stat": 0.0001,
+    "p_value": 1.0
+  },
+  "revol_bal": {
+    "ks_stat": 0.0018,
+    "p_value": 0.032
+  },
+  "revol_util": {
+    "ks_stat": 0.0066,
+    "p_value": 0.0
+  },
+  "sub_grade": {
+    "ks_stat": 0.0275,
+    "p_value": 0.0
+  },
+  "term": {
+    "ks_stat": 0.0188,
+    "p_value": 0.0
+  },
+  "total_acc": {
+    "ks_stat": 0.0018,
+    "p_value": 0.0383
+  },
+  "verification_status_Source Verified": {
+    "ks_stat": 0.0023,
+    "p_value": 0.0026
+  },
+  "verification_status_Verified": {
+    "ks_stat": 0.0075,
+    "p_value": 0.0
+  }
+}

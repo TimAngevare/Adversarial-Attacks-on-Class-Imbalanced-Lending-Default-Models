@@ -1,0 +1,5 @@
+Model,Best performing sampler,Mean PR-AUC,Most hardened sampler,Mean ASR (GA+ZOO),ASR (GA),ASR (ZOO)
+XGBClassifier,ClassWeight,0.1737,SMOTEENN,0.214,0.344,0.084
+LogisticRegression,ClassWeight,0.1529,Baseline,0.111,0.15,0.072
+RandomForestClassifier,Baseline,0.1569,RandomUnderSampler,0.3683,0.5533,0.1833
+NeuralNetClassifier,ClassWeight,0.159,KMeansSMOTE,0.195,0.21,0.18

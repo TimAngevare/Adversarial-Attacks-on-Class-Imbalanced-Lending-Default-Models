@@ -1,0 +1,27 @@
+{
+  "XGBClassifier": {
+    "colsample_bytree": 0.8,
+    "eval_metric": "logloss",
+    "learning_rate": 0.05,
+    "max_depth": 6,
+    "min_child_weight": 10,
+    "n_estimators": 800,
+    "random_state": 42,
+    "reg_lambda": 5,
+    "subsample": 0.8
+  },
+  "LogisticRegression": {
+    "C": 0.1,
+    "max_iter": 2000,
+    "penalty": "l2",
+    "random_state": 42,
+    "solver": "saga"
+  },
+  "RandomForestClassifier": {
+    "max_depth": null,
+    "max_features": "sqrt",
+    "min_samples_leaf": 5,
+    "n_estimators": 500,
+    "random_state": 42
+  }
+}

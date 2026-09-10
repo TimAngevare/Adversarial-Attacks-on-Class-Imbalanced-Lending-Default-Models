@@ -1,0 +1,385 @@
+experiment_id,Imbalance ratio,Model,Sampler,Feature,Group,Role,Threshold used,DIR,n_samples,favourable_label_rate,default_label_rate
+0,0.01,XGBClassifier,Baseline,emp_length,emp_length < 5 years,unprivileged,5.0,0.9997626847478897,327104.0,0.9898533799647818,0.0101466200352181
+0,0.01,XGBClassifier,Baseline,emp_length,emp_length >= 5 years,privileged,5.0,0.9997626847478897,542997.0,0.9900883430295196,0.0099116569704805
+0,0.01,XGBClassifier,Baseline,annual_inc,higher annual income,privileged,11.082157933374816,0.9975787900920918,454893.0,0.99114517040271,0.0088548295972899
+0,0.01,XGBClassifier,Baseline,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9975787900920918,415208.0,0.9887453998959558,0.0112546001040442
+1,0.01,XGBClassifier,RandomUnderSampler,emp_length,emp_length < 5 years,unprivileged,5.0,1.0060942142408305,6663.0,0.5018760318174996,0.4981239681825004
+1,0.01,XGBClassifier,RandomUnderSampler,emp_length,emp_length >= 5 years,privileged,5.0,1.0060942142408305,10739.0,0.4988360182512338,0.5011639817487662
+1,0.01,XGBClassifier,RandomUnderSampler,annual_inc,higher annual income,privileged,11.082157933374816,0.8852377284430001,8586.0,0.5308641975308642,0.4691358024691358
+1,0.01,XGBClassifier,RandomUnderSampler,annual_inc,lower annual income,unprivileged,11.082157933374816,0.8852377284430001,8816.0,0.4699410163339383,0.5300589836660617
+2,0.01,XGBClassifier,SMOTEENN,emp_length,emp_length < 5 years,unprivileged,5.0,0.9572147494530026,635752.0,0.463358353571833,0.5366416464281669
+2,0.01,XGBClassifier,SMOTEENN,emp_length,emp_length >= 5 years,privileged,5.0,0.9572147494530026,1008310.0,0.4840693834237486,0.5159306165762514
+2,0.01,XGBClassifier,SMOTEENN,annual_inc,higher annual income,privileged,11.082157933374816,0.8073341825574085,778297.0,0.5298144538652982,0.4701855461347018
+2,0.01,XGBClassifier,SMOTEENN,annual_inc,lower annual income,unprivileged,11.082157933374816,0.8073341825574085,865765.0,0.4277373190184403,0.5722626809815596
+3,0.01,XGBClassifier,KMeansSMOTE,emp_length,emp_length < 5 years,unprivileged,5.0,1.0196025959117452,639748.0,0.5061133446294478,0.4938866553705521
+3,0.01,XGBClassifier,KMeansSMOTE,emp_length,emp_length >= 5 years,privileged,5.0,1.0196025959117452,1083065.0,0.4963829502384437,0.5036170497615563
+3,0.01,XGBClassifier,KMeansSMOTE,annual_inc,higher annual income,privileged,11.082157933374816,0.7188794843203238,760079.0,0.5931817613695418,0.4068182386304581
+3,0.01,XGBClassifier,KMeansSMOTE,annual_inc,lower annual income,unprivileged,11.082157933374816,0.7188794843203238,962734.0,0.4264261987215575,0.5735738012784425
+4,0.01,XGBClassifier,ClassWeight,emp_length,emp_length < 5 years,unprivileged,5.0,0.9997626847478897,327104.0,0.9898533799647818,0.0101466200352181
+4,0.01,XGBClassifier,ClassWeight,emp_length,emp_length >= 5 years,privileged,5.0,0.9997626847478897,542997.0,0.9900883430295196,0.0099116569704805
+4,0.01,XGBClassifier,ClassWeight,annual_inc,higher annual income,privileged,11.082157933374816,0.9975787900920918,454893.0,0.99114517040271,0.0088548295972899
+4,0.01,XGBClassifier,ClassWeight,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9975787900920918,415208.0,0.9887453998959558,0.0112546001040442
+5,0.01,LogisticRegression,Baseline,emp_length,emp_length < 5 years,unprivileged,5.0,0.9997626847478897,327104.0,0.9898533799647818,0.0101466200352181
+5,0.01,LogisticRegression,Baseline,emp_length,emp_length >= 5 years,privileged,5.0,0.9997626847478897,542997.0,0.9900883430295196,0.0099116569704805
+5,0.01,LogisticRegression,Baseline,annual_inc,higher annual income,privileged,11.082157933374816,0.9975787900920918,454893.0,0.99114517040271,0.0088548295972899
+5,0.01,LogisticRegression,Baseline,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9975787900920918,415208.0,0.9887453998959558,0.0112546001040442
+6,0.01,LogisticRegression,RandomUnderSampler,emp_length,emp_length < 5 years,unprivileged,5.0,1.0060942142408305,6663.0,0.5018760318174996,0.4981239681825004
+6,0.01,LogisticRegression,RandomUnderSampler,emp_length,emp_length >= 5 years,privileged,5.0,1.0060942142408305,10739.0,0.4988360182512338,0.5011639817487662
+6,0.01,LogisticRegression,RandomUnderSampler,annual_inc,higher annual income,privileged,11.082157933374816,0.8852377284430001,8586.0,0.5308641975308642,0.4691358024691358
+6,0.01,LogisticRegression,RandomUnderSampler,annual_inc,lower annual income,unprivileged,11.082157933374816,0.8852377284430001,8816.0,0.4699410163339383,0.5300589836660617
+7,0.01,LogisticRegression,SMOTEENN,emp_length,emp_length < 5 years,unprivileged,5.0,0.957116972249724,635869.0,0.4633595913623718,0.5366404086376282
+7,0.01,LogisticRegression,SMOTEENN,emp_length,emp_length >= 5 years,privileged,5.0,0.957116972249724,1008289.0,0.4841201282568787,0.5158798717431212
+7,0.01,LogisticRegression,SMOTEENN,annual_inc,higher annual income,privileged,11.082157933374816,0.8076414498522902,778493.0,0.5297427208722494,0.4702572791277506
+7,0.01,LogisticRegression,SMOTEENN,annual_inc,lower annual income,unprivileged,11.082157933374816,0.8076414498522902,865665.0,0.4278421791339606,0.5721578208660394
+8,0.01,LogisticRegression,KMeansSMOTE,emp_length,emp_length < 5 years,unprivileged,5.0,1.0196025959117452,639748.0,0.5061133446294478,0.4938866553705521
+8,0.01,LogisticRegression,KMeansSMOTE,emp_length,emp_length >= 5 years,privileged,5.0,1.0196025959117452,1083065.0,0.4963829502384437,0.5036170497615563
+8,0.01,LogisticRegression,KMeansSMOTE,annual_inc,higher annual income,privileged,11.082157933374816,0.7188794843203238,760079.0,0.5931817613695418,0.4068182386304581
+8,0.01,LogisticRegression,KMeansSMOTE,annual_inc,lower annual income,unprivileged,11.082157933374816,0.7188794843203238,962734.0,0.4264261987215575,0.5735738012784425
+9,0.01,LogisticRegression,ClassWeight,emp_length,emp_length < 5 years,unprivileged,5.0,0.9997626847478897,327104.0,0.9898533799647818,0.0101466200352181
+9,0.01,LogisticRegression,ClassWeight,emp_length,emp_length >= 5 years,privileged,5.0,0.9997626847478897,542997.0,0.9900883430295196,0.0099116569704805
+9,0.01,LogisticRegression,ClassWeight,annual_inc,higher annual income,privileged,11.082157933374816,0.9975787900920918,454893.0,0.99114517040271,0.0088548295972899
+9,0.01,LogisticRegression,ClassWeight,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9975787900920918,415208.0,0.9887453998959558,0.0112546001040442
+10,0.01,RandomForestClassifier,Baseline,emp_length,emp_length < 5 years,unprivileged,5.0,0.9997626847478897,327104.0,0.9898533799647818,0.0101466200352181
+10,0.01,RandomForestClassifier,Baseline,emp_length,emp_length >= 5 years,privileged,5.0,0.9997626847478897,542997.0,0.9900883430295196,0.0099116569704805
+10,0.01,RandomForestClassifier,Baseline,annual_inc,higher annual income,privileged,11.082157933374816,0.9975787900920918,454893.0,0.99114517040271,0.0088548295972899
+10,0.01,RandomForestClassifier,Baseline,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9975787900920918,415208.0,0.9887453998959558,0.0112546001040442
+11,0.01,RandomForestClassifier,RandomUnderSampler,emp_length,emp_length < 5 years,unprivileged,5.0,1.0060942142408305,6663.0,0.5018760318174996,0.4981239681825004
+11,0.01,RandomForestClassifier,RandomUnderSampler,emp_length,emp_length >= 5 years,privileged,5.0,1.0060942142408305,10739.0,0.4988360182512338,0.5011639817487662
+11,0.01,RandomForestClassifier,RandomUnderSampler,annual_inc,higher annual income,privileged,11.082157933374816,0.8852377284430001,8586.0,0.5308641975308642,0.4691358024691358
+11,0.01,RandomForestClassifier,RandomUnderSampler,annual_inc,lower annual income,unprivileged,11.082157933374816,0.8852377284430001,8816.0,0.4699410163339383,0.5300589836660617
+12,0.01,RandomForestClassifier,SMOTEENN,emp_length,emp_length < 5 years,unprivileged,5.0,0.957116972249724,635869.0,0.4633595913623718,0.5366404086376282
+12,0.01,RandomForestClassifier,SMOTEENN,emp_length,emp_length >= 5 years,privileged,5.0,0.957116972249724,1008289.0,0.4841201282568787,0.5158798717431212
+12,0.01,RandomForestClassifier,SMOTEENN,annual_inc,higher annual income,privileged,11.082157933374816,0.8076414498522902,778493.0,0.5297427208722494,0.4702572791277506
+12,0.01,RandomForestClassifier,SMOTEENN,annual_inc,lower annual income,unprivileged,11.082157933374816,0.8076414498522902,865665.0,0.4278421791339606,0.5721578208660394
+13,0.01,RandomForestClassifier,KMeansSMOTE,emp_length,emp_length < 5 years,unprivileged,5.0,1.0196025959117452,639748.0,0.5061133446294478,0.4938866553705521
+13,0.01,RandomForestClassifier,KMeansSMOTE,emp_length,emp_length >= 5 years,privileged,5.0,1.0196025959117452,1083065.0,0.4963829502384437,0.5036170497615563
+13,0.01,RandomForestClassifier,KMeansSMOTE,annual_inc,higher annual income,privileged,11.082157933374816,0.7188794843203238,760079.0,0.5931817613695418,0.4068182386304581
+13,0.01,RandomForestClassifier,KMeansSMOTE,annual_inc,lower annual income,unprivileged,11.082157933374816,0.7188794843203238,962734.0,0.4264261987215575,0.5735738012784425
+14,0.01,RandomForestClassifier,ClassWeight,emp_length,emp_length < 5 years,unprivileged,5.0,0.9997626847478897,327104.0,0.9898533799647818,0.0101466200352181
+14,0.01,RandomForestClassifier,ClassWeight,emp_length,emp_length >= 5 years,privileged,5.0,0.9997626847478897,542997.0,0.9900883430295196,0.0099116569704805
+14,0.01,RandomForestClassifier,ClassWeight,annual_inc,higher annual income,privileged,11.082157933374816,0.9975787900920918,454893.0,0.99114517040271,0.0088548295972899
+14,0.01,RandomForestClassifier,ClassWeight,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9975787900920918,415208.0,0.9887453998959558,0.0112546001040442
+15,0.01,NeuralNetClassifier,Baseline,emp_length,emp_length < 5 years,unprivileged,5.0,0.9997626847478897,327104.0,0.9898533799647818,0.0101466200352181
+15,0.01,NeuralNetClassifier,Baseline,emp_length,emp_length >= 5 years,privileged,5.0,0.9997626847478897,542997.0,0.9900883430295196,0.0099116569704805
+15,0.01,NeuralNetClassifier,Baseline,annual_inc,higher annual income,privileged,11.082157933374816,0.9975787900920918,454893.0,0.99114517040271,0.0088548295972899
+15,0.01,NeuralNetClassifier,Baseline,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9975787900920918,415208.0,0.9887453998959558,0.0112546001040442
+16,0.01,NeuralNetClassifier,RandomUnderSampler,emp_length,emp_length < 5 years,unprivileged,5.0,1.0060942142408305,6663.0,0.5018760318174996,0.4981239681825004
+16,0.01,NeuralNetClassifier,RandomUnderSampler,emp_length,emp_length >= 5 years,privileged,5.0,1.0060942142408305,10739.0,0.4988360182512338,0.5011639817487662
+16,0.01,NeuralNetClassifier,RandomUnderSampler,annual_inc,higher annual income,privileged,11.082157933374816,0.8852377284430001,8586.0,0.5308641975308642,0.4691358024691358
+16,0.01,NeuralNetClassifier,RandomUnderSampler,annual_inc,lower annual income,unprivileged,11.082157933374816,0.8852377284430001,8816.0,0.4699410163339383,0.5300589836660617
+17,0.01,NeuralNetClassifier,SMOTEENN,emp_length,emp_length < 5 years,unprivileged,5.0,0.9572147494530026,635752.0,0.463358353571833,0.5366416464281669
+17,0.01,NeuralNetClassifier,SMOTEENN,emp_length,emp_length >= 5 years,privileged,5.0,0.9572147494530026,1008310.0,0.4840693834237486,0.5159306165762514
+17,0.01,NeuralNetClassifier,SMOTEENN,annual_inc,higher annual income,privileged,11.082157933374816,0.8073341825574085,778297.0,0.5298144538652982,0.4701855461347018
+17,0.01,NeuralNetClassifier,SMOTEENN,annual_inc,lower annual income,unprivileged,11.082157933374816,0.8073341825574085,865765.0,0.4277373190184403,0.5722626809815596
+18,0.01,NeuralNetClassifier,KMeansSMOTE,emp_length,emp_length < 5 years,unprivileged,5.0,1.0196025959117452,639748.0,0.5061133446294478,0.4938866553705521
+18,0.01,NeuralNetClassifier,KMeansSMOTE,emp_length,emp_length >= 5 years,privileged,5.0,1.0196025959117452,1083065.0,0.4963829502384437,0.5036170497615563
+18,0.01,NeuralNetClassifier,KMeansSMOTE,annual_inc,higher annual income,privileged,11.082157933374816,0.7188794843203238,760079.0,0.5931817613695418,0.4068182386304581
+18,0.01,NeuralNetClassifier,KMeansSMOTE,annual_inc,lower annual income,unprivileged,11.082157933374816,0.7188794843203238,962734.0,0.4264261987215575,0.5735738012784425
+19,0.01,NeuralNetClassifier,ClassWeight,emp_length,emp_length < 5 years,unprivileged,5.0,0.9997626847478897,327104.0,0.9898533799647818,0.0101466200352181
+19,0.01,NeuralNetClassifier,ClassWeight,emp_length,emp_length >= 5 years,privileged,5.0,0.9997626847478897,542997.0,0.9900883430295196,0.0099116569704805
+19,0.01,NeuralNetClassifier,ClassWeight,annual_inc,higher annual income,privileged,11.082157933374816,0.9975787900920918,454893.0,0.99114517040271,0.0088548295972899
+19,0.01,NeuralNetClassifier,ClassWeight,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9975787900920918,415208.0,0.9887453998959558,0.0112546001040442
+20,0.02,XGBClassifier,Baseline,emp_length,emp_length < 5 years,unprivileged,5.0,0.9995308337069796,330252.0,0.979712461998716,0.0202875380012838
+20,0.02,XGBClassifier,Baseline,emp_length,emp_length >= 5 years,privileged,5.0,0.9995308337069796,548728.0,0.9801723258153402,0.0198276741846597
+20,0.02,XGBClassifier,Baseline,annual_inc,higher annual income,privileged,11.082157933374816,0.9947127390296532,458903.0,0.982482136747853,0.0175178632521469
+20,0.02,XGBClassifier,Baseline,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9947127390296532,420077.0,0.9772874972921632,0.0227125027078368
+21,0.02,XGBClassifier,RandomUnderSampler,emp_length,emp_length < 5 years,unprivileged,5.0,0.9900054982294476,13317.0,0.496883682511076,0.5031163174889239
+21,0.02,XGBClassifier,RandomUnderSampler,emp_length,emp_length >= 5 years,privileged,5.0,0.9900054982294476,21843.0,0.5018999221718629,0.4981000778281371
+21,0.02,XGBClassifier,RandomUnderSampler,annual_inc,higher annual income,privileged,11.082157933374816,0.8745055543419739,17256.0,0.5341330551692165,0.4658669448307835
+21,0.02,XGBClassifier,RandomUnderSampler,annual_inc,lower annual income,unprivileged,11.082157933374816,0.8745055543419739,17904.0,0.4671023235031278,0.5328976764968723
+22,0.02,XGBClassifier,SMOTEENN,emp_length,emp_length < 5 years,unprivileged,5.0,0.955124231868735,612766.0,0.4435216705887729,0.5564783294112271
+22,0.02,XGBClassifier,SMOTEENN,emp_length,emp_length >= 5 years,privileged,5.0,0.955124231868735,971063.0,0.4643601908424067,0.5356398091575932
+22,0.02,XGBClassifier,SMOTEENN,annual_inc,higher annual income,privileged,11.082157933374816,0.7845852035061912,745340.0,0.515033407572383,0.4849665924276169
+22,0.02,XGBClassifier,SMOTEENN,annual_inc,lower annual income,unprivileged,11.082157933374816,0.7845852035061912,838489.0,0.4040875908926652,0.5959124091073348
+23,0.02,XGBClassifier,KMeansSMOTE,emp_length,emp_length < 5 years,unprivileged,5.0,1.0642594765824596,622152.0,0.5200529774074503,0.4799470225925497
+23,0.02,XGBClassifier,KMeansSMOTE,emp_length,emp_length >= 5 years,privileged,5.0,1.0642594765824596,1100676.0,0.4886524281441586,0.5113475718558413
+23,0.02,XGBClassifier,KMeansSMOTE,annual_inc,higher annual income,privileged,11.082157933374816,0.6223244690154345,699441.0,0.6446061926595668,0.3553938073404333
+23,0.02,XGBClassifier,KMeansSMOTE,annual_inc,lower annual income,unprivileged,11.082157933374816,0.6223244690154345,1023387.0,0.4011542065709257,0.5988457934290743
+24,0.02,XGBClassifier,ClassWeight,emp_length,emp_length < 5 years,unprivileged,5.0,0.9995308337069796,330252.0,0.979712461998716,0.0202875380012838
+24,0.02,XGBClassifier,ClassWeight,emp_length,emp_length >= 5 years,privileged,5.0,0.9995308337069796,548728.0,0.9801723258153402,0.0198276741846597
+24,0.02,XGBClassifier,ClassWeight,annual_inc,higher annual income,privileged,11.082157933374816,0.9947127390296532,458903.0,0.982482136747853,0.0175178632521469
+24,0.02,XGBClassifier,ClassWeight,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9947127390296532,420077.0,0.9772874972921632,0.0227125027078368
+25,0.02,LogisticRegression,Baseline,emp_length,emp_length < 5 years,unprivileged,5.0,0.9995308337069796,330252.0,0.979712461998716,0.0202875380012838
+25,0.02,LogisticRegression,Baseline,emp_length,emp_length >= 5 years,privileged,5.0,0.9995308337069796,548728.0,0.9801723258153402,0.0198276741846597
+25,0.02,LogisticRegression,Baseline,annual_inc,higher annual income,privileged,11.082157933374816,0.9947127390296532,458903.0,0.982482136747853,0.0175178632521469
+25,0.02,LogisticRegression,Baseline,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9947127390296532,420077.0,0.9772874972921632,0.0227125027078368
+26,0.02,LogisticRegression,RandomUnderSampler,emp_length,emp_length < 5 years,unprivileged,5.0,0.9900054982294476,13317.0,0.496883682511076,0.5031163174889239
+26,0.02,LogisticRegression,RandomUnderSampler,emp_length,emp_length >= 5 years,privileged,5.0,0.9900054982294476,21843.0,0.5018999221718629,0.4981000778281371
+26,0.02,LogisticRegression,RandomUnderSampler,annual_inc,higher annual income,privileged,11.082157933374816,0.8745055543419739,17256.0,0.5341330551692165,0.4658669448307835
+26,0.02,LogisticRegression,RandomUnderSampler,annual_inc,lower annual income,unprivileged,11.082157933374816,0.8745055543419739,17904.0,0.4671023235031278,0.5328976764968723
+27,0.02,LogisticRegression,SMOTEENN,emp_length,emp_length < 5 years,unprivileged,5.0,0.955030399637084,612795.0,0.4435251593110257,0.5564748406889742
+27,0.02,LogisticRegression,SMOTEENN,emp_length,emp_length >= 5 years,privileged,5.0,0.955030399637084,971115.0,0.4644094674678076,0.5355905325321924
+27,0.02,LogisticRegression,SMOTEENN,annual_inc,higher annual income,privileged,11.082157933374816,0.7844817433048584,745273.0,0.5151092284303872,0.4848907715696127
+27,0.02,LogisticRegression,SMOTEENN,annual_inc,lower annual income,unprivileged,11.082157933374816,0.7844817433048584,838637.0,0.4040937855114906,0.5959062144885093
+28,0.02,LogisticRegression,KMeansSMOTE,emp_length,emp_length < 5 years,unprivileged,5.0,1.0642594765824596,622152.0,0.5200529774074503,0.4799470225925497
+28,0.02,LogisticRegression,KMeansSMOTE,emp_length,emp_length >= 5 years,privileged,5.0,1.0642594765824596,1100676.0,0.4886524281441586,0.5113475718558413
+28,0.02,LogisticRegression,KMeansSMOTE,annual_inc,higher annual income,privileged,11.082157933374816,0.6223244690154345,699441.0,0.6446061926595668,0.3553938073404333
+28,0.02,LogisticRegression,KMeansSMOTE,annual_inc,lower annual income,unprivileged,11.082157933374816,0.6223244690154345,1023387.0,0.4011542065709257,0.5988457934290743
+29,0.02,LogisticRegression,ClassWeight,emp_length,emp_length < 5 years,unprivileged,5.0,0.9995308337069796,330252.0,0.979712461998716,0.0202875380012838
+29,0.02,LogisticRegression,ClassWeight,emp_length,emp_length >= 5 years,privileged,5.0,0.9995308337069796,548728.0,0.9801723258153402,0.0198276741846597
+29,0.02,LogisticRegression,ClassWeight,annual_inc,higher annual income,privileged,11.082157933374816,0.9947127390296532,458903.0,0.982482136747853,0.0175178632521469
+29,0.02,LogisticRegression,ClassWeight,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9947127390296532,420077.0,0.9772874972921632,0.0227125027078368
+30,0.02,RandomForestClassifier,Baseline,emp_length,emp_length < 5 years,unprivileged,5.0,0.9995308337069796,330252.0,0.979712461998716,0.0202875380012838
+30,0.02,RandomForestClassifier,Baseline,emp_length,emp_length >= 5 years,privileged,5.0,0.9995308337069796,548728.0,0.9801723258153402,0.0198276741846597
+30,0.02,RandomForestClassifier,Baseline,annual_inc,higher annual income,privileged,11.082157933374816,0.9947127390296532,458903.0,0.982482136747853,0.0175178632521469
+30,0.02,RandomForestClassifier,Baseline,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9947127390296532,420077.0,0.9772874972921632,0.0227125027078368
+31,0.02,RandomForestClassifier,RandomUnderSampler,emp_length,emp_length < 5 years,unprivileged,5.0,0.9900054982294476,13317.0,0.496883682511076,0.5031163174889239
+31,0.02,RandomForestClassifier,RandomUnderSampler,emp_length,emp_length >= 5 years,privileged,5.0,0.9900054982294476,21843.0,0.5018999221718629,0.4981000778281371
+31,0.02,RandomForestClassifier,RandomUnderSampler,annual_inc,higher annual income,privileged,11.082157933374816,0.8745055543419739,17256.0,0.5341330551692165,0.4658669448307835
+31,0.02,RandomForestClassifier,RandomUnderSampler,annual_inc,lower annual income,unprivileged,11.082157933374816,0.8745055543419739,17904.0,0.4671023235031278,0.5328976764968723
+32,0.02,RandomForestClassifier,SMOTEENN,emp_length,emp_length < 5 years,unprivileged,5.0,0.955124231868735,612766.0,0.4435216705887729,0.5564783294112271
+32,0.02,RandomForestClassifier,SMOTEENN,emp_length,emp_length >= 5 years,privileged,5.0,0.955124231868735,971063.0,0.4643601908424067,0.5356398091575932
+32,0.02,RandomForestClassifier,SMOTEENN,annual_inc,higher annual income,privileged,11.082157933374816,0.7845852035061912,745340.0,0.515033407572383,0.4849665924276169
+32,0.02,RandomForestClassifier,SMOTEENN,annual_inc,lower annual income,unprivileged,11.082157933374816,0.7845852035061912,838489.0,0.4040875908926652,0.5959124091073348
+33,0.02,RandomForestClassifier,KMeansSMOTE,emp_length,emp_length < 5 years,unprivileged,5.0,1.208443112255362,572592.0,0.5650655265878671,0.4349344734121328
+33,0.02,RandomForestClassifier,KMeansSMOTE,emp_length,emp_length >= 5 years,privileged,5.0,1.208443112255362,1150236.0,0.4675979538112179,0.5324020461887822
+33,0.02,RandomForestClassifier,KMeansSMOTE,annual_inc,higher annual income,privileged,11.082157933374816,1.4004055659426158,1044007.0,0.431859173358033,0.568140826641967
+33,0.02,RandomForestClassifier,KMeansSMOTE,annual_inc,lower annual income,unprivileged,11.082157933374816,1.4004055659426158,678821.0,0.6047779900739665,0.3952220099260335
+34,0.02,RandomForestClassifier,ClassWeight,emp_length,emp_length < 5 years,unprivileged,5.0,0.9995308337069796,330252.0,0.979712461998716,0.0202875380012838
+34,0.02,RandomForestClassifier,ClassWeight,emp_length,emp_length >= 5 years,privileged,5.0,0.9995308337069796,548728.0,0.9801723258153402,0.0198276741846597
+34,0.02,RandomForestClassifier,ClassWeight,annual_inc,higher annual income,privileged,11.082157933374816,0.9947127390296532,458903.0,0.982482136747853,0.0175178632521469
+34,0.02,RandomForestClassifier,ClassWeight,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9947127390296532,420077.0,0.9772874972921632,0.0227125027078368
+35,0.02,NeuralNetClassifier,Baseline,emp_length,emp_length < 5 years,unprivileged,5.0,0.9995308337069796,330252.0,0.979712461998716,0.0202875380012838
+35,0.02,NeuralNetClassifier,Baseline,emp_length,emp_length >= 5 years,privileged,5.0,0.9995308337069796,548728.0,0.9801723258153402,0.0198276741846597
+35,0.02,NeuralNetClassifier,Baseline,annual_inc,higher annual income,privileged,11.082157933374816,0.9947127390296532,458903.0,0.982482136747853,0.0175178632521469
+35,0.02,NeuralNetClassifier,Baseline,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9947127390296532,420077.0,0.9772874972921632,0.0227125027078368
+36,0.02,NeuralNetClassifier,RandomUnderSampler,emp_length,emp_length < 5 years,unprivileged,5.0,0.9900054982294476,13317.0,0.496883682511076,0.5031163174889239
+36,0.02,NeuralNetClassifier,RandomUnderSampler,emp_length,emp_length >= 5 years,privileged,5.0,0.9900054982294476,21843.0,0.5018999221718629,0.4981000778281371
+36,0.02,NeuralNetClassifier,RandomUnderSampler,annual_inc,higher annual income,privileged,11.082157933374816,0.8745055543419739,17256.0,0.5341330551692165,0.4658669448307835
+36,0.02,NeuralNetClassifier,RandomUnderSampler,annual_inc,lower annual income,unprivileged,11.082157933374816,0.8745055543419739,17904.0,0.4671023235031278,0.5328976764968723
+37,0.02,NeuralNetClassifier,SMOTEENN,emp_length,emp_length < 5 years,unprivileged,5.0,0.955030399637084,612795.0,0.4435251593110257,0.5564748406889742
+37,0.02,NeuralNetClassifier,SMOTEENN,emp_length,emp_length >= 5 years,privileged,5.0,0.955030399637084,971115.0,0.4644094674678076,0.5355905325321924
+37,0.02,NeuralNetClassifier,SMOTEENN,annual_inc,higher annual income,privileged,11.082157933374816,0.7844817433048584,745273.0,0.5151092284303872,0.4848907715696127
+37,0.02,NeuralNetClassifier,SMOTEENN,annual_inc,lower annual income,unprivileged,11.082157933374816,0.7844817433048584,838637.0,0.4040937855114906,0.5959062144885093
+38,0.02,NeuralNetClassifier,KMeansSMOTE,emp_length,emp_length < 5 years,unprivileged,5.0,1.208443112255362,572592.0,0.5650655265878671,0.4349344734121328
+38,0.02,NeuralNetClassifier,KMeansSMOTE,emp_length,emp_length >= 5 years,privileged,5.0,1.208443112255362,1150236.0,0.4675979538112179,0.5324020461887822
+38,0.02,NeuralNetClassifier,KMeansSMOTE,annual_inc,higher annual income,privileged,11.082157933374816,1.4004055659426158,1044007.0,0.431859173358033,0.568140826641967
+38,0.02,NeuralNetClassifier,KMeansSMOTE,annual_inc,lower annual income,unprivileged,11.082157933374816,1.4004055659426158,678821.0,0.6047779900739665,0.3952220099260335
+39,0.02,NeuralNetClassifier,ClassWeight,emp_length,emp_length < 5 years,unprivileged,5.0,0.9995308337069796,330252.0,0.979712461998716,0.0202875380012838
+39,0.02,NeuralNetClassifier,ClassWeight,emp_length,emp_length >= 5 years,privileged,5.0,0.9995308337069796,548728.0,0.9801723258153402,0.0198276741846597
+39,0.02,NeuralNetClassifier,ClassWeight,annual_inc,higher annual income,privileged,11.082157933374816,0.9947127390296532,458903.0,0.982482136747853,0.0175178632521469
+39,0.02,NeuralNetClassifier,ClassWeight,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9947127390296532,420077.0,0.9772874972921632,0.0227125027078368
+40,0.05,XGBClassifier,Baseline,emp_length,emp_length < 5 years,unprivileged,5.0,0.999361471031904,341017.0,0.9496212798775427,0.0503787201224572
+40,0.05,XGBClassifier,Baseline,emp_length,emp_length >= 5 years,privileged,5.0,0.999361471031904,565720.0,0.9502280279997172,0.0497719720002828
+40,0.05,XGBClassifier,Baseline,annual_inc,higher annual income,privileged,11.082157933374816,0.9864990792155957,471552.0,0.9561957111834962,0.0438042888165038
+40,0.05,XGBClassifier,Baseline,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9864990792155957,435185.0,0.9432861886324206,0.0567138113675793
+41,0.05,XGBClassifier,RandomUnderSampler,emp_length,emp_length < 5 years,unprivileged,5.0,0.9987349661125244,34333.0,0.4996067922989544,0.5003932077010457
+41,0.05,XGBClassifier,RandomUnderSampler,emp_length,emp_length >= 5 years,privileged,5.0,0.9987349661125244,56341.0,0.500239612360448,0.499760387639552
+41,0.05,XGBClassifier,RandomUnderSampler,annual_inc,higher annual income,privileged,11.082157933374816,0.8784313355998709,44249.0,0.5331871906709756,0.4668128093290243
+41,0.05,XGBClassifier,RandomUnderSampler,annual_inc,lower annual income,unprivileged,11.082157933374816,0.8784313355998709,46425.0,0.4683683360258481,0.5316316639741518
+42,0.05,XGBClassifier,SMOTEENN,emp_length,emp_length < 5 years,unprivileged,5.0,0.948619225979481,568936.0,0.4006443607013794,0.5993556392986206
+42,0.05,XGBClassifier,SMOTEENN,emp_length,emp_length >= 5 years,privileged,5.0,0.948619225979481,896765.0,0.4223447614480939,0.577655238551906
+42,0.05,XGBClassifier,SMOTEENN,annual_inc,higher annual income,privileged,11.082157933374816,0.7593795411394119,689526.0,0.474366448835867,0.525633551164133
+42,0.05,XGBClassifier,SMOTEENN,annual_inc,lower annual income,unprivileged,11.082157933374816,0.7593795411394119,776175.0,0.3602241762489129,0.6397758237510871
+45,0.05,LogisticRegression,Baseline,emp_length,emp_length < 5 years,unprivileged,5.0,0.999361471031904,341017.0,0.9496212798775427,0.0503787201224572
+45,0.05,LogisticRegression,Baseline,emp_length,emp_length >= 5 years,privileged,5.0,0.999361471031904,565720.0,0.9502280279997172,0.0497719720002828
+45,0.05,LogisticRegression,Baseline,annual_inc,higher annual income,privileged,11.082157933374816,0.9864990792155957,471552.0,0.9561957111834962,0.0438042888165038
+45,0.05,LogisticRegression,Baseline,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9864990792155957,435185.0,0.9432861886324206,0.0567138113675793
+46,0.05,LogisticRegression,RandomUnderSampler,emp_length,emp_length < 5 years,unprivileged,5.0,0.9987349661125244,34333.0,0.4996067922989544,0.5003932077010457
+46,0.05,LogisticRegression,RandomUnderSampler,emp_length,emp_length >= 5 years,privileged,5.0,0.9987349661125244,56341.0,0.500239612360448,0.499760387639552
+46,0.05,LogisticRegression,RandomUnderSampler,annual_inc,higher annual income,privileged,11.082157933374816,0.8784313355998709,44249.0,0.5331871906709756,0.4668128093290243
+46,0.05,LogisticRegression,RandomUnderSampler,annual_inc,lower annual income,unprivileged,11.082157933374816,0.8784313355998709,46425.0,0.4683683360258481,0.5316316639741518
+47,0.05,LogisticRegression,SMOTEENN,emp_length,emp_length < 5 years,unprivileged,5.0,0.948619225979481,568936.0,0.4006443607013794,0.5993556392986206
+47,0.05,LogisticRegression,SMOTEENN,emp_length,emp_length >= 5 years,privileged,5.0,0.948619225979481,896765.0,0.4223447614480939,0.577655238551906
+47,0.05,LogisticRegression,SMOTEENN,annual_inc,higher annual income,privileged,11.082157933374816,0.7593795411394119,689526.0,0.474366448835867,0.525633551164133
+47,0.05,LogisticRegression,SMOTEENN,annual_inc,lower annual income,unprivileged,11.082157933374816,0.7593795411394119,776175.0,0.3602241762489129,0.6397758237510871
+48,0.05,LogisticRegression,KMeansSMOTE,emp_length,emp_length < 5 years,unprivileged,5.0,0.9989134488099074,648124.0,0.4996528442088242,0.5003471557911757
+48,0.05,LogisticRegression,KMeansSMOTE,emp_length,emp_length >= 5 years,privileged,5.0,0.9989134488099074,1074704.0,0.5001963331298664,0.4998036668701335
+48,0.05,LogisticRegression,KMeansSMOTE,annual_inc,higher annual income,privileged,11.082157933374816,0.9390051724318612,874729.0,0.5154693625111321,0.484530637488868
+48,0.05,LogisticRegression,KMeansSMOTE,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9390051724318612,848099.0,0.4840283976281071,0.5159716023718929
+49,0.05,LogisticRegression,ClassWeight,emp_length,emp_length < 5 years,unprivileged,5.0,0.999361471031904,341017.0,0.9496212798775427,0.0503787201224572
+49,0.05,LogisticRegression,ClassWeight,emp_length,emp_length >= 5 years,privileged,5.0,0.999361471031904,565720.0,0.9502280279997172,0.0497719720002828
+49,0.05,LogisticRegression,ClassWeight,annual_inc,higher annual income,privileged,11.082157933374816,0.9864990792155957,471552.0,0.9561957111834962,0.0438042888165038
+49,0.05,LogisticRegression,ClassWeight,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9864990792155957,435185.0,0.9432861886324206,0.0567138113675793
+50,0.05,RandomForestClassifier,Baseline,emp_length,emp_length < 5 years,unprivileged,5.0,0.999361471031904,341017.0,0.9496212798775427,0.0503787201224572
+50,0.05,RandomForestClassifier,Baseline,emp_length,emp_length >= 5 years,privileged,5.0,0.999361471031904,565720.0,0.9502280279997172,0.0497719720002828
+50,0.05,RandomForestClassifier,Baseline,annual_inc,higher annual income,privileged,11.082157933374816,0.9864990792155957,471552.0,0.9561957111834962,0.0438042888165038
+50,0.05,RandomForestClassifier,Baseline,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9864990792155957,435185.0,0.9432861886324206,0.0567138113675793
+51,0.05,RandomForestClassifier,RandomUnderSampler,emp_length,emp_length < 5 years,unprivileged,5.0,0.9987349661125244,34333.0,0.4996067922989544,0.5003932077010457
+51,0.05,RandomForestClassifier,RandomUnderSampler,emp_length,emp_length >= 5 years,privileged,5.0,0.9987349661125244,56341.0,0.500239612360448,0.499760387639552
+51,0.05,RandomForestClassifier,RandomUnderSampler,annual_inc,higher annual income,privileged,11.082157933374816,0.8784313355998709,44249.0,0.5331871906709756,0.4668128093290243
+51,0.05,RandomForestClassifier,RandomUnderSampler,annual_inc,lower annual income,unprivileged,11.082157933374816,0.8784313355998709,46425.0,0.4683683360258481,0.5316316639741518
+52,0.05,RandomForestClassifier,SMOTEENN,emp_length,emp_length < 5 years,unprivileged,5.0,0.9493459988305324,568906.0,0.4009168474229486,0.5990831525770514
+52,0.05,RandomForestClassifier,SMOTEENN,emp_length,emp_length >= 5 years,privileged,5.0,0.9493459988305324,896996.0,0.4223084606843286,0.5776915393156714
+52,0.05,RandomForestClassifier,SMOTEENN,annual_inc,higher annual income,privileged,11.082157933374816,0.7595106839256847,689630.0,0.4744254165277032,0.5255745834722967
+52,0.05,RandomForestClassifier,SMOTEENN,annual_inc,lower annual income,unprivileged,11.082157933374816,0.7595106839256847,776272.0,0.3603311725786837,0.6396688274213163
+53,0.05,RandomForestClassifier,KMeansSMOTE,emp_length,emp_length < 5 years,unprivileged,5.0,0.809894768941945,734867.0,0.4406742988867373,0.5593257011132626
+53,0.05,RandomForestClassifier,KMeansSMOTE,emp_length,emp_length >= 5 years,privileged,5.0,0.809894768941945,987962.0,0.544113032687492,0.455886967312508
+53,0.05,RandomForestClassifier,KMeansSMOTE,annual_inc,higher annual income,privileged,11.082157933374816,0.6134058897044441,693514.0,0.650161352186113,0.3498386478138869
+53,0.05,RandomForestClassifier,KMeansSMOTE,annual_inc,lower annual income,unprivileged,11.082157933374816,0.6134058897044441,1029315.0,0.3988128026891671,0.6011871973108329
+54,0.05,RandomForestClassifier,ClassWeight,emp_length,emp_length < 5 years,unprivileged,5.0,0.999361471031904,341017.0,0.9496212798775427,0.0503787201224572
+54,0.05,RandomForestClassifier,ClassWeight,emp_length,emp_length >= 5 years,privileged,5.0,0.999361471031904,565720.0,0.9502280279997172,0.0497719720002828
+54,0.05,RandomForestClassifier,ClassWeight,annual_inc,higher annual income,privileged,11.082157933374816,0.9864990792155957,471552.0,0.9561957111834962,0.0438042888165038
+54,0.05,RandomForestClassifier,ClassWeight,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9864990792155957,435185.0,0.9432861886324206,0.0567138113675793
+55,0.05,NeuralNetClassifier,Baseline,emp_length,emp_length < 5 years,unprivileged,5.0,0.999361471031904,341017.0,0.9496212798775427,0.0503787201224572
+55,0.05,NeuralNetClassifier,Baseline,emp_length,emp_length >= 5 years,privileged,5.0,0.999361471031904,565720.0,0.9502280279997172,0.0497719720002828
+55,0.05,NeuralNetClassifier,Baseline,annual_inc,higher annual income,privileged,11.082157933374816,0.9864990792155957,471552.0,0.9561957111834962,0.0438042888165038
+55,0.05,NeuralNetClassifier,Baseline,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9864990792155957,435185.0,0.9432861886324206,0.0567138113675793
+56,0.05,NeuralNetClassifier,RandomUnderSampler,emp_length,emp_length < 5 years,unprivileged,5.0,0.9987349661125244,34333.0,0.4996067922989544,0.5003932077010457
+56,0.05,NeuralNetClassifier,RandomUnderSampler,emp_length,emp_length >= 5 years,privileged,5.0,0.9987349661125244,56341.0,0.500239612360448,0.499760387639552
+56,0.05,NeuralNetClassifier,RandomUnderSampler,annual_inc,higher annual income,privileged,11.082157933374816,0.8784313355998709,44249.0,0.5331871906709756,0.4668128093290243
+56,0.05,NeuralNetClassifier,RandomUnderSampler,annual_inc,lower annual income,unprivileged,11.082157933374816,0.8784313355998709,46425.0,0.4683683360258481,0.5316316639741518
+57,0.05,NeuralNetClassifier,SMOTEENN,emp_length,emp_length < 5 years,unprivileged,5.0,0.9493459988305324,568906.0,0.4009168474229486,0.5990831525770514
+57,0.05,NeuralNetClassifier,SMOTEENN,emp_length,emp_length >= 5 years,privileged,5.0,0.9493459988305324,896996.0,0.4223084606843286,0.5776915393156714
+57,0.05,NeuralNetClassifier,SMOTEENN,annual_inc,higher annual income,privileged,11.082157933374816,0.7595106839256847,689630.0,0.4744254165277032,0.5255745834722967
+57,0.05,NeuralNetClassifier,SMOTEENN,annual_inc,lower annual income,unprivileged,11.082157933374816,0.7595106839256847,776272.0,0.3603311725786837,0.6396688274213163
+59,0.05,NeuralNetClassifier,ClassWeight,emp_length,emp_length < 5 years,unprivileged,5.0,0.999361471031904,341017.0,0.9496212798775427,0.0503787201224572
+59,0.05,NeuralNetClassifier,ClassWeight,emp_length,emp_length >= 5 years,privileged,5.0,0.999361471031904,565720.0,0.9502280279997172,0.0497719720002828
+59,0.05,NeuralNetClassifier,ClassWeight,annual_inc,higher annual income,privileged,11.082157933374816,0.9864990792155957,471552.0,0.9561957111834962,0.0438042888165038
+59,0.05,NeuralNetClassifier,ClassWeight,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9864990792155957,435185.0,0.9432861886324206,0.0567138113675793
+60,0.1,XGBClassifier,Baseline,emp_length,emp_length < 5 years,unprivileged,5.0,0.9990517844533408,360193.0,0.8994677853262001,0.1005322146737998
+60,0.1,XGBClassifier,Baseline,emp_length,emp_length >= 5 years,privileged,5.0,0.9990517844533408,596919.0,0.9003214841544666,0.0996785158455334
+60,0.1,XGBClassifier,Baseline,annual_inc,higher annual income,privileged,11.082157933374816,0.9726852462508864,494524.0,0.9120406694113936,0.0879593305886064
+60,0.1,XGBClassifier,Baseline,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9726852462508864,462588.0,0.8871285031172447,0.1128714968827552
+61,0.1,XGBClassifier,RandomUnderSampler,emp_length,emp_length < 5 years,unprivileged,5.0,0.9966032080335872,72269.0,0.4989414548423252,0.5010585451576748
+61,0.1,XGBClassifier,RandomUnderSampler,emp_length,emp_length >= 5 years,privileged,5.0,0.9966032080335872,119153.0,0.5006420316735626,0.4993579683264374
+61,0.1,XGBClassifier,RandomUnderSampler,annual_inc,higher annual income,privileged,11.082157933374816,0.8690069532231661,93711.0,0.5358282378802915,0.4641717621197084
+61,0.1,XGBClassifier,RandomUnderSampler,annual_inc,lower annual income,unprivileged,11.082157933374816,0.8690069532231661,97711.0,0.46563846445129,0.53436153554871
+62,0.1,XGBClassifier,SMOTEENN,emp_length,emp_length < 5 years,unprivileged,5.0,0.9438477773089584,526056.0,0.3557168818528826,0.6442831181471174
+62,0.1,XGBClassifier,SMOTEENN,emp_length,emp_length >= 5 years,privileged,5.0,0.9438477773089584,826548.0,0.3768795036706882,0.6231204963293118
+62,0.1,XGBClassifier,SMOTEENN,annual_inc,higher annual income,privileged,11.082157933374816,0.723051609138687,635154.0,0.4321282712539006,0.5678717287460994
+62,0.1,XGBClassifier,SMOTEENN,annual_inc,lower annual income,unprivileged,11.082157933374816,0.723051609138687,717450.0,0.3124510418844519,0.6875489581155482
+63,0.1,XGBClassifier,KMeansSMOTE,emp_length,emp_length < 5 years,unprivileged,5.0,0.7677533211703558,757773.0,0.4275449244034823,0.5724550755965176
+63,0.1,XGBClassifier,KMeansSMOTE,emp_length,emp_length >= 5 years,privileged,5.0,0.7677533211703558,965057.0,0.5568779875178357,0.4431220124821642
+63,0.1,XGBClassifier,KMeansSMOTE,annual_inc,higher annual income,privileged,11.082157933374816,0.6255450536012936,701900.0,0.6425787149166547,0.3574212850833452
+63,0.1,XGBClassifier,KMeansSMOTE,annual_inc,lower annual income,unprivileged,11.082157933374816,0.6255450536012936,1020930.0,0.4019619366655892,0.5980380633344108
+64,0.1,XGBClassifier,ClassWeight,emp_length,emp_length < 5 years,unprivileged,5.0,0.9990517844533408,360193.0,0.8994677853262001,0.1005322146737998
+64,0.1,XGBClassifier,ClassWeight,emp_length,emp_length >= 5 years,privileged,5.0,0.9990517844533408,596919.0,0.9003214841544666,0.0996785158455334
+64,0.1,XGBClassifier,ClassWeight,annual_inc,higher annual income,privileged,11.082157933374816,0.9726852462508864,494524.0,0.9120406694113936,0.0879593305886064
+64,0.1,XGBClassifier,ClassWeight,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9726852462508864,462588.0,0.8871285031172447,0.1128714968827552
+65,0.1,LogisticRegression,Baseline,emp_length,emp_length < 5 years,unprivileged,5.0,0.9990517844533408,360193.0,0.8994677853262001,0.1005322146737998
+65,0.1,LogisticRegression,Baseline,emp_length,emp_length >= 5 years,privileged,5.0,0.9990517844533408,596919.0,0.9003214841544666,0.0996785158455334
+65,0.1,LogisticRegression,Baseline,annual_inc,higher annual income,privileged,11.082157933374816,0.9726852462508864,494524.0,0.9120406694113936,0.0879593305886064
+65,0.1,LogisticRegression,Baseline,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9726852462508864,462588.0,0.8871285031172447,0.1128714968827552
+66,0.1,LogisticRegression,RandomUnderSampler,emp_length,emp_length < 5 years,unprivileged,5.0,0.9966032080335872,72269.0,0.4989414548423252,0.5010585451576748
+66,0.1,LogisticRegression,RandomUnderSampler,emp_length,emp_length >= 5 years,privileged,5.0,0.9966032080335872,119153.0,0.5006420316735626,0.4993579683264374
+66,0.1,LogisticRegression,RandomUnderSampler,annual_inc,higher annual income,privileged,11.082157933374816,0.8690069532231661,93711.0,0.5358282378802915,0.4641717621197084
+66,0.1,LogisticRegression,RandomUnderSampler,annual_inc,lower annual income,unprivileged,11.082157933374816,0.8690069532231661,97711.0,0.46563846445129,0.53436153554871
+67,0.1,LogisticRegression,SMOTEENN,emp_length,emp_length < 5 years,unprivileged,5.0,0.9438477773089584,526056.0,0.3557168818528826,0.6442831181471174
+67,0.1,LogisticRegression,SMOTEENN,emp_length,emp_length >= 5 years,privileged,5.0,0.9438477773089584,826548.0,0.3768795036706882,0.6231204963293118
+67,0.1,LogisticRegression,SMOTEENN,annual_inc,higher annual income,privileged,11.082157933374816,0.723051609138687,635154.0,0.4321282712539006,0.5678717287460994
+67,0.1,LogisticRegression,SMOTEENN,annual_inc,lower annual income,unprivileged,11.082157933374816,0.723051609138687,717450.0,0.3124510418844519,0.6875489581155482
+68,0.1,LogisticRegression,KMeansSMOTE,emp_length,emp_length < 5 years,unprivileged,5.0,0.7677533211703558,757773.0,0.4275449244034823,0.5724550755965176
+68,0.1,LogisticRegression,KMeansSMOTE,emp_length,emp_length >= 5 years,privileged,5.0,0.7677533211703558,965057.0,0.5568779875178357,0.4431220124821642
+68,0.1,LogisticRegression,KMeansSMOTE,annual_inc,higher annual income,privileged,11.082157933374816,0.6255450536012936,701900.0,0.6425787149166547,0.3574212850833452
+68,0.1,LogisticRegression,KMeansSMOTE,annual_inc,lower annual income,unprivileged,11.082157933374816,0.6255450536012936,1020930.0,0.4019619366655892,0.5980380633344108
+69,0.1,LogisticRegression,ClassWeight,emp_length,emp_length < 5 years,unprivileged,5.0,0.9990517844533408,360193.0,0.8994677853262001,0.1005322146737998
+69,0.1,LogisticRegression,ClassWeight,emp_length,emp_length >= 5 years,privileged,5.0,0.9990517844533408,596919.0,0.9003214841544666,0.0996785158455334
+69,0.1,LogisticRegression,ClassWeight,annual_inc,higher annual income,privileged,11.082157933374816,0.9726852462508864,494524.0,0.9120406694113936,0.0879593305886064
+69,0.1,LogisticRegression,ClassWeight,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9726852462508864,462588.0,0.8871285031172447,0.1128714968827552
+70,0.1,RandomForestClassifier,Baseline,emp_length,emp_length < 5 years,unprivileged,5.0,0.9990517844533408,360193.0,0.8994677853262001,0.1005322146737998
+70,0.1,RandomForestClassifier,Baseline,emp_length,emp_length >= 5 years,privileged,5.0,0.9990517844533408,596919.0,0.9003214841544666,0.0996785158455334
+70,0.1,RandomForestClassifier,Baseline,annual_inc,higher annual income,privileged,11.082157933374816,0.9726852462508864,494524.0,0.9120406694113936,0.0879593305886064
+70,0.1,RandomForestClassifier,Baseline,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9726852462508864,462588.0,0.8871285031172447,0.1128714968827552
+71,0.1,RandomForestClassifier,RandomUnderSampler,emp_length,emp_length < 5 years,unprivileged,5.0,0.9966032080335872,72269.0,0.4989414548423252,0.5010585451576748
+71,0.1,RandomForestClassifier,RandomUnderSampler,emp_length,emp_length >= 5 years,privileged,5.0,0.9966032080335872,119153.0,0.5006420316735626,0.4993579683264374
+71,0.1,RandomForestClassifier,RandomUnderSampler,annual_inc,higher annual income,privileged,11.082157933374816,0.8690069532231661,93711.0,0.5358282378802915,0.4641717621197084
+71,0.1,RandomForestClassifier,RandomUnderSampler,annual_inc,lower annual income,unprivileged,11.082157933374816,0.8690069532231661,97711.0,0.46563846445129,0.53436153554871
+72,0.1,RandomForestClassifier,SMOTEENN,emp_length,emp_length < 5 years,unprivileged,5.0,0.9438477773089584,526056.0,0.3557168818528826,0.6442831181471174
+72,0.1,RandomForestClassifier,SMOTEENN,emp_length,emp_length >= 5 years,privileged,5.0,0.9438477773089584,826548.0,0.3768795036706882,0.6231204963293118
+72,0.1,RandomForestClassifier,SMOTEENN,annual_inc,higher annual income,privileged,11.082157933374816,0.723051609138687,635154.0,0.4321282712539006,0.5678717287460994
+72,0.1,RandomForestClassifier,SMOTEENN,annual_inc,lower annual income,unprivileged,11.082157933374816,0.723051609138687,717450.0,0.3124510418844519,0.6875489581155482
+73,0.1,RandomForestClassifier,KMeansSMOTE,emp_length,emp_length < 5 years,unprivileged,5.0,0.7677533211703558,757773.0,0.4275449244034823,0.5724550755965176
+73,0.1,RandomForestClassifier,KMeansSMOTE,emp_length,emp_length >= 5 years,privileged,5.0,0.7677533211703558,965057.0,0.5568779875178357,0.4431220124821642
+73,0.1,RandomForestClassifier,KMeansSMOTE,annual_inc,higher annual income,privileged,11.082157933374816,0.6255450536012936,701900.0,0.6425787149166547,0.3574212850833452
+73,0.1,RandomForestClassifier,KMeansSMOTE,annual_inc,lower annual income,unprivileged,11.082157933374816,0.6255450536012936,1020930.0,0.4019619366655892,0.5980380633344108
+75,0.1,NeuralNetClassifier,Baseline,emp_length,emp_length < 5 years,unprivileged,5.0,0.9990517844533408,360193.0,0.8994677853262001,0.1005322146737998
+75,0.1,NeuralNetClassifier,Baseline,emp_length,emp_length >= 5 years,privileged,5.0,0.9990517844533408,596919.0,0.9003214841544666,0.0996785158455334
+75,0.1,NeuralNetClassifier,Baseline,annual_inc,higher annual income,privileged,11.082157933374816,0.9726852462508864,494524.0,0.9120406694113936,0.0879593305886064
+75,0.1,NeuralNetClassifier,Baseline,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9726852462508864,462588.0,0.8871285031172447,0.1128714968827552
+76,0.1,NeuralNetClassifier,RandomUnderSampler,emp_length,emp_length < 5 years,unprivileged,5.0,0.9966032080335872,72269.0,0.4989414548423252,0.5010585451576748
+76,0.1,NeuralNetClassifier,RandomUnderSampler,emp_length,emp_length >= 5 years,privileged,5.0,0.9966032080335872,119153.0,0.5006420316735626,0.4993579683264374
+76,0.1,NeuralNetClassifier,RandomUnderSampler,annual_inc,higher annual income,privileged,11.082157933374816,0.8690069532231661,93711.0,0.5358282378802915,0.4641717621197084
+76,0.1,NeuralNetClassifier,RandomUnderSampler,annual_inc,lower annual income,unprivileged,11.082157933374816,0.8690069532231661,97711.0,0.46563846445129,0.53436153554871
+77,0.1,NeuralNetClassifier,SMOTEENN,emp_length,emp_length < 5 years,unprivileged,5.0,0.9435254286192694,526185.0,0.3555726598059617,0.6444273401940382
+77,0.1,NeuralNetClassifier,SMOTEENN,emp_length,emp_length >= 5 years,privileged,5.0,0.9435254286192694,826301.0,0.3768554074120689,0.623144592587931
+77,0.1,NeuralNetClassifier,SMOTEENN,annual_inc,higher annual income,privileged,11.082157933374816,0.7226369391467543,635164.0,0.4321466581859173,0.5678533418140826
+77,0.1,NeuralNetClassifier,SMOTEENN,annual_inc,lower annual income,unprivileged,11.082157933374816,0.7226369391467543,717322.0,0.31228513833397,0.68771486166603
+78,0.1,NeuralNetClassifier,KMeansSMOTE,emp_length,emp_length < 5 years,unprivileged,5.0,0.7677533211703558,757773.0,0.4275449244034823,0.5724550755965176
+78,0.1,NeuralNetClassifier,KMeansSMOTE,emp_length,emp_length >= 5 years,privileged,5.0,0.7677533211703558,965057.0,0.5568779875178357,0.4431220124821642
+78,0.1,NeuralNetClassifier,KMeansSMOTE,annual_inc,higher annual income,privileged,11.082157933374816,0.6255450536012936,701900.0,0.6425787149166547,0.3574212850833452
+78,0.1,NeuralNetClassifier,KMeansSMOTE,annual_inc,lower annual income,unprivileged,11.082157933374816,0.6255450536012936,1020930.0,0.4019619366655892,0.5980380633344108
+79,0.1,NeuralNetClassifier,ClassWeight,emp_length,emp_length < 5 years,unprivileged,5.0,0.9990517844533408,360193.0,0.8994677853262001,0.1005322146737998
+79,0.1,NeuralNetClassifier,ClassWeight,emp_length,emp_length >= 5 years,privileged,5.0,0.9990517844533408,596919.0,0.9003214841544666,0.0996785158455334
+79,0.1,NeuralNetClassifier,ClassWeight,annual_inc,higher annual income,privileged,11.082157933374816,0.9726852462508864,494524.0,0.9120406694113936,0.0879593305886064
+79,0.1,NeuralNetClassifier,ClassWeight,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9726852462508864,462588.0,0.8871285031172447,0.1128714968827552
+80,0.2,XGBClassifier,Baseline,emp_length,emp_length < 5 years,unprivileged,5.0,0.997051198456072,404662.0,0.7985281543609234,0.2014718456390765
+80,0.2,XGBClassifier,Baseline,emp_length,emp_length >= 5 years,privileged,5.0,0.997051198456072,669574.0,0.8008898194971729,0.1991101805028271
+80,0.2,XGBClassifier,Baseline,annual_inc,higher annual income,privileged,11.082157933374816,0.9453279240609463,547432.0,0.82203999766181,0.1779600023381899
+80,0.2,XGBClassifier,Baseline,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9453279240609463,526804.0,0.777097364484704,0.222902635515296
+81,0.2,XGBClassifier,RandomUnderSampler,emp_length,emp_length < 5 years,unprivileged,5.0,0.9920524861202814,162251.0,0.4975192756901344,0.5024807243098656
+81,0.2,XGBClassifier,RandomUnderSampler,emp_length,emp_length >= 5 years,privileged,5.0,0.9920524861202814,267443.0,0.5015049935874186,0.4984950064125814
+81,0.2,XGBClassifier,RandomUnderSampler,annual_inc,higher annual income,privileged,11.082157933374816,0.8675484366573349,210096.0,0.536302452212322,0.463697547787678
+81,0.2,XGBClassifier,RandomUnderSampler,annual_inc,lower annual income,unprivileged,11.082157933374816,0.8675484366573349,219598.0,0.465268353992295,0.534731646007705
+82,0.2,XGBClassifier,SMOTEENN,emp_length,emp_length < 5 years,unprivileged,5.0,0.939048154994221,450549.0,0.3152065591089981,0.6847934408910019
+82,0.2,XGBClassifier,SMOTEENN,emp_length,emp_length >= 5 years,privileged,5.0,0.939048154994221,708910.0,0.3356660224852238,0.6643339775147762
+82,0.2,XGBClassifier,SMOTEENN,annual_inc,higher annual income,privileged,11.082157933374816,0.6837255437051896,545881.0,0.3935912772197603,0.6064087227802396
+82,0.2,XGBClassifier,SMOTEENN,annual_inc,lower annual income,unprivileged,11.082157933374816,0.6837255437051896,613578.0,0.2691084100147006,0.7308915899852994
+83,0.2,XGBClassifier,KMeansSMOTE,emp_length,emp_length < 5 years,unprivileged,5.0,0.7678882470548272,755737.0,0.4275746721412343,0.5724253278587657
+83,0.2,XGBClassifier,KMeansSMOTE,emp_length,emp_length >= 5 years,privileged,5.0,0.7678882470548272,963069.0,0.5568188779827822,0.4431811220172179
+83,0.2,XGBClassifier,KMeansSMOTE,annual_inc,higher annual income,privileged,11.082157933374816,0.5552275607447619,651448.0,0.6907857572668885,0.3092142427331115
+83,0.2,XGBClassifier,KMeansSMOTE,annual_inc,lower annual income,unprivileged,11.082157933374816,0.5552275607447619,1067358.0,0.3835432910045177,0.6164567089954823
+84,0.2,XGBClassifier,ClassWeight,emp_length,emp_length < 5 years,unprivileged,5.0,0.997051198456072,404662.0,0.7985281543609234,0.2014718456390765
+84,0.2,XGBClassifier,ClassWeight,emp_length,emp_length >= 5 years,privileged,5.0,0.997051198456072,669574.0,0.8008898194971729,0.1991101805028271
+84,0.2,XGBClassifier,ClassWeight,annual_inc,higher annual income,privileged,11.082157933374816,0.9453279240609463,547432.0,0.82203999766181,0.1779600023381899
+84,0.2,XGBClassifier,ClassWeight,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9453279240609463,526804.0,0.777097364484704,0.222902635515296
+85,0.2,LogisticRegression,Baseline,emp_length,emp_length < 5 years,unprivileged,5.0,0.997051198456072,404662.0,0.7985281543609234,0.2014718456390765
+85,0.2,LogisticRegression,Baseline,emp_length,emp_length >= 5 years,privileged,5.0,0.997051198456072,669574.0,0.8008898194971729,0.1991101805028271
+85,0.2,LogisticRegression,Baseline,annual_inc,higher annual income,privileged,11.082157933374816,0.9453279240609463,547432.0,0.82203999766181,0.1779600023381899
+85,0.2,LogisticRegression,Baseline,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9453279240609463,526804.0,0.777097364484704,0.222902635515296
+86,0.2,LogisticRegression,RandomUnderSampler,emp_length,emp_length < 5 years,unprivileged,5.0,0.9920524861202814,162251.0,0.4975192756901344,0.5024807243098656
+86,0.2,LogisticRegression,RandomUnderSampler,emp_length,emp_length >= 5 years,privileged,5.0,0.9920524861202814,267443.0,0.5015049935874186,0.4984950064125814
+86,0.2,LogisticRegression,RandomUnderSampler,annual_inc,higher annual income,privileged,11.082157933374816,0.8675484366573349,210096.0,0.536302452212322,0.463697547787678
+86,0.2,LogisticRegression,RandomUnderSampler,annual_inc,lower annual income,unprivileged,11.082157933374816,0.8675484366573349,219598.0,0.465268353992295,0.534731646007705
+87,0.2,LogisticRegression,SMOTEENN,emp_length,emp_length < 5 years,unprivileged,5.0,0.937143502539219,450693.0,0.3147353076262555,0.6852646923737444
+87,0.2,LogisticRegression,SMOTEENN,emp_length,emp_length >= 5 years,privileged,5.0,0.937143502539219,708588.0,0.3358453713582505,0.6641546286417495
+87,0.2,LogisticRegression,SMOTEENN,annual_inc,higher annual income,privileged,11.082157933374816,0.683413669315733,545813.0,0.3935743560523476,0.6064256439476524
+87,0.2,LogisticRegression,SMOTEENN,annual_inc,lower annual income,unprivileged,11.082157933374816,0.683413669315733,613468.0,0.2689740948183116,0.7310259051816884
+88,0.2,LogisticRegression,KMeansSMOTE,emp_length,emp_length < 5 years,unprivileged,5.0,0.7677631329614026,755806.0,0.4275356374519387,0.5724643625480613
+88,0.2,LogisticRegression,KMeansSMOTE,emp_length,emp_length >= 5 years,privileged,5.0,0.7677631329614026,963000.0,0.556858774662513,0.443141225337487
+88,0.2,LogisticRegression,KMeansSMOTE,annual_inc,higher annual income,privileged,11.082157933374816,0.55486257035443,651182.0,0.6910679349244911,0.3089320650755088
+88,0.2,LogisticRegression,KMeansSMOTE,annual_inc,lower annual income,unprivileged,11.082157933374816,0.55486257035443,1067624.0,0.3834477306617311,0.6165522693382689
+89,0.2,LogisticRegression,ClassWeight,emp_length,emp_length < 5 years,unprivileged,5.0,0.997051198456072,404662.0,0.7985281543609234,0.2014718456390765
+89,0.2,LogisticRegression,ClassWeight,emp_length,emp_length >= 5 years,privileged,5.0,0.997051198456072,669574.0,0.8008898194971729,0.1991101805028271
+89,0.2,LogisticRegression,ClassWeight,annual_inc,higher annual income,privileged,11.082157933374816,0.9453279240609463,547432.0,0.82203999766181,0.1779600023381899
+89,0.2,LogisticRegression,ClassWeight,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9453279240609463,526804.0,0.777097364484704,0.222902635515296
+90,0.2,RandomForestClassifier,Baseline,emp_length,emp_length < 5 years,unprivileged,5.0,0.997051198456072,404662.0,0.7985281543609234,0.2014718456390765
+90,0.2,RandomForestClassifier,Baseline,emp_length,emp_length >= 5 years,privileged,5.0,0.997051198456072,669574.0,0.8008898194971729,0.1991101805028271
+90,0.2,RandomForestClassifier,Baseline,annual_inc,higher annual income,privileged,11.082157933374816,0.9453279240609463,547432.0,0.82203999766181,0.1779600023381899
+90,0.2,RandomForestClassifier,Baseline,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9453279240609463,526804.0,0.777097364484704,0.222902635515296
+91,0.2,RandomForestClassifier,RandomUnderSampler,emp_length,emp_length < 5 years,unprivileged,5.0,0.9920524861202814,162251.0,0.4975192756901344,0.5024807243098656
+91,0.2,RandomForestClassifier,RandomUnderSampler,emp_length,emp_length >= 5 years,privileged,5.0,0.9920524861202814,267443.0,0.5015049935874186,0.4984950064125814
+91,0.2,RandomForestClassifier,RandomUnderSampler,annual_inc,higher annual income,privileged,11.082157933374816,0.8675484366573349,210096.0,0.536302452212322,0.463697547787678
+91,0.2,RandomForestClassifier,RandomUnderSampler,annual_inc,lower annual income,unprivileged,11.082157933374816,0.8675484366573349,219598.0,0.465268353992295,0.534731646007705
+92,0.2,RandomForestClassifier,SMOTEENN,emp_length,emp_length < 5 years,unprivileged,5.0,0.939048154994221,450549.0,0.3152065591089981,0.6847934408910019
+92,0.2,RandomForestClassifier,SMOTEENN,emp_length,emp_length >= 5 years,privileged,5.0,0.939048154994221,708910.0,0.3356660224852238,0.6643339775147762
+92,0.2,RandomForestClassifier,SMOTEENN,annual_inc,higher annual income,privileged,11.082157933374816,0.6837255437051896,545881.0,0.3935912772197603,0.6064087227802396
+92,0.2,RandomForestClassifier,SMOTEENN,annual_inc,lower annual income,unprivileged,11.082157933374816,0.6837255437051896,613578.0,0.2691084100147006,0.7308915899852994
+93,0.2,RandomForestClassifier,KMeansSMOTE,emp_length,emp_length < 5 years,unprivileged,5.0,0.7677631329614026,755806.0,0.4275356374519387,0.5724643625480613
+93,0.2,RandomForestClassifier,KMeansSMOTE,emp_length,emp_length >= 5 years,privileged,5.0,0.7677631329614026,963000.0,0.556858774662513,0.443141225337487
+93,0.2,RandomForestClassifier,KMeansSMOTE,annual_inc,higher annual income,privileged,11.082157933374816,0.55486257035443,651182.0,0.6910679349244911,0.3089320650755088
+93,0.2,RandomForestClassifier,KMeansSMOTE,annual_inc,lower annual income,unprivileged,11.082157933374816,0.55486257035443,1067624.0,0.3834477306617311,0.6165522693382689
+94,0.2,RandomForestClassifier,ClassWeight,emp_length,emp_length < 5 years,unprivileged,5.0,0.997051198456072,404662.0,0.7985281543609234,0.2014718456390765
+94,0.2,RandomForestClassifier,ClassWeight,emp_length,emp_length >= 5 years,privileged,5.0,0.997051198456072,669574.0,0.8008898194971729,0.1991101805028271
+94,0.2,RandomForestClassifier,ClassWeight,annual_inc,higher annual income,privileged,11.082157933374816,0.9453279240609463,547432.0,0.82203999766181,0.1779600023381899
+94,0.2,RandomForestClassifier,ClassWeight,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9453279240609463,526804.0,0.777097364484704,0.222902635515296
+95,0.2,NeuralNetClassifier,Baseline,emp_length,emp_length < 5 years,unprivileged,5.0,0.997051198456072,404662.0,0.7985281543609234,0.2014718456390765
+95,0.2,NeuralNetClassifier,Baseline,emp_length,emp_length >= 5 years,privileged,5.0,0.997051198456072,669574.0,0.8008898194971729,0.1991101805028271
+95,0.2,NeuralNetClassifier,Baseline,annual_inc,higher annual income,privileged,11.082157933374816,0.9453279240609463,547432.0,0.82203999766181,0.1779600023381899
+95,0.2,NeuralNetClassifier,Baseline,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9453279240609463,526804.0,0.777097364484704,0.222902635515296
+96,0.2,NeuralNetClassifier,RandomUnderSampler,emp_length,emp_length < 5 years,unprivileged,5.0,0.9920524861202814,162251.0,0.4975192756901344,0.5024807243098656
+96,0.2,NeuralNetClassifier,RandomUnderSampler,emp_length,emp_length >= 5 years,privileged,5.0,0.9920524861202814,267443.0,0.5015049935874186,0.4984950064125814
+96,0.2,NeuralNetClassifier,RandomUnderSampler,annual_inc,higher annual income,privileged,11.082157933374816,0.8675484366573349,210096.0,0.536302452212322,0.463697547787678
+96,0.2,NeuralNetClassifier,RandomUnderSampler,annual_inc,lower annual income,unprivileged,11.082157933374816,0.8675484366573349,219598.0,0.465268353992295,0.534731646007705
+97,0.2,NeuralNetClassifier,SMOTEENN,emp_length,emp_length < 5 years,unprivileged,5.0,0.937143502539219,450693.0,0.3147353076262555,0.6852646923737444
+97,0.2,NeuralNetClassifier,SMOTEENN,emp_length,emp_length >= 5 years,privileged,5.0,0.937143502539219,708588.0,0.3358453713582505,0.6641546286417495
+97,0.2,NeuralNetClassifier,SMOTEENN,annual_inc,higher annual income,privileged,11.082157933374816,0.683413669315733,545813.0,0.3935743560523476,0.6064256439476524
+97,0.2,NeuralNetClassifier,SMOTEENN,annual_inc,lower annual income,unprivileged,11.082157933374816,0.683413669315733,613468.0,0.2689740948183116,0.7310259051816884
+98,0.2,NeuralNetClassifier,KMeansSMOTE,emp_length,emp_length < 5 years,unprivileged,5.0,0.7677631329614026,755806.0,0.4275356374519387,0.5724643625480613
+98,0.2,NeuralNetClassifier,KMeansSMOTE,emp_length,emp_length >= 5 years,privileged,5.0,0.7677631329614026,963000.0,0.556858774662513,0.443141225337487
+98,0.2,NeuralNetClassifier,KMeansSMOTE,annual_inc,higher annual income,privileged,11.082157933374816,0.55486257035443,651182.0,0.6910679349244911,0.3089320650755088
+98,0.2,NeuralNetClassifier,KMeansSMOTE,annual_inc,lower annual income,unprivileged,11.082157933374816,0.55486257035443,1067624.0,0.3834477306617311,0.6165522693382689
+99,0.2,NeuralNetClassifier,ClassWeight,emp_length,emp_length < 5 years,unprivileged,5.0,0.997051198456072,404662.0,0.7985281543609234,0.2014718456390765
+99,0.2,NeuralNetClassifier,ClassWeight,emp_length,emp_length >= 5 years,privileged,5.0,0.997051198456072,669574.0,0.8008898194971729,0.1991101805028271
+99,0.2,NeuralNetClassifier,ClassWeight,annual_inc,higher annual income,privileged,11.082157933374816,0.9453279240609463,547432.0,0.82203999766181,0.1779600023381899
+99,0.2,NeuralNetClassifier,ClassWeight,annual_inc,lower annual income,unprivileged,11.082157933374816,0.9453279240609463,526804.0,0.777097364484704,0.222902635515296
