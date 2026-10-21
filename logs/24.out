@@ -1,6 +1,0 @@
-[Tue Jun 30 07:07:10 CEST 2026] Starting experiment 24 on tcn1160.local.snellius.surf.nl with 16 cores
-[exp 0024] frac=0.02, model=XGBClassifier, sampler=ClassWeight
-  PR-AUC=0.0506  F1=0.4707
-  Attack success rate: GA=0.66 ZOO=0.3
-[exp 0024] DONE → results/exp_0024
-[Tue Jun 30 08:23:22 CEST 2026] Experiment 24 finished with exit code 0

@@ -1,49 +1,0 @@
-  0%|          | 0/20 [00:00<?, ?it/s] 10%|█         | 2/20 [00:00<00:01, 16.94it/s] 20%|██        | 4/20 [00:00<00:00, 17.06it/s] 30%|███       | 6/20 [00:00<00:00, 17.10it/s] 40%|████      | 8/20 [00:00<00:00, 17.10it/s] 50%|█████     | 10/20 [00:00<00:00, 17.14it/s] 60%|██████    | 12/20 [00:00<00:00, 17.14it/s] 70%|███████   | 14/20 [00:00<00:00, 17.14it/s] 80%|████████  | 16/20 [00:00<00:00, 17.13it/s] 90%|█████████ | 18/20 [00:01<00:00, 17.11it/s]100%|██████████| 20/20 [00:01<00:00, 17.12it/s]100%|██████████| 20/20 [00:01<00:00, 17.11it/s]
-Traceback (most recent call last):
-  File "/gpfs/home2/tangevare/main.py", line 172, in <module>
-    run_experiment(args.experiment_id, n_cores=args.n_cores)
-  File "/gpfs/home2/tangevare/main.py", line 129, in run_experiment
-    attack_row = run_adversarial_attacks(pipe_final, X_fit, X_val, y_val, X_te, y_te)
-                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/gpfs/home2/tangevare/src/pipeline_utils.py", line 653, in run_adversarial_attacks
-    attack_fn(pipe, x0, X_ref, action_features, threshold,
-  File "/gpfs/home2/tangevare/src/pipeline_utils.py", line 462, in permute_attack
-    score, probability, x_adv, z_effective = evaluate_candidate(
-                                             ^^^^^^^^^^^^^^^^^^^
-  File "/gpfs/home2/tangevare/src/pipeline_utils.py", line 410, in evaluate_candidate
-    adversarial_probability = default_probability(model, x_adv, query_counter)
-                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/gpfs/home2/tangevare/src/pipeline_utils.py", line 381, in default_probability
-    return float(default_probabilities(model, X)[0])
-                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/gpfs/home2/tangevare/src/pipeline_utils.py", line 375, in default_probabilities
-    return model.predict_proba(X)[:, class_index]
-           ^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/tangevare/.local/lib/python3.11/site-packages/imblearn/pipeline.py", line 848, in predict_proba
-    Xt = transform.transform(Xt)
-         ^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/tangevare/.local/lib/python3.11/site-packages/sklearn/utils/_set_output.py", line 319, in wrapped
-    data_to_wrap = f(self, X, *args, **kwargs)
-                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/tangevare/.local/lib/python3.11/site-packages/sklearn/impute/_base.py", line 617, in transform
-    X = self._validate_input(X, in_fit=False)
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/tangevare/.local/lib/python3.11/site-packages/sklearn/impute/_base.py", line 356, in _validate_input
-    X = validate_data(
-        ^^^^^^^^^^^^^^
-  File "/home/tangevare/.local/lib/python3.11/site-packages/sklearn/utils/validation.py", line 3038, in validate_data
-    out = check_array(X, input_name="X", **check_params)
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/tangevare/.local/lib/python3.11/site-packages/sklearn/utils/validation.py", line 917, in check_array
-    pandas_requires_conversion = any(
-                                 ^^^^
-  File "/home/tangevare/.local/lib/python3.11/site-packages/sklearn/utils/validation.py", line 918, in <genexpr>
-    _pandas_dtype_needs_early_conversion(i) for i in dtypes_orig
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/tangevare/.local/lib/python3.11/site-packages/sklearn/utils/validation.py", line 689, in _pandas_dtype_needs_early_conversion
-    if is_bool_dtype(pd_dtype):
-       ^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/tangevare/.local/lib/python3.11/site-packages/pandas/core/dtypes/common.py", line 1392, in is_bool_dtype
-    @set_module("pandas.api.types")
-    
-KeyboardInterrupt

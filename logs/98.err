@@ -1,57 +1,0 @@
-/home/tangevare/.local/lib/python3.11/site-packages/imblearn/over_sampling/_smote/cluster.py:216: RuntimeWarning: overflow encountered in scalar power
-  return (mean_distance**exponent) / X.shape[0]
-/home/tangevare/.local/lib/python3.11/site-packages/imblearn/over_sampling/_smote/cluster.py:216: RuntimeWarning: overflow encountered in scalar power
-  return (mean_distance**exponent) / X.shape[0]
-/home/tangevare/.local/lib/python3.11/site-packages/imblearn/over_sampling/_smote/cluster.py:267: RuntimeWarning: invalid value encountered in divide
-  cluster_weights = cluster_sparsities / cluster_sparsities.sum()
-/gpfs/home2/tangevare/src/samplers_def.py:17: RuntimeWarning: KMeansSMOTE failed (cannot convert float NaN to integer); falling back to SMOTE.
-  warnings.warn(
-/home/tangevare/.local/lib/python3.11/site-packages/imblearn/over_sampling/_smote/cluster.py:216: RuntimeWarning: overflow encountered in scalar power
-  return (mean_distance**exponent) / X.shape[0]
-/home/tangevare/.local/lib/python3.11/site-packages/imblearn/over_sampling/_smote/cluster.py:216: RuntimeWarning: overflow encountered in scalar power
-  return (mean_distance**exponent) / X.shape[0]
-/home/tangevare/.local/lib/python3.11/site-packages/imblearn/over_sampling/_smote/cluster.py:267: RuntimeWarning: invalid value encountered in divide
-  cluster_weights = cluster_sparsities / cluster_sparsities.sum()
-/gpfs/home2/tangevare/src/samplers_def.py:17: RuntimeWarning: KMeansSMOTE failed (cannot convert float NaN to integer); falling back to SMOTE.
-  warnings.warn(
-/home/tangevare/.local/lib/python3.11/site-packages/imblearn/over_sampling/_smote/cluster.py:216: RuntimeWarning: overflow encountered in scalar power
-  return (mean_distance**exponent) / X.shape[0]
-/home/tangevare/.local/lib/python3.11/site-packages/imblearn/over_sampling/_smote/cluster.py:216: RuntimeWarning: overflow encountered in scalar power
-  return (mean_distance**exponent) / X.shape[0]
-/home/tangevare/.local/lib/python3.11/site-packages/imblearn/over_sampling/_smote/cluster.py:216: RuntimeWarning: overflow encountered in scalar power
-  return (mean_distance**exponent) / X.shape[0]
-/home/tangevare/.local/lib/python3.11/site-packages/imblearn/over_sampling/_smote/cluster.py:267: RuntimeWarning: invalid value encountered in divide
-  cluster_weights = cluster_sparsities / cluster_sparsities.sum()
-/gpfs/home2/tangevare/src/samplers_def.py:17: RuntimeWarning: KMeansSMOTE failed (cannot convert float NaN to integer); falling back to SMOTE.
-  warnings.warn(
-/home/tangevare/.local/lib/python3.11/site-packages/imblearn/over_sampling/_smote/cluster.py:216: RuntimeWarning: overflow encountered in scalar power
-  return (mean_distance**exponent) / X.shape[0]
-/home/tangevare/.local/lib/python3.11/site-packages/imblearn/over_sampling/_smote/cluster.py:216: RuntimeWarning: overflow encountered in scalar power
-  return (mean_distance**exponent) / X.shape[0]
-/home/tangevare/.local/lib/python3.11/site-packages/imblearn/over_sampling/_smote/cluster.py:216: RuntimeWarning: overflow encountered in scalar power
-  return (mean_distance**exponent) / X.shape[0]
-/home/tangevare/.local/lib/python3.11/site-packages/imblearn/over_sampling/_smote/cluster.py:267: RuntimeWarning: invalid value encountered in divide
-  cluster_weights = cluster_sparsities / cluster_sparsities.sum()
-/gpfs/home2/tangevare/src/samplers_def.py:17: RuntimeWarning: KMeansSMOTE failed (cannot convert float NaN to integer); falling back to SMOTE.
-  warnings.warn(
-/home/tangevare/.local/lib/python3.11/site-packages/imblearn/over_sampling/_smote/cluster.py:216: RuntimeWarning: overflow encountered in scalar power
-  return (mean_distance**exponent) / X.shape[0]
-/home/tangevare/.local/lib/python3.11/site-packages/imblearn/over_sampling/_smote/cluster.py:216: RuntimeWarning: overflow encountered in scalar power
-  return (mean_distance**exponent) / X.shape[0]
-/home/tangevare/.local/lib/python3.11/site-packages/imblearn/over_sampling/_smote/cluster.py:216: RuntimeWarning: overflow encountered in scalar power
-  return (mean_distance**exponent) / X.shape[0]
-/home/tangevare/.local/lib/python3.11/site-packages/imblearn/over_sampling/_smote/cluster.py:216: RuntimeWarning: overflow encountered in scalar power
-  return (mean_distance**exponent) / X.shape[0]
-/home/tangevare/.local/lib/python3.11/site-packages/imblearn/over_sampling/_smote/cluster.py:267: RuntimeWarning: invalid value encountered in divide
-  cluster_weights = cluster_sparsities / cluster_sparsities.sum()
-/gpfs/home2/tangevare/src/samplers_def.py:17: RuntimeWarning: KMeansSMOTE failed (cannot convert float NaN to integer); falling back to SMOTE.
-  warnings.warn(
-  0%|          | 0/20 [00:00<?, ?it/s] 10%|█         | 2/20 [00:00<00:01, 16.92it/s] 20%|██        | 4/20 [00:00<00:00, 17.08it/s] 30%|███       | 6/20 [00:00<00:00, 17.14it/s] 40%|████      | 8/20 [00:00<00:00, 17.19it/s] 50%|█████     | 10/20 [00:00<00:00, 17.20it/s] 60%|██████    | 12/20 [00:00<00:00, 17.21it/s] 70%|███████   | 14/20 [00:00<00:00, 17.22it/s] 80%|████████  | 16/20 [00:00<00:00, 17.20it/s] 90%|█████████ | 18/20 [00:01<00:00, 17.20it/s]100%|██████████| 20/20 [00:01<00:00, 17.20it/s]100%|██████████| 20/20 [00:01<00:00, 17.18it/s]
-/home/tangevare/.local/lib/python3.11/site-packages/imblearn/over_sampling/_smote/cluster.py:216: RuntimeWarning: overflow encountered in scalar power
-  return (mean_distance**exponent) / X.shape[0]
-/home/tangevare/.local/lib/python3.11/site-packages/imblearn/over_sampling/_smote/cluster.py:216: RuntimeWarning: overflow encountered in scalar power
-  return (mean_distance**exponent) / X.shape[0]
-/home/tangevare/.local/lib/python3.11/site-packages/imblearn/over_sampling/_smote/cluster.py:267: RuntimeWarning: invalid value encountered in divide
-  cluster_weights = cluster_sparsities / cluster_sparsities.sum()
-/gpfs/home2/tangevare/src/samplers_def.py:17: RuntimeWarning: KMeansSMOTE failed (cannot convert float NaN to integer); falling back to SMOTE.
-  warnings.warn(

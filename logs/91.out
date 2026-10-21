@@ -1,3 +1,0 @@
-[Thu Jul  2 09:20:22 CEST 2026] Starting experiment 91 on tcn607.local.snellius.surf.nl with 16 cores
-[exp 0091] frac=0.2, model=RandomForestClassifier, sampler=RandomUnderSampler
-  PR-AUC=0.3735  F1=0.5857

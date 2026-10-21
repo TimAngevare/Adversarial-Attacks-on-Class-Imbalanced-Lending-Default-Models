@@ -1,6 +1,0 @@
-[Tue Jun 30 15:06:31 CEST 2026] Starting experiment 18 on tcn1026.local.snellius.surf.nl with 16 cores
-[exp 0018] frac=0.01, model=NeuralNetClassifier, sampler=KMeansSMOTE
-  PR-AUC=0.0118  F1=0.5015
-  Attack success rate: GA=0.26 ZOO=0.22
-[exp 0018] DONE → results/exp_0018
-[Tue Jun 30 17:35:37 CEST 2026] Experiment 18 finished with exit code 0

@@ -1,6 +1,0 @@
-[Tue Jun 30 12:14:56 CEST 2026] Starting experiment 21 on tcn1026.local.snellius.surf.nl with 16 cores
-[exp 0021] frac=0.02, model=XGBClassifier, sampler=RandomUnderSampler
-  PR-AUC=0.0485  F1=0.4226
-  Attack success rate: GA=0.76 ZOO=0.31
-[exp 0021] DONE → results/exp_0021
-[Tue Jun 30 13:14:09 CEST 2026] Experiment 21 finished with exit code 0

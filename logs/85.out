@@ -1,6 +1,0 @@
-[Tue Jun 30 15:59:44 CEST 2026] Starting experiment 85 on tcn1026.local.snellius.surf.nl with 16 cores
-[exp 0085] frac=0.2, model=LogisticRegression, sampler=Baseline
-  PR-AUC=0.3676  F1=0.5088
-  Attack success rate: GA=0.11 ZOO=0.1
-[exp 0085] DONE → results/exp_0085
-[Tue Jun 30 18:50:04 CEST 2026] Experiment 85 finished with exit code 0

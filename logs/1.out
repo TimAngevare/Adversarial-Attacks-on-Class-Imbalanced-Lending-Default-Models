@@ -1,6 +1,0 @@
-[Wed Jul  1 06:40:21 CEST 2026] Starting experiment 1 on tcn607.local.snellius.surf.nl with 16 cores
-[exp 0001] frac=0.01, model=XGBClassifier, sampler=RandomUnderSampler
-  PR-AUC=0.0235  F1=0.4047
-  Attack success rate: GA=0.91 ZOO=0.5
-[exp 0001] DONE → results/exp_0001
-[Wed Jul  1 07:13:01 CEST 2026] Experiment 1 finished with exit code 0

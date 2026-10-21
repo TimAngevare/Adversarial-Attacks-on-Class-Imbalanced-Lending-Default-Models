@@ -1,3 +1,0 @@
-# Shell scripts run on the Linux HPC — always store/checkout with LF so SLURM and
-# HyperQueue don't choke on Windows CRLF line endings ("DOS line breaks" error).
-*.sh text eol=lf

@@ -1,6 +1,0 @@
-[Tue Jun 30 11:49:16 CEST 2026] Starting experiment 49 on tcn1026.local.snellius.surf.nl with 16 cores
-[exp 0049] frac=0.05, model=LogisticRegression, sampler=ClassWeight
-  PR-AUC=0.1138  F1=0.4719
-  Attack success rate: GA=0.17 ZOO=0.17
-[exp 0049] DONE → results/exp_0049
-[Tue Jun 30 14:18:11 CEST 2026] Experiment 49 finished with exit code 0

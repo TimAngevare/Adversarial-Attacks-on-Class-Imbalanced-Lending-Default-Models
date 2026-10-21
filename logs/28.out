@@ -1,6 +1,0 @@
-[Tue Jun 30 00:00:15 CEST 2026] Starting experiment 28 on tcn1174.local.snellius.surf.nl with 16 cores
-[exp 0028] frac=0.02, model=LogisticRegression, sampler=KMeansSMOTE
-  PR-AUC=0.0272  F1=0.4742
-  Attack success rate: GA=0.06 ZOO=0.06
-[exp 0028] DONE → results/exp_0028
-[Tue Jun 30 03:50:33 CEST 2026] Experiment 28 finished with exit code 0

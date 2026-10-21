@@ -1,3 +1,0 @@
-[Mon Jun 29 08:37:23 CEST 2026] Starting experiment 32 on tcn1174.local.snellius.surf.nl with 16 cores
-[exp 0032] frac=0.02, model=RandomForestClassifier, sampler=SMOTEENN
-  PR-AUC=0.0380  F1=0.5216
