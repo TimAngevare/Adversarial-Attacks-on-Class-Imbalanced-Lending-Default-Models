@@ -1,0 +1,5 @@
+Model,Best performing sampler,Mean PR-AUC,Lowest grid ASR sampler,Grid ASR,ASR Exact (LR),ASR GA,ASR Grid,ASR ZOO,Highest post-attack recall sampler,Post-attack recall (best)
+XGBClassifier,Baseline,0.165,SMOTEENN,0.297,,0.316,0.297,0.054,SMOTEENN,0.2567
+LogisticRegression,ClassWeight,0.1529,Baseline,0.2437,0.2437,0.24,0.2437,0.24,KMeansSMOTE,0.3172
+RandomForestClassifier,Baseline,0.1589,SMOTEENN,0.2212,,0.238,0.2212,0.054,SMOTEENN,0.2888
+NeuralNetClassifier,ClassWeight,0.1606,KMeansSMOTE,0.1998,,0.222,0.1998,0.214,KMeansSMOTE,0.4322

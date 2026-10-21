@@ -1,10 +1,27 @@
+# Raw data and partial downloads
+/Data/
 
-# Environment files
-.env
+# Local experiment files
+/notebook_experiments/
+/HPC_updated_submission/HPC/data/
+/HPC_updated_submission/HPC/Data/
+/HPC_updated_submission/HPC/results/
+/HPC_updated_submission/HPC/results_v2/
+/HPC_updated_submission/HPC/logs/
 
-# Claude assistant state
-.claude
+# Local HPC reports
+/outputs/task_report.csv
+/outputs/provenance.csv
 
-# Python cache
+# Python and notebook caches
 __pycache__/
 *.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# Local credentials
+.env
+.env.*
+.kaggle/
+kaggle.json

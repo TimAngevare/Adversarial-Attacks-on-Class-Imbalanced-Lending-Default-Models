@@ -12,6 +12,7 @@ from xgboost import XGBClassifier
 from src.config import RANDOM_STATE
 
 
+# Define two 64-unit ReLU layers with dropout
 class NeuralNetwork(nn.Module):
     def __init__(self, input_dim: int):
         super().__init__()
@@ -25,6 +26,7 @@ class NeuralNetwork(nn.Module):
         return self.net(X)
 
 
+# Build the four classifiers using the selected parameters and core count
 def get_models(n_features: int, n_cores: int = 1, best_params: dict = None) -> dict:
 
     params = best_params or {}
@@ -33,7 +35,8 @@ def get_models(n_features: int, n_cores: int = 1, best_params: dict = None) -> d
     xgb_kw = dict(params.get("XGBClassifier", {}))
     xgb_kw.setdefault("random_state", RANDOM_STATE)
     xgb_kw.setdefault("eval_metric", "logloss")
-    xgb_kw["nthread"] = n_cores
+    xgb_kw.pop("nthread", None)
+    xgb_kw["n_jobs"] = n_cores
 
     lr_kw = dict(params.get("LogisticRegression", {}))
     lr_kw.setdefault("random_state", RANDOM_STATE)
@@ -68,6 +71,7 @@ def get_models(n_features: int, n_cores: int = 1, best_params: dict = None) -> d
     }
 
 
+# Set or clear class weights for the selected model
 def apply_class_weight(estimator, sampler_name: str, y) -> object:
     y_arr = np.asarray(y)
     name = estimator.__class__.__name__
@@ -89,3 +93,18 @@ def apply_class_weight(estimator, sampler_name: str, y) -> object:
         elif name == "NeuralNetClassifier":
             estimator.set_params(criterion__weight=None)
     return estimator
+
+
+# Set prediction thread counts for the fitted model
+def set_model_threads(estimator, n_threads: int) -> None:
+    name = estimator.__class__.__name__
+    if name == "XGBClassifier":
+        estimator.set_params(n_jobs=n_threads)
+        try:
+            estimator.get_booster().set_param({"nthread": n_threads})
+        except Exception:
+            pass
+    elif name == "RandomForestClassifier":
+        estimator.set_params(n_jobs=n_threads)
+    elif name == "NeuralNetClassifier":
+        torch.set_num_threads(n_threads)

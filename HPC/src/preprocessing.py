@@ -1,129 +1,209 @@
+# Prepare lending data while preserving the original borrower IDs.
+import json
+import locale
+import os
+
 import numpy as np
 import pandas as pd
 from scipy.stats import ks_2samp
 from sklearn.model_selection import train_test_split
 
-from src.config import RANDOM_STATE
-
-KEEP_COLS = [
-    "loan_amnt", "term", "installment", "grade", "emp_length",
-    "home_ownership", "annual_inc", "verification_status", "issue_d",
-    "loan_status", "purpose", "addr_state", "dti", "delinq_2yrs", "earliest_cr_line",
-    "fico_range_low", "fico_range_high", "inq_last_6mths", "open_acc",
-    "pub_rec", "revol_bal", "revol_util", "total_acc", "initial_list_status",
-    "application_type", "mort_acc", "pub_rec_bankruptcies",
-]
+from src.config import (
+    RANDOM_STATE, TEST_SIZE, MISSING_THRESHOLD, NEAR_CONSTANT_THRESHOLD,
+    HIGH_CARDINALITY_COUNT, CORR_DROP_COLS, DROP_FOR_LEAKAGE, DROP_FOR_PROXY_RISK,
+    PRICING_COLUMNS, DROP_MANUAL, EMP_LENGTH_MAP, LOG_FEATURES,
+)
 
 
-def load_and_clean(filepath: str) -> pd.DataFrame:
+# Prepare predictors and target while keeping pricing columns separate
+def load_and_prepare(filepath: str, verbose: bool = True):
+    log = print if verbose else (lambda *a, **k: None)
+    report = {}
+
     df = pd.read_csv(filepath, low_memory=False)
+    report["raw_shape"] = list(df.shape)
     df = df[df.loan_status.isin(["Fully Paid", "Charged Off"])]
+    log(f"Resolved loans: {len(df):,}")
 
-    missing_pct = df.isnull().mean() * 100
-    df = df.drop(columns=missing_pct[missing_pct > 50].index, errors="ignore")
+    # Drop columns with more than 10% missing values
+    missing_ratio = df.isnull().mean()
+    cols_above_missing = missing_ratio[missing_ratio > MISSING_THRESHOLD].index.tolist()
+    df = df.drop(columns=cols_above_missing)
+    report["dropped_missing"] = cols_above_missing
 
-    available = [c for c in KEEP_COLS if c in df.columns]
-    df = df[available]
+    # Create the FICO midpoint and drop selected correlated columns
+    df["fico_mid"] = (df["fico_range_low"] + df["fico_range_high"]) / 2
+    df = df.drop(columns=["fico_range_low", "fico_range_high"], errors="ignore")
+    corr_cols = [c for c in CORR_DROP_COLS if c in df.columns]
+    df = df.drop(columns=corr_cols)
+    report["dropped_correlated"] = corr_cols
 
+    # Drop near-constant columns
+    near_constant = [
+        col for col in df.columns
+        if df[col].value_counts(normalize=True, dropna=False).iloc[0] > NEAR_CONSTANT_THRESHOLD
+    ]
+    df = df.drop(columns=near_constant)
+    report["dropped_near_constant"] = near_constant
+
+    # Drop categorical columns with too many unique values
+    cat_cols = df.select_dtypes(include=["object"]).columns
+    high_unique = [c for c in cat_cols if df[c].nunique(dropna=True) > HIGH_CARDINALITY_COUNT]
+    df = df.drop(columns=high_unique)
+    report["dropped_high_cardinality"] = high_unique
+
+    # Remove leakage and keep pricing columns for sensitivity analysis
+    pricing_df = df[[c for c in PRICING_COLUMNS if c in df.columns]].copy()
+    if "int_rate" in pricing_df.columns and pricing_df["int_rate"].dtype == object:
+        pricing_df["int_rate"] = pd.to_numeric(
+            pricing_df["int_rate"].astype(str).str.rstrip("%").str.strip(), errors="coerce"
+        )
+    term_months = pd.to_numeric(df["term"].astype(str).str.extract(r"(\d+)")[0], errors="coerce")
+    report["implied_rate_check"] = implied_rate_check(df["loan_amnt"], term_months, pricing_df)
+
+    df = df.drop(columns=[c for c in DROP_FOR_LEAKAGE if c in df.columns])
+    df = df.drop(columns=[c for c in DROP_FOR_PROXY_RISK if c in df.columns])
+    df = df.drop(columns=[c for c in DROP_MANUAL if c in df.columns])
+
+    # Map loan status to the binary default target
     df = df.rename(columns={"loan_status": "target"})
     df["target"] = df["target"].map({"Charged Off": 1, "Fully Paid": 0})
-    return df
 
-
-def engineer_features(df: pd.DataFrame) -> pd.DataFrame:
-    df = df.copy()
-
-    df["Individual application"] = (df["application_type"] == "INDIVIDUAL").astype(np.int8)
-    df.drop(columns=["application_type"], inplace=True)
-
-    emp_map = {
-        "< 1 year": 0, "1 year": 1, "2 years": 2, "3 years": 3, "4 years": 4,
-        "5 years": 5, "6 years": 6, "7 years": 7, "8 years": 8, "9 years": 9,
-        "10+ years": 10,
-    }
-    df["emp_length"] = df["emp_length"].map(emp_map)
-
-    df["term"] = (
-        df["term"].fillna("36 months").str.strip().str.replace(" months", "", regex=False).astype(int)
-    )
-
-    df.drop("grade", axis=1, inplace=True)
-
-    dummies = ["verification_status", "purpose", "initial_list_status", "home_ownership", "addr_state"]
-    dummies = [c for c in dummies if c in df.columns]
-    df = pd.get_dummies(df, columns=dummies, drop_first=True)
-
+    # Encode employment length, loan term and credit history
+    df["emp_length"] = df["emp_length"].map(EMP_LENGTH_MAP)
+    df["term"] = df["term"].fillna("36 months")
+    df["term"] = df["term"].str.strip().str.replace(" months", "").astype(int)
+    try:
+        locale.setlocale(locale.LC_TIME, "C")
+    except locale.Error:
+        pass
     df["earliest_cr_line"] = pd.to_datetime(df["earliest_cr_line"], format="%b-%Y")
-    reference = pd.Timestamp("2018-01-01")
-    df["credit_history_yrs"] = (reference - df["earliest_cr_line"]).dt.days / 365.25
-    df.drop(columns="earliest_cr_line", inplace=True)
+    reference_date = df["earliest_cr_line"].max()
+    df["credit_history_years"] = (reference_date - df["earliest_cr_line"]).dt.days / 365.25
+    df = df.drop(columns=["earliest_cr_line"])
 
-    if "fico_range_low" in df.columns and "fico_range_high" in df.columns:
-        df["fico_mid"] = (df["fico_range_low"] + df["fico_range_high"]) / 2
-        df.drop(columns=["fico_range_low", "fico_range_high"], inplace=True)
-
-    df["annual_inc"] = np.log1p(df["annual_inc"])
-    df["revol_bal"] = np.log1p(df["revol_bal"])
-
-    df.drop("issue_d", axis=1, inplace=True, errors="ignore")
-
+    # Transform skewed features and remove rows without a loan amount
+    for col in LOG_FEATURES:
+        df[col] = np.log1p(df[col])
     df = df.dropna(subset=["loan_amnt"])
-    df = df.dropna(subset=["target"])
+    categorical_cols = df.select_dtypes(include="object").columns.tolist()
+    df = pd.get_dummies(df, columns=categorical_cols, drop_first=True)
+    report["one_hot_encoded"] = categorical_cols
 
-    # Ensure no boolean columns (parquet/sklearn compatibility)
-    bool_cols = df.select_dtypes(include="bool").columns
-    df[bool_cols] = df[bool_cols].astype(np.int8)
+    leaks = set(DROP_FOR_PROXY_RISK) & set(df.columns)
+    if leaks:
+        raise RuntimeError(f"Pricing columns still present: {leaks}")
 
-    return df
+    report["final_shape"] = list(df.shape)
+    report["base_default_rate"] = float(df["target"].mean())
+    report["feature_names"] = [c for c in df.columns if c != "target"]
+    log(f"Final feature matrix: {df.shape[0]:,} rows x {df.shape[1] - 1} features, "
+        f"default rate {df['target'].mean():.3f}")
+    return df, pricing_df, report
 
 
+# Compare the interest rate implied by installment with int_rate
+def implied_rate_check(loan_amnt, term_months, pricing_df) -> dict:
+    if not {"installment", "int_rate"}.issubset(pricing_df.columns):
+        return {"skipped": "installment or int_rate not available"}
+    check = pd.DataFrame({
+        "P": loan_amnt, "n": term_months,
+        "A": pricing_df["installment"], "r": pricing_df["int_rate"],
+    }).dropna()
+    check = check[(check["P"] > 0) & (check["A"] > 0)]
+    P, n, A = (check[c].to_numpy(dtype=float) for c in ["P", "n", "A"])
+    low, high = np.full(len(P), 1e-8), np.full(len(P), 0.10)
+    for _ in range(60):
+        mid = (low + high) / 2
+        too_high = P * mid / (1 - (1 + mid) ** -n) > A
+        high = np.where(too_high, mid, high)
+        low = np.where(too_high, low, mid)
+    implied = 1200 * (low + high) / 2
+    error = implied - check["r"].to_numpy(dtype=float)
+    return {
+        "loans_checked": int(len(check)),
+        "correlation": float(np.corrcoef(implied, check["r"])[0, 1]) if len(check) > 1 else None,
+        "median_abs_error_pp": float(np.median(np.abs(error))) if len(check) else None,
+        "share_within_0.1pp": float(np.mean(np.abs(error) < 0.1)) if len(check) else None,
+    }
+
+
+# Compare feature distributions using KS statistics
 def calc_bias(df_original: pd.DataFrame, df_subset: pd.DataFrame) -> dict:
     results = {}
-    numeric_cols = df_original.select_dtypes(include="number").columns.difference(["target"])
-    for col in numeric_cols:
-        a = df_original[col].dropna().values
-        b = df_subset[col].dropna().values
-        stat, p = ks_2samp(a, b)
-        results[col] = {"ks_stat": round(float(stat), 4), "p_value": round(float(p), 4)}
+    for col in df_original.select_dtypes(include="number").columns:
+        stat, p = ks_2samp(df_original[col], df_subset[col])
+        if pd.notna(stat):
+            results[col] = {"ks_stat": round(float(stat), 4), "p_value": round(float(p), 4)}
     return results
 
 
-def create_imbalanced_dataset(
-    df: pd.DataFrame, frac: float, random_state: int = RANDOM_STATE
-) -> tuple:
-    majority = df[df["target"] == 0]
-    minority = df[df["target"] == 1]
-    natural_frac = len(minority) / len(df)
-
-    if frac <= natural_frac:
-        n_minority = int(round(frac / (1 - frac) * len(majority)))
-        min_part = minority.sample(n=n_minority, random_state=random_state)
-        maj_part = majority
-    else:
-        n_majority = int(round((1 - frac) / frac * len(minority)))
-        maj_part = majority.sample(n=n_majority, random_state=random_state)
-        min_part = minority
-
-    dataset = (
-        pd.concat([maj_part, min_part])
-        .sample(frac=1, random_state=random_state)
-        .reset_index(drop=True)
+# Assign borrowers to fixed stratified training and test pools
+def make_pools(df: pd.DataFrame, random_state: int = RANDOM_STATE):
+    train_ids, test_ids = train_test_split(
+        df.index.to_numpy(), test_size=TEST_SIZE, stratify=df["target"], random_state=random_state
     )
+    return pd.Index(train_ids), pd.Index(test_ids)
 
-    bias = calc_bias(df, dataset)
-    X = dataset.drop(columns="target")
-    y = dataset["target"]
+
+# Subsample one class to reach the target prevalence
+def _sample_to_prevalence(pool: pd.DataFrame, frac: float, seed: int):
+    majority = pool[pool["target"] == 0]
+    minority = pool[pool["target"] == 1]
+    pool_fraction = len(minority) / len(pool)
+    if frac <= pool_fraction:
+        n_minority = int(round(frac / (1 - frac) * len(majority)))
+        return majority, minority.sample(n=n_minority, random_state=seed)
+    n_majority = int(round((1 - frac) / frac * len(minority)))
+    return majority.sample(n=n_majority, random_state=seed), minority
+
+
+# Sample each borrower pool to the target prevalence
+def create_imbalanced_dataset(df, frac, train_ids, test_ids, random_state: int = RANDOM_STATE):
+    parts = []
+    for pool_ids in (train_ids, test_ids):
+        parts.extend(_sample_to_prevalence(df.loc[pool_ids], frac, random_state))
+    subsample = pd.concat(parts).sample(frac=1, random_state=random_state)
+    bias = calc_bias(df, subsample)
+    X = subsample.drop(columns="target")
+    y = subsample["target"]
     return X, y, bias
 
 
-def make_train_test_split(X: pd.DataFrame, y: pd.Series, random_state: int = RANDOM_STATE):
-    return train_test_split(X, y, test_size=0.2, stratify=y, random_state=random_state)
+# Save predictors, target and matched pricing data as Parquet
+def save_dataset(directory, frac, X, y, pricing):
+    X.to_parquet(os.path.join(directory, f"X_full_{frac}.parquet"))
+    y.to_frame("target").to_parquet(os.path.join(directory, f"y_full_{frac}.parquet"))
+    pricing.to_parquet(os.path.join(directory, f"pricing_{frac}.parquet"))
 
 
-def make_validation_split(X: pd.DataFrame, y: pd.Series, random_state: int = RANDOM_STATE):
-    """Carve a stratified validation set out of the training set (20%).
+# Load predictors and target and check that borrower IDs match
+def load_dataset(directory, frac):
+    X = pd.read_parquet(os.path.join(directory, f"X_full_{frac}.parquet"))
+    y = pd.read_parquet(os.path.join(directory, f"y_full_{frac}.parquet"))["target"]
+    if not X.index.equals(y.index):
+        raise RuntimeError(f"X and y of prevalence {frac} do not line up")
+    return X, y
 
-    Used to calibrate the F1-optimal decision threshold for the adversarial
-    attacks without touching the held-out test set.
-    """
-    return train_test_split(X, y, test_size=0.2, stratify=y, random_state=random_state)
+
+# Read the borrower IDs assigned to the test pool
+def load_test_ids(directory) -> pd.Index:
+    return pd.Index(pd.read_parquet(os.path.join(directory, "test_ids.parquet"))["borrower_id"])
+
+
+# Split observations using their fixed borrower pools
+def split_train_test(X, y, test_ids):
+    is_test = X.index.isin(test_ids)
+    return X[~is_test], X[is_test], y[~is_test], y[is_test]
+
+
+# Hold out a stratified validation split from the training pool
+def make_validation_split(X, y, random_state: int = RANDOM_STATE):
+    from src.config import VALIDATION_SIZE
+    return train_test_split(X, y, test_size=VALIDATION_SIZE, stratify=y, random_state=random_state)
+
+
+# Save preprocessing information as JSON
+def write_json(path, obj):
+    with open(path, "w") as f:
+        json.dump(obj, f, indent=2, default=str)

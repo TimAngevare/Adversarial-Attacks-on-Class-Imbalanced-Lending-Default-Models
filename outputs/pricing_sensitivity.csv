@@ -1,0 +1,28 @@
+Imbalance ratio,Variant,Model,Sampler,ROC-AUC (mean),PR-AUC (mean)
+0.01,Pre-pricing (main),LogisticRegression,Baseline,0.6978596404251588,0.0239866071241707
+0.01,With installment (previous feature set),LogisticRegression,Baseline,0.7031120544442389,0.0247439999896185
+0.01,Post-pricing (int_rate included),LogisticRegression,Baseline,0.7104037570300178,0.0252382601472895
+0.02,Pre-pricing (main),LogisticRegression,Baseline,0.6959639651793282,0.0467320820863536
+0.02,Pre-pricing (main),LogisticRegression,ClassWeight,0.7007391341172674,0.0470751956697504
+0.02,With installment (previous feature set),LogisticRegression,Baseline,0.701179601304525,0.048120830158837
+0.02,With installment (previous feature set),LogisticRegression,ClassWeight,0.7049581987615532,0.0483408748766939
+0.02,Post-pricing (int_rate included),LogisticRegression,Baseline,0.7088483731166351,0.0492829581461371
+0.02,Post-pricing (int_rate included),LogisticRegression,ClassWeight,0.7113344288414957,0.0492435842805746
+0.05,Pre-pricing (main),LogisticRegression,Baseline,0.7012044500745827,0.1141231529840308
+0.05,Pre-pricing (main),LogisticRegression,ClassWeight,0.7047672006597938,0.1148398022547646
+0.05,With installment (previous feature set),LogisticRegression,Baseline,0.7060530574757122,0.1169531439442974
+0.05,With installment (previous feature set),LogisticRegression,ClassWeight,0.7089093795013433,0.1175620940898027
+0.05,Post-pricing (int_rate included),LogisticRegression,Baseline,0.7126965589444276,0.1187477544684068
+0.05,Post-pricing (int_rate included),LogisticRegression,ClassWeight,0.714719521514761,0.1190014331234691
+0.1,Pre-pricing (main),LogisticRegression,Baseline,0.7031204554790036,0.2103440669042469
+0.1,Pre-pricing (main),LogisticRegression,ClassWeight,0.7049206742000044,0.2105592621081796
+0.1,With installment (previous feature set),LogisticRegression,Baseline,0.7078732892513989,0.2146466077192541
+0.1,With installment (previous feature set),LogisticRegression,ClassWeight,0.7093151469822717,0.2149197681456985
+0.1,Post-pricing (int_rate included),LogisticRegression,Baseline,0.7135997274227543,0.2170510424960796
+0.1,Post-pricing (int_rate included),LogisticRegression,ClassWeight,0.7147287112682985,0.2170996173294054
+0.2,Pre-pricing (main),LogisticRegression,Baseline,0.704502580770243,0.3681872804129564
+0.2,Pre-pricing (main),LogisticRegression,ClassWeight,0.7051669570069337,0.3679830455947357
+0.2,With installment (previous feature set),LogisticRegression,Baseline,0.7091972787871363,0.3740742017462102
+0.2,With installment (previous feature set),LogisticRegression,ClassWeight,0.70972783532752,0.3739492756965206
+0.2,Post-pricing (int_rate included),LogisticRegression,Baseline,0.714599794140292,0.3776138394234237
+0.2,Post-pricing (int_rate included),LogisticRegression,ClassWeight,0.7150364422912876,0.3773564359368967

@@ -5,24 +5,27 @@ from imblearn.combine import SMOTEENN
 from imblearn.over_sampling import KMeansSMOTE, SMOTE
 from sklearn.cluster import MiniBatchKMeans
 
-from src.config import RANDOM_STATE, KMEANS_SMOTE_N_CLUSTERS
+from src.config import (
+    RANDOM_STATE, KMEANS_SMOTE_N_CLUSTERS, KMEANS_SMOTE_DENSITY_EXPONENT,
+    KMEANS_SMOTE_ALLOW_FALLBACK,
+)
+
+# Record reasons for any enabled replacement of KMeans-SMOTE by SMOTE
+FALLBACK_EVENTS = []
 
 
-class SafeKMeansSMOTE(KMeansSMOTE):
+# Record the optional SMOTE replacement when KMeans-SMOTE fails
+class GuardedKMeansSMOTE(KMeansSMOTE):
 
+    # Resample with KMeans-SMOTE and handle the optional replacement
     def fit_resample(self, X, y, **params):
         try:
             return super().fit_resample(X, y, **params)
         except (ValueError, RuntimeError) as exc:
-            warnings.warn(
-                f"KMeansSMOTE failed ({exc}); falling back to SMOTE.",
-                RuntimeWarning,
-            )
-            # NB: SMOTE dropped the `n_jobs` parameter in imbalanced-learn >=0.12
-            # (KMeansSMOTE/SMOTEENN still accept it), so forwarding it here makes
-            # the fallback itself raise TypeError and the fit fails. Use
-            # k_neighbors from the KMeansSMOTE config (default 2) so the fallback
-            # stays valid on small minority clusters.
+            if not KMEANS_SMOTE_ALLOW_FALLBACK:
+                raise
+            FALLBACK_EVENTS.append(str(exc))
+            warnings.warn(f"KMeansSMOTE failed ({exc}); replaced by SMOTE.", RuntimeWarning)
             fallback = SMOTE(
                 sampling_strategy=self.sampling_strategy,
                 random_state=self.random_state,
@@ -31,9 +34,11 @@ class SafeKMeansSMOTE(KMeansSMOTE):
             return fallback.fit_resample(X, y, **params)
 
 
+# Define the five imbalance-handling strategies
 def get_samplers(n_jobs: int = 1) -> dict:
     return {
         "Baseline": None,
+        "ClassWeight": None,
         "RandomUnderSampler": RandomUnderSampler(
             sampling_strategy="majority",
             random_state=RANDOM_STATE,
@@ -43,18 +48,11 @@ def get_samplers(n_jobs: int = 1) -> dict:
             random_state=RANDOM_STATE,
             n_jobs=n_jobs,
         ),
-        "KMeansSMOTE": SafeKMeansSMOTE(
+        "KMeansSMOTE": GuardedKMeansSMOTE(
             sampling_strategy="minority",
             random_state=RANDOM_STATE,
             cluster_balance_threshold=0.01,
-            # Pin the density exponent to a small constant. The default ("auto")
-            # scales the exponent with the data; on our high-dimensional,
-            # standardised features that makes `mean_distance ** exponent` overflow
-            # to inf, so every cluster sparsity collapses to 0 and the normalisation
-            # 0/0 -> NaN sample count. That NaN is exactly what triggered the SMOTE
-            # fallback at the higher imbalance fractions. A fixed small exponent
-            # keeps the sparser-cluster weighting while staying numerically stable.
-            density_exponent=2,
+            density_exponent=KMEANS_SMOTE_DENSITY_EXPONENT,
             kmeans_estimator=MiniBatchKMeans(
                 n_clusters=KMEANS_SMOTE_N_CLUSTERS,
                 random_state=RANDOM_STATE,
@@ -62,5 +60,4 @@ def get_samplers(n_jobs: int = 1) -> dict:
             ),
             n_jobs=n_jobs,
         ),
-        "ClassWeight": None,
     }

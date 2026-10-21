@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c ' *)",
+      "Bash(python -m py_compile setup.py main.py src/config.py src/samplers_def.py src/pipeline_utils.py)",
+      "Bash(python -m py_compile main.py setup.py aggregate.py src/config.py src/preprocessing.py src/pipeline_utils.py src/samplers_def.py src/models_def.py)",
+      "Bash(PYTHONIOENCODING=utf-8 python -c ' *)"
+    ]
+  }
+}
