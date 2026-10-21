@@ -25,3 +25,6 @@ venv/
 .env.*
 .kaggle/
 kaggle.json
+
+# Large generated artifact (71MB, exceeds GitHub recommended size)
+/outputs/attack_records.parquet
